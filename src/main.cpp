@@ -23,10 +23,8 @@ glm::vec3 cube_pos;
 GLuint vao[num_vaos]; 
 GLuint vbo[num_vbos]; 
 
-GLuint mv_loc, proj_loc;
 int width, height;
 float aspect;
-glm::mat4 p_mat, v_mat, m_mat, mv_mat;
 
 void init_vertices() {
    float vertex_positions[108] = {
@@ -54,7 +52,10 @@ void init_vertices() {
    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 }
 
-void render_cube(GLFWwindow* window, glm::vec3 cube_pos) {
+void render_cube(GLFWwindow* window, glm::vec3 cube_pos, double& time) {
+   GLuint mv_loc, proj_loc, rot_loc;
+   glm::mat4 p_mat, v_mat, m_mat, mv_mat, rot_mat;
+
    mv_loc = glGetUniformLocation(rendering_program, "mv_matrix");
    proj_loc = glGetUniformLocation(rendering_program, "proj_matrix");
 
@@ -67,22 +68,22 @@ void render_cube(GLFWwindow* window, glm::vec3 cube_pos) {
 
    v_mat = glm::translate(glm::mat4(1.0f), -camera_pos);
    m_mat = glm::translate(glm::mat4(1.0f), cube_pos);
-   mv_mat = v_mat * m_mat;
+   rot_mat = glm::rotate(glm::mat4(1.0f), static_cast<float>(1.0 * time), glm::vec3(1.0f, 1.0f, 0.0f));
+   mv_mat = v_mat * m_mat * rot_mat;
 
    glUniformMatrix4fv(mv_loc, 1, GL_FALSE, glm::value_ptr(mv_mat));
    glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(p_mat));
 }
 
-void display(GLFWwindow* window) {
-   glClearColor(0.3, 0.5, 0.15, 1.0);
+void display(GLFWwindow* window, double time) {
+   glClearColor(0.0, 0.0, 0.0, 1.0);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glUseProgram(rendering_program);
-
-   render_cube(window, {0.0f, 0.0f, 0.0f});
-
    glEnable(GL_DEPTH_TEST);
    glDepthFunc(GL_LEQUAL);
    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+   render_cube(window, {0.0f, 0.0f, 0.0f}, time);
 }
 
 int main(void) {
@@ -117,7 +118,7 @@ int main(void) {
       else if (glfwGetKey(w.window_ptr, GLFW_KEY_A) == GLFW_PRESS) {
           camera_pos[0] -= 5.0 * delta_time;
       }
-      display(w.window_ptr);
+      display(w.window_ptr, glfwGetTime());
       glfwSwapBuffers(w.window_ptr); // swaps the front and back color buffers
       glfwPollEvents();
    }
