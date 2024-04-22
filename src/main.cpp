@@ -49,18 +49,16 @@ void init_vertices() {
    glGenBuffers(num_vbos, vbo);
 
    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+   glEnableVertexAttribArray(0);
    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 }
 
-void display(GLFWwindow* window, double currentTime) {
-   glClearColor(0.3, 0.5, 0.15, 1.0);
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glUseProgram(rendering_program);
-   
-   // building the perspective matrix
+void render_cube(GLFWwindow* window, glm::vec3 cube_pos) {
    mv_loc = glGetUniformLocation(rendering_program, "mv_matrix");
    proj_loc = glGetUniformLocation(rendering_program, "proj_matrix");
 
+   // building the perspective matrix
    glfwGetFramebufferSize(window, &width, &height);
    aspect = (float)width / (float)height;
    p_mat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
@@ -73,10 +71,14 @@ void display(GLFWwindow* window, double currentTime) {
 
    glUniformMatrix4fv(mv_loc, 1, GL_FALSE, glm::value_ptr(mv_mat));
    glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(p_mat));
+}
 
-   glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-   glEnableVertexAttribArray(0);
+void display(GLFWwindow* window) {
+   glClearColor(0.3, 0.5, 0.15, 1.0);
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glUseProgram(rendering_program);
+
+   render_cube(window, {0.0f, 0.0f, 0.0f});
 
    glEnable(GL_DEPTH_TEST);
    glDepthFunc(GL_LEQUAL);
@@ -85,7 +87,6 @@ void display(GLFWwindow* window, double currentTime) {
 
 int main(void) {
    camera_pos = {0.0f, 0.0f, 3.0f};
-   cube_pos = {0.0f, -2.0f, 0.0f};
 
    window w(1280, 720, "Blossom");
 
@@ -116,7 +117,7 @@ int main(void) {
       else if (glfwGetKey(w.window_ptr, GLFW_KEY_A) == GLFW_PRESS) {
           camera_pos[0] -= 5.0 * delta_time;
       }
-      display(w.window_ptr, glfwGetTime());
+      display(w.window_ptr);
       glfwSwapBuffers(w.window_ptr); // swaps the front and back color buffers
       glfwPollEvents();
    }
