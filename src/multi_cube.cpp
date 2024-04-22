@@ -52,27 +52,29 @@ void init_vertices() {
 }
 
 void render_cube(GLFWwindow* window, glm::vec3 cube_pos, double& time) {
-   GLuint mv_loc, proj_loc, rot_loc;
-   glm::mat4 p_mat, v_mat, m_mat, mv_mat, rot_mat;
+   GLuint v_loc, proj_loc, t_loc, m_loc;
+   glm::mat4 p_mat, v_mat, m_mat;
 
-   mv_loc = glGetUniformLocation(rendering_program, "mv_matrix");
+   v_loc = glGetUniformLocation(rendering_program, "v_matrix");
    proj_loc = glGetUniformLocation(rendering_program, "proj_matrix");
+   m_loc = glGetUniformLocation(rendering_program, "m_matrix");
+   t_loc = glGetUniformLocation(rendering_program, "tf");
 
    // building the perspective matrix
 
    glfwGetFramebufferSize(window, &width, &height);
    aspect = (float)width / (float)height;
-   p_mat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
+   p_mat = glm::perspective(1.0472f, aspect, 0.1f, 50000.0f);
 
    // building the view, model, and model-view matrices
 
    v_mat = glm::translate(glm::mat4(1.0f), -camera_pos);
    m_mat = glm::translate(glm::mat4(1.0f), cube_pos);
-   rot_mat = glm::rotate(glm::mat4(1.0f), static_cast<float>(1.0 * time), glm::vec3(1.0f, 1.0f, 0.0f));
-   mv_mat = v_mat * m_mat * rot_mat;
 
-   glUniformMatrix4fv(mv_loc, 1, GL_FALSE, glm::value_ptr(mv_mat));
+   glUniformMatrix4fv(v_loc, 1, GL_FALSE, glm::value_ptr(v_mat));
    glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(p_mat));
+   glUniformMatrix4fv(m_loc, 1, GL_FALSE, glm::value_ptr(m_mat));
+   glUniform1f(t_loc, static_cast<float>(time));
 }
 
 void display(GLFWwindow* window, double time) {
@@ -81,20 +83,20 @@ void display(GLFWwindow* window, double time) {
    glUseProgram(rendering_program);
    glEnable(GL_DEPTH_TEST);
    glDepthFunc(GL_LEQUAL);
-   glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 24);
+   glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 3000000);
 
-   render_cube(window, {0.0f, 0.0f, 0.0f}, time);
+   render_cube(window, {0.0f, 0.0f, 1.0f}, time);
 }
 
 int main(void) {
-   camera_pos = {0.0f, 0.0f, 3.0f};
+   camera_pos = {0.0f, 0.0f, 420.0f};
 
-   window w(1280, 720, "Blossom");
+   window w(1920, 1080, "Blossom");
 
    w.init();
    init_vertices();
 
-   shader s("frag.txt", "vert.txt");
+   shader s("multi_cube.frag", "multi_cube.vert");
    rendering_program = s.init();
 
 
@@ -104,19 +106,19 @@ int main(void) {
       double delta_time = current_time - last_frame_time;
 
       last_frame_time = current_time;
-      std::cout << "FPS — " << 1.0 / delta_time << std::endl;
+      std::cout << "FPS: " << 1.0 / delta_time << std::endl;
 
       if (glfwGetKey(w.window_ptr, GLFW_KEY_W) == GLFW_PRESS) {
-          camera_pos[2] -= 5.0 * delta_time;
+          camera_pos[2] -= 5000.0 * delta_time;
       }
       else if (glfwGetKey(w.window_ptr, GLFW_KEY_S) == GLFW_PRESS) {
-          camera_pos[2] += 5.0 * delta_time;
+          camera_pos[2] += 5000.0 * delta_time;
       }
       else if (glfwGetKey(w.window_ptr, GLFW_KEY_D) == GLFW_PRESS) {
-          camera_pos[0] += 5.0 * delta_time;
+          camera_pos[0] += 5000.0 * delta_time;
       }
       else if (glfwGetKey(w.window_ptr, GLFW_KEY_A) == GLFW_PRESS) {
-          camera_pos[0] -= 5.0 * delta_time;
+          camera_pos[0] -= 5000.0 * delta_time;
       }
       display(w.window_ptr, glfwGetTime());
       glfwSwapBuffers(w.window_ptr); // swaps the front and back colour buffers
