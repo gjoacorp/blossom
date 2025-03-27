@@ -8,12 +8,12 @@
 #include "../glm/glm.hpp"
 #include "../glm/ext.hpp"
 
+#define TOTAL_CUBES 1000000
 
 using namespace std;
 
 #define num_vaos 1 
 #define num_vbos 2
-
 
 GLuint rendering_program; 
 
@@ -25,8 +25,10 @@ GLuint vbo[num_vbos];
 int width, height;
 float aspect;
 
-void init_vertices() {
-   float vertex_positions[108] = {
+void init_vertices() 
+{
+   float vertex_positions[108] = 
+   {
       -1.0f, 1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f,
       1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f,
       1.0f, -1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f,
@@ -77,28 +79,28 @@ void render_cube(GLFWwindow* window, glm::vec3 cube_pos, double& time) {
    glUniform1f(t_loc, static_cast<float>(time));
 }
 
-void display(GLFWwindow* window, double time) {
+void display(GLFWwindow* window, double time) 
+{
    glClearColor(0.0, 0.0, 0.0, 1.0);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glUseProgram(rendering_program);
    glEnable(GL_DEPTH_TEST);
    glDepthFunc(GL_LEQUAL);
-   glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 3000000);
+   glDrawArraysInstanced(GL_TRIANGLES, 0, 36, TOTAL_CUBES);
 
    render_cube(window, {0.0f, 0.0f, 1.0f}, time);
 }
 
-int main(void) {
+int main(void) 
+{
    camera_pos = {0.0f, 0.0f, 420.0f};
-
    window w(1920, 1080, "Blossom");
 
    w.init();
    init_vertices();
 
-   shader s("multi_cube.frag", "multi_cube.vert");
+   shader s("shaders/multi_cube.frag", "shaders/multi_cube.vert");
    rendering_program = s.init();
-
 
    while (!glfwWindowShouldClose(w.window_ptr)) {
       double current_time = glfwGetTime();
@@ -126,6 +128,5 @@ int main(void) {
    }
 
    w.destroy();
-
    exit(EXIT_SUCCESS);
 }
