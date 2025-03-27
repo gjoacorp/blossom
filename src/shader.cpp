@@ -98,4 +98,3 @@ GLuint shader::init() {
 
    return vf_program;
 }
-
