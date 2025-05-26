@@ -112,7 +112,7 @@ int main(void) {
    w.init();
    int size = init_vertices();
 
-   shader s("shaders/frag.txt", "shaders/vert.txt");
+   shader s("shaders/waves.frag", "shaders/waves.vert");
    rendering_program = s.init();
    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
