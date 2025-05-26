@@ -1,18 +1,20 @@
 #include "../headers/shader.h"
 #include <GL/glew.h>
 
-shader::shader(const char* frag_path, const char* vert_path) {
+shader::shader(const char* frag_path, const char* vert_path) 
+{
    this->frag_path = frag_path;
    this->vert_path = vert_path;
 }
 
-std::string shader::read_source(const char* path) {
-
+std::string shader::read_source(const char* path) 
+{
    std::string file_content;
    std::ifstream file(path, std::ios::in);
    std::string line = "";
 
-   while (!file.eof()) {
+   while (!file.eof()) 
+   {
       getline(file, line);
       file_content.append(line + '\n');
    }
@@ -20,8 +22,8 @@ std::string shader::read_source(const char* path) {
    return file_content;
 }
 
-void shader::print_log(GLuint shader) const {
-
+void shader::print_log(GLuint shader) const 
+{
    int length = 0;
    int char_written = 0;
    char* log;
@@ -36,8 +38,8 @@ void shader::print_log(GLuint shader) const {
    }
 }
 
-bool shader::check_gl_error() const {
-
+bool shader::check_gl_error() const 
+{
    bool error_found = false;
    int gl_error = glGetError();
 
@@ -50,8 +52,8 @@ bool shader::check_gl_error() const {
 }
 
 
-GLuint shader::init() {
-
+GLuint shader::init() 
+{
    GLint vert_compiled, frag_compiled;
 
    std::string v_string = read_source(vert_path);
@@ -70,7 +72,8 @@ GLuint shader::init() {
    check_gl_error();
    glGetShaderiv(v_shader, GL_COMPILE_STATUS, &vert_compiled);
 
-   if (vert_compiled != 1) {
+   if (vert_compiled != 1) 
+   {
       std::cout << "ERROR: Vertex shader compilation failed." << std::endl;
       print_log(v_shader);
    }
@@ -82,7 +85,8 @@ GLuint shader::init() {
    check_gl_error();
    glGetShaderiv(f_shader, GL_COMPILE_STATUS, &frag_compiled);
 
-   if (frag_compiled != 1) {
+   if (frag_compiled != 1) 
+   {
       std::cout << "ERROR: Fragment shader compilation failed." << std::endl;
       print_log(f_shader);
    }
