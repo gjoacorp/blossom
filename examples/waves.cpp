@@ -3,18 +3,14 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <string>
-#include <fstream>
 #include <vector>
 #include "../glm/glm.hpp"
 #include "../glm/ext.hpp"
-
 
 using namespace std;
 
 #define num_vaos 1 
 #define num_vbos 2
-
 
 GLuint rendering_program; 
 
@@ -34,11 +30,7 @@ int init_vertices() {
    int grid_length = 1000;
 
    for (int y = 0; y < grid_length; ++y) {
-      for (int x = 0; x < grid_length; ++x) {
-         grid_vertices.push_back({x * 0.1f, 0.0f, y * 0.1f});
-      }
-   }
-
+      for (int x = 0; x < grid_length; ++x) { grid_vertices.push_back({x * 0.1f, 0.0f, y * 0.1f}); } }
    std::cout << "Total Vertices: " << grid_vertices.size() << std::endl;
 
    for (int y = 0; y < grid_length - 1; ++y) {
