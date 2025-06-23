@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
-#include "../glm/glm.hpp"
-#include "../glm/ext.hpp"
+#include "../external/glm/glm/glm.hpp"
+#include "../external/glm/glm/ext.hpp"
 
 using namespace std;
 

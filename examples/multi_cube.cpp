@@ -3,8 +3,8 @@
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
 #include<iostream>
-#include "../glm/glm.hpp"
-#include "../glm/ext.hpp"
+#include "../external/glm/glm/glm.hpp"
+#include "../external/glm/glm/ext.hpp"
 
 #define TOTAL_CUBES 1000000
 
