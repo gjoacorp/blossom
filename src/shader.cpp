@@ -1,5 +1,6 @@
 #include "../headers/shader.h"
 #include <GL/glew.h>
+#include <stdexcept>
 
 shader::shader(const char* frag_path, const char* vert_path) 
 {
@@ -16,6 +17,11 @@ std::string shader::read_source(const char* path)
    while (std::getline(file, line)) 
    {
       file_content.append(line + '\n');
+   }
+
+   if ( !file.is_open() ) 
+   {
+      throw std::runtime_error("The file" + std::string(path) + "doesn't exist.");
    }
 
    file.close();

@@ -14,6 +14,8 @@ class shader
       void print_log(GLuint shader) const;
 
       FRIEND_TEST(ShaderTest, ReadSourceReadsFileCorrectly);
+      FRIEND_TEST(ShaderTest, ReadSourceThrowsOnMissingFile);
+      FRIEND_TEST(ShaderTest, ReadSourceReturnsEmptyStringOnEmptyFile);
 
    public:
       shader(const char* frag_path, const char* vert_path);
