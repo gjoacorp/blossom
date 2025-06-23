@@ -2,8 +2,10 @@
 #include <fstream>
 #include <GL/glew.h>
 #include <iostream>
+#include <gtest/gtest_prod.h>
 
-class shader {
+class shader 
+{
    private:
       const char* frag_path;
       const char* vert_path;
@@ -11,8 +13,11 @@ class shader {
       bool check_gl_error() const;
       void print_log(GLuint shader) const;
 
+      FRIEND_TEST(ShaderTest, ReadSourceReadsFileCorrectly);
+
    public:
       shader(const char* frag_path, const char* vert_path);
-      GLuint init();
+      shader() = default;
 
+      GLuint init();
 };

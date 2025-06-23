@@ -7,17 +7,17 @@ shader::shader(const char* frag_path, const char* vert_path)
    this->vert_path = vert_path;
 }
 
-std::string shader::read_source(const char* path) 
+std::string shader::read_source(const char* path)
 {
    std::string file_content;
    std::ifstream file(path, std::ios::in);
-   std::string line = "";
+   std::string line;
 
-   while (!file.eof()) 
+   while (std::getline(file, line)) 
    {
-      getline(file, line);
       file_content.append(line + '\n');
    }
+
    file.close();
    return file_content;
 }
