@@ -9,7 +9,7 @@ class window
   public:
     GLFWwindow* window_ptr;
 
-    window (const int& size_x, const int& size_y, const char* title);
+    window (int width, int height, const char* title);
 
     void enter_fullscreen() const;
 

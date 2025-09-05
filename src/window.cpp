@@ -1,7 +1,7 @@
 #include "../headers/window.h"
 #include <iostream>
 
-window::window(const int& size_x, const int& size_y, const char* title) 
+window::window(int width, int height, const char* title) 
 {
   if ( !glfwInit() ) 
   {
@@ -12,7 +12,7 @@ window::window(const int& size_x, const int& size_y, const char* title)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-  this->window_ptr = glfwCreateWindow(size_x, size_y, title, NULL, NULL);
+  window_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
 }
 
