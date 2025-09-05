@@ -14,13 +14,14 @@ class mesh
     void draw() const;
 
     mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program);
+    ~mesh();
 
     void init();
 
   private:
     GLuint shader_program_;
-    GLuint vao_;
-    GLuint vbo_;
+    GLuint vao_ = 0;
+    GLuint vbo_ = 0;
 };
 
 #endif

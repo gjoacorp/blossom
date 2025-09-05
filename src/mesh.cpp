@@ -10,6 +10,15 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program) :
   vertices(vertices), 
   shader_program_(shader_program) {}
 
+mesh::~mesh()
+{
+  if (vao_ != 0)
+    glDeleteVertexArrays(1, &vao_);
+
+  if (vbo_ != 0)
+    glDeleteBuffers(1, &vbo_);
+}
+
 void mesh::init()
 {
   glCreateVertexArrays(1, &vao_);
