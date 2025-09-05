@@ -1,4 +1,5 @@
 #include "../headers/shader.h"
+#include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include <stdexcept>
 
@@ -61,51 +62,55 @@ bool shader::check_gl_error() const
 
 GLuint shader::init() 
 {
-  GLint vert_compiled, frag_compiled;
-
-  std::string v_string = read_source(vert_path);
-  std::string f_string = read_source(frag_path);
-
-  const char* vert_source = v_string.c_str();
-  const char* frag_source = f_string.c_str();
-
-  GLuint v_shader = glCreateShader(GL_VERTEX_SHADER);
-  GLuint f_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-  glShaderSource(v_shader, 1, &vert_source, NULL);
-  glCompileShader(v_shader);
-
-  // Checking that the vertex shader successfully compiles.
-  check_gl_error();
-  glGetShaderiv(v_shader, GL_COMPILE_STATUS, &vert_compiled);
-
-  if (vert_compiled != 1) 
+  if (glfwGetCurrentContext())
   {
-    std::cout << "ERROR: Vertex shader compilation failed." << std::endl;
-    print_log(v_shader);
+    GLint vert_compiled, frag_compiled;
+
+    std::string v_string = read_source(vert_path);
+    std::string f_string = read_source(frag_path);
+
+    const char* vert_source = v_string.c_str();
+    const char* frag_source = f_string.c_str();
+
+    GLuint v_shader = glCreateShader(GL_VERTEX_SHADER);
+    GLuint f_shader = glCreateShader(GL_FRAGMENT_SHADER);
+
+    glShaderSource(v_shader, 1, &vert_source, NULL);
+    glCompileShader(v_shader);
+
+    // Checking that the vertex shader successfully compiles.
+    check_gl_error();
+    glGetShaderiv(v_shader, GL_COMPILE_STATUS, &vert_compiled);
+
+    if (vert_compiled != 1) 
+    {
+      std::cout << "ERROR: Vertex shader compilation failed." << std::endl;
+      print_log(v_shader);
+    }
+
+    glShaderSource(f_shader, 1, &frag_source, NULL);
+    glCompileShader(f_shader);
+
+    // Checking that the fragment shader successfully compiles. 
+    check_gl_error();
+    glGetShaderiv(f_shader, GL_COMPILE_STATUS, &frag_compiled);
+
+    if (frag_compiled != 1) 
+    {
+      std::cout << "ERROR: Fragment shader compilation failed." << std::endl;
+      print_log(f_shader);
+    }
+
+    GLuint vf_program = glCreateProgram();
+
+    glAttachShader(vf_program, v_shader);
+    glAttachShader(vf_program, f_shader);
+    glLinkProgram(vf_program);
+
+    glDeleteShader(v_shader);
+    glDeleteShader(f_shader);
+
+    return vf_program;
   }
-
-  glShaderSource(f_shader, 1, &frag_source, NULL);
-  glCompileShader(f_shader);
-
-  // Checking that the fragment shader successfully compiles. 
-  check_gl_error();
-  glGetShaderiv(f_shader, GL_COMPILE_STATUS, &frag_compiled);
-
-  if (frag_compiled != 1) 
-  {
-    std::cout << "ERROR: Fragment shader compilation failed." << std::endl;
-    print_log(f_shader);
-  }
-
-  GLuint vf_program = glCreateProgram();
-
-  glAttachShader(vf_program, v_shader);
-  glAttachShader(vf_program, f_shader);
-  glLinkProgram(vf_program);
-
-  glDeleteShader(v_shader);
-  glDeleteShader(f_shader);
-
-  return vf_program;
+  throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
 }
