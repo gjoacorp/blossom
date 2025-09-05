@@ -13,8 +13,15 @@ window::window(const int& size_x, const int& size_y, const char* title)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
   this->window_ptr = glfwCreateWindow(size_x, size_y, title, NULL, NULL);
+  glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
 }
 
+void window::enter_fullscreen() const
+{
+  GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+  const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+  glfwSetWindowMonitor(window_ptr, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+}
 
 void window::init() 
 {
@@ -32,4 +39,9 @@ void window::destroy() const
 {
   glfwDestroyWindow(window_ptr);
   glfwTerminate();
+}
+
+void window::framebuffer_size_callback_(GLFWwindow* window, int width, int height)
+{
+  glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 }
