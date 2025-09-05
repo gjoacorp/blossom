@@ -12,10 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+        -name: Cache packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev
+          packages: cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev libglm-dev
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev libglm-dev
