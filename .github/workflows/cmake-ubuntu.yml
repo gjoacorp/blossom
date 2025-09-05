@@ -11,15 +11,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Download GLM
-        run: |
-          mkdir -p external
-          git clone --depth 1 https://github.com/g-truc/glm.git external/glm
 
       - name: Install dependencies
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev
+          sudo apt-get install -y cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev libglm-dev
 
           cd /usr/src/gtest
           sudo cmake .
