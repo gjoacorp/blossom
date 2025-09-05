@@ -1,3 +1,6 @@
+#ifndef SHADER
+#define SHADER
+
 #include <string>
 #include <fstream>
 #include <GL/glew.h>
@@ -23,3 +26,5 @@ class shader
 
     GLuint init();
 };
+
+#endif

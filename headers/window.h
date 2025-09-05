@@ -1,3 +1,6 @@
+#ifndef WINDOW
+#define WINDOW
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -16,3 +19,5 @@ class window
   private:
     static void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
 };
+
+#endif
