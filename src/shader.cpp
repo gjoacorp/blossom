@@ -35,7 +35,8 @@ void shader::print_log(GLuint shader) const
 
   glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
-  if (length > 0) {
+  if (length > 0) 
+  {
     log = (char*)malloc(length);
     glGetShaderInfoLog(shader, length, &char_written, log);
     std::cout << "Shader Log: " << log << std::endl;
@@ -48,7 +49,8 @@ bool shader::check_gl_error() const
   bool error_found = false;
   int gl_error = glGetError();
 
-  while (gl_error != GL_NO_ERROR) {
+  while (gl_error != GL_NO_ERROR) 
+  {
     std::cout << "gl_error: " << gl_error << std::endl;
     error_found = true;
     gl_error = glGetError();
