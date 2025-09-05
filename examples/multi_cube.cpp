@@ -6,19 +6,16 @@
 #include "../external/glm/glm/glm.hpp"
 #include "../external/glm/glm/ext.hpp"
 
-#define TOTAL_CUBES 1000000
-
-using namespace std;
-
-#define num_vaos 1 
-#define num_vbos 2
+const unsigned int TOTAL_CUBES = 1000000;
+const unsigned int NUM_VAOS = 1;
+const unsigned int NUM_VBOS = 2;
 
 GLuint rendering_program; 
 
 glm::vec3 camera_pos;
 
-GLuint vao[num_vaos]; 
-GLuint vbo[num_vbos]; 
+GLuint vao[NUM_VAOS]; 
+GLuint vbo[NUM_VBOS]; 
 
 int width, height;
 float aspect;
@@ -43,7 +40,7 @@ void init_vertices()
 
   glGenVertexArrays (1, vao); 
   glBindVertexArray (vao[0]);
-  glGenBuffers (num_vbos, vbo);
+  glGenBuffers (NUM_VBOS, vbo);
 
   glBindBuffer (GL_ARRAY_BUFFER, vbo[0]);
   glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, 0);
