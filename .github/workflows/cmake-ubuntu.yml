@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-        -name: Cache packages
+      - name: Cache packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: cmake build-essential libglew-dev libglfw3-dev libglu1-mesa-dev libgtest-dev libglm-dev
