@@ -2,11 +2,10 @@
 #include <GL/glew.h>
 #include <stdexcept>
 
-shader::shader(const char* frag_path, const char* vert_path) 
-{
-  this->frag_path = frag_path;
-  this->vert_path = vert_path;
-}
+shader::shader(const char* frag_path, const char* vert_path) : 
+  frag_path(frag_path), 
+  vert_path(vert_path) 
+{}
 
 std::string shader::read_source(const char* path)
 {
