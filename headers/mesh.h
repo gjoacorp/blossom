@@ -1,0 +1,26 @@
+#ifndef MESH
+#define MESH
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <vector>
+
+class mesh
+{
+  public:
+    std::vector<glm::vec3> vertices;
+
+    void draw() const;
+
+    mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program);
+
+    void init();
+
+  private:
+    GLuint shader_program_;
+    GLuint vao_;
+    GLuint vbo_;
+};
+
+#endif
