@@ -3,8 +3,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "../external/glm/glm/glm.hpp"
-#include "../external/glm/glm/ext.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 const unsigned int TOTAL_CUBES = 1000000;
 const unsigned int NUM_VAOS = 1;
