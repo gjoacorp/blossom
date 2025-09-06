@@ -21,7 +21,7 @@ int main(void)
     {0.5f, -0.289f, 0.0f}
   };
 
-  shader triangle_shader("shaders/triangles.frag", "shaders/triangles.vert");
+  shader triangle_shader("shaders/triangle.frag", "shaders/triangle.vert");
   GLuint shader_program = triangle_shader.init();
 
   mesh triangle(vertices, shader_program);
