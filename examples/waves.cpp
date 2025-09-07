@@ -81,7 +81,7 @@ void display(GLFWwindow* window)
 
 int main() 
 {
-  camera_pos = {0.0f, 1.0f, 10.0f};
+  camera_pos = {0.0f, 1.0f, 5.0f};
   window w(WINDOW_WIDTH, WINDOW_HEIGHT, "Blossom Waves Example");
   w.init();
 
@@ -96,8 +96,8 @@ int main()
 
   mesh grid {std::get<0>(grid_data), std::get<1>(grid_data), rendering_program};
   grid.init();
+  grid.set_draw_mode(GL_LINE);
   init_uniforms(w.window_ptr);
-  glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
 
   while (!glfwWindowShouldClose(w.window_ptr)) 
   {
