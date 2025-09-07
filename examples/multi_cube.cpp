@@ -97,7 +97,7 @@ int main(void)
   init_vertices();
 
   shader s ("shaders/multi_cube.frag", "shaders/multi_cube.vert");
-  rendering_program = s.init();
+  rendering_program = s.program_id;
 
   while ( !glfwWindowShouldClose(w.window_ptr) ) 
   {

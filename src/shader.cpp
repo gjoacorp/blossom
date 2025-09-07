@@ -6,7 +6,9 @@
 shader::shader(const char* frag_path, const char* vert_path) : 
   frag_path(frag_path), 
   vert_path(vert_path) 
-{}
+{
+  init();
+}
 
 std::string shader::read_source(const char* path)
 {
@@ -59,8 +61,7 @@ bool shader::check_gl_error() const
   return error_found;
 }
 
-
-GLuint shader::init() 
+void shader::init() 
 {
   if (!glfwGetCurrentContext())
   {
@@ -113,5 +114,5 @@ GLuint shader::init()
   glDeleteShader(v_shader);
   glDeleteShader(f_shader);
 
-  return vf_program;
+  program_id = vf_program;
 }

@@ -90,7 +90,7 @@ int main()
   glDepthFunc(GL_LEQUAL);
 
   shader s("shaders/waves.frag", "shaders/waves.vert");
-  rendering_program = s.init();
+  rendering_program = s.program_id;
 
   auto grid_data = generate_grid(100, 0.1f, 0.1f);
 
