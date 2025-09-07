@@ -39,25 +39,27 @@ mesh::~mesh()
 
 void mesh::init()
 {
-  if (glfwGetCurrentContext())
+  if (!glfwGetCurrentContext())
   {
-    glCreateVertexArrays(1, &vao_);
-    glBindVertexArray(vao_);
-
-    glCreateBuffers(1, &vbo_);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glNamedBufferStorage(vbo_, vertices.size() * sizeof(glm::vec3), &vertices[0], 0);
-
-    if (indices.size() > 0)
-    {
-      glCreateBuffers(1, &ibo_);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
-      glNamedBufferStorage(ibo_, indices.size() * sizeof(GLuint), &indices[0], 0);
-    }
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
-    glEnableVertexAttribArray(0);
+    throw std::runtime_error("ERROR: Cannot initialise mesh without current GL context.");
   }
+
+  glCreateVertexArrays(1, &vao_);
+  glBindVertexArray(vao_);
+
+  glCreateBuffers(1, &vbo_);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+  glNamedBufferStorage(vbo_, vertices.size() * sizeof(glm::vec3), &vertices[0], 0);
+
+  if (indices.size() > 0)
+  {
+    glCreateBuffers(1, &ibo_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
+    glNamedBufferStorage(ibo_, indices.size() * sizeof(GLuint), &indices[0], 0);
+  }
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+  glEnableVertexAttribArray(0);
 }
 
 void mesh::set_draw_mode(GLenum draw_mode)
