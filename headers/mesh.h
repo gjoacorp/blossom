@@ -19,12 +19,14 @@ class mesh
     ~mesh();
 
     void init();
+    void set_draw_mode(GLenum draw_mode);
 
   private:
     GLuint shader_program_;
     GLuint vao_ = 0;
     GLuint vbo_ = 0;
     GLuint ibo_ = 0;
+    GLenum polygon_mode_ = GL_FILL;
 };
 
 #endif

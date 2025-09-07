@@ -1,8 +1,10 @@
 #include "../headers/mesh.h"
+#include <stdexcept>
 
 void mesh::draw() const
 {
   glUseProgram(shader_program_);
+  glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
 
   if (indices.size() > 0) 
   { 
@@ -56,4 +58,11 @@ void mesh::init()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
     glEnableVertexAttribArray(0);
   }
+}
+
+void mesh::set_draw_mode(GLenum draw_mode)
+{
+  if ( !( draw_mode == GL_FILL || draw_mode == GL_LINE || draw_mode == GL_POINT ) )
+    throw std::runtime_error("ERROR: Invalid polygon mode. Must use one of: GL_FILL, GL_LINE, GL_POINT.");
+  polygon_mode_ = draw_mode;
 }
