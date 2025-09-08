@@ -16,15 +16,14 @@ int main(void)
 
   std::vector<glm::vec3> vertices =
   {
-    {0.0f, 0.577f, 0.0f},
-    {-0.5f, -0.289f, 0.0f},
-    {0.5f, -0.289f, 0.0f}
+    { 0.0f,   0.577f, 0.0f},
+    {-0.5f,  -0.289f,  0.0f},
+    { 0.5f,  -0.289f, 0.0f}
   };
 
-  shader triangle_shader("shaders/triangles.frag", "shaders/triangles.vert");
-  GLuint shader_program = triangle_shader.init();
+  shader triangle_shader {"shaders/triangle.frag", "shaders/triangle.vert"};
 
-  mesh triangle(vertices, shader_program);
+  mesh triangle(vertices, triangle_shader.program_id);
   triangle.init();
 
   while ( !glfwWindowShouldClose(w.window_ptr) )

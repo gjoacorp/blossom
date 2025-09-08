@@ -1,11 +1,14 @@
 #include "../headers/shader.h"
+#include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include <stdexcept>
 
 shader::shader(const char* frag_path, const char* vert_path) : 
   frag_path(frag_path), 
   vert_path(vert_path) 
-{}
+{
+  init();
+}
 
 std::string shader::read_source(const char* path)
 {
@@ -58,9 +61,13 @@ bool shader::check_gl_error() const
   return error_found;
 }
 
-
-GLuint shader::init() 
+void shader::init() 
 {
+  if (!glfwGetCurrentContext())
+  {
+    throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
+  }
+
   GLint vert_compiled, frag_compiled;
 
   std::string v_string = read_source(vert_path);
@@ -107,5 +114,5 @@ GLuint shader::init()
   glDeleteShader(v_shader);
   glDeleteShader(f_shader);
 
-  return vf_program;
+  program_id = vf_program;
 }
