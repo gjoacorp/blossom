@@ -22,7 +22,6 @@ int main(void)
   };
 
   blossom::shader triangle_shader {"shaders/triangle.frag", "shaders/triangle.vert"};
-
   blossom::mesh triangle(vertices, triangle_shader.program_id);
 
   while ( !glfwWindowShouldClose(w.window_ptr) )
