@@ -24,7 +24,6 @@ int main(void)
   shader triangle_shader {"shaders/triangle.frag", "shaders/triangle.vert"};
 
   mesh triangle(vertices, triangle_shader.program_id);
-  triangle.init();
 
   while ( !glfwWindowShouldClose(w.window_ptr) )
   {

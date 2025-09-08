@@ -95,7 +95,6 @@ int main()
   auto grid_data = generate_grid(100, 0.1f, 0.1f);
 
   mesh grid {std::get<0>(grid_data), std::get<1>(grid_data), rendering_program};
-  grid.init();
   grid.set_draw_mode(GL_LINE);
   init_uniforms(w.window_ptr);
 

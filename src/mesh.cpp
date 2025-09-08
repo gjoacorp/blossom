@@ -6,24 +6,30 @@ void mesh::draw() const
   glUseProgram(shader_program_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
 
-  if (indices.size() > 0) 
+  if (indices_.size() > 0) 
   { 
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0); 
+    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0); 
   }
   else 
   { 
-    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices.size()); 
+    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices_.size()); 
   }
 }
 
 mesh::mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program) : 
-  vertices(vertices), 
-  shader_program_(shader_program) {}
+  vertices_(vertices), 
+  shader_program_(shader_program) 
+  {
+    init_();
+  }
 
 mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, GLuint shader_program) :
-  vertices(vertices),
-  indices(indices),
-  shader_program_(shader_program) {}
+  vertices_(vertices),
+  indices_(indices),
+  shader_program_(shader_program)
+  {
+    init_();
+  }
 
 mesh::~mesh()
 {
@@ -37,7 +43,14 @@ mesh::~mesh()
     glDeleteBuffers(1, &ibo_);
 }
 
-void mesh::init()
+/**
+ * @brief Initialises the mesh's OpenGL resources and sets up vertex array, vertex buffer, and element buffer objects.
+ *
+ * The IDs for the VAO, VBO, and EBO are stored in `vao_`, `vbo_`, and `ibo_` respectively.
+ *
+ * @throws std::runtime_error if there is no active OpenGL context when called.
+ */
+void mesh::init_()
 {
   if (!glfwGetCurrentContext())
   {
@@ -49,13 +62,13 @@ void mesh::init()
 
   glCreateBuffers(1, &vbo_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glNamedBufferStorage(vbo_, vertices.size() * sizeof(glm::vec3), &vertices[0], 0);
+  glNamedBufferStorage(vbo_, vertices_.size() * sizeof(glm::vec3), &vertices_[0], 0);
 
-  if (indices.size() > 0)
+  if (indices_.size() > 0)
   {
     glCreateBuffers(1, &ibo_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_);
-    glNamedBufferStorage(ibo_, indices.size() * sizeof(GLuint), &indices[0], 0);
+    glNamedBufferStorage(ibo_, indices_.size() * sizeof(GLuint), &indices_[0], 0);
   }
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
