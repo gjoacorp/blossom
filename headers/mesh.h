@@ -14,6 +14,7 @@ namespace blossom
       /// @brief Draws the mesh using the shader program `mesh::shader_program_` and with polygon mode `mesh::polygon_mode_`.
       void draw() const;
 
+      mesh() = default;
       /**
        * @brief Constructs a mesh using a list of vertices and a shader program.
        */
