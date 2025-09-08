@@ -20,7 +20,7 @@ class mesh
      * @brief Constructs a mesh using a list of vertices, a list of indices, and a shader program.
      */
     mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, GLuint shader_program);
-    /// @brief Deletes the vertex array object and buffers referenced in `mesh::vao_`, `mesh::vbo_`, and `mesh::ibo_`.
+    /// @brief Deletes the vertex array object and buffers referenced in `mesh::vao_`, `mesh::vbo_`, and `mesh::ebo_`.
     ~mesh();
 
     /** 
@@ -44,14 +44,14 @@ class mesh
     GLuint shader_program_;
     GLuint vao_ = 0;
     GLuint vbo_ = 0;
-    GLuint ibo_ = 0;
+    GLuint ebo_ = 0;
     /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
     GLenum polygon_mode_ = GL_FILL;
 
     /**
      * @brief Initialises the mesh's OpenGL resources and sets up vertex array, vertex buffer, and element buffer objects.
      *
-     * The IDs for the VAO, VBO, and EBO are stored in `mesh::vao_`, `mesh::vbo_`, and `mesh::ibo_` respectively.
+     * The IDs for the VAO, VBO, and EBO are stored in `mesh::vao_`, `mesh::vbo_`, and `mesh::ebo_` respectively.
      *
      * @throws std::runtime_error if there is no active OpenGL context when called.
      */
