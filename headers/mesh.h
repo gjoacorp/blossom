@@ -1,5 +1,5 @@
-#ifndef MESH
-#define MESH
+#ifndef BLOSSOM_MESH_H
+#define BLOSSOM_MESH_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

@@ -1,5 +1,5 @@
-#ifndef WINDOW
-#define WINDOW
+#ifndef BLOSSOM_WINDOW_H
+#define BLOSSOM_WINDOW_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

@@ -1,5 +1,5 @@
-#ifndef SHADER
-#define SHADER
+#ifndef BLOSSOM_SHADER_H
+#define BLOSSOM_SHADER_H
 
 #include <string>
 #include <fstream>
