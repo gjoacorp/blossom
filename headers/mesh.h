@@ -30,7 +30,7 @@ class mesh
      */
     void set_draw_mode(GLenum draw_mode);
 
-  private:
+  protected:
     /// @brief The model-space coordinates of the mesh's vertices.
     std::vector<glm::vec3> vertices_;
 
