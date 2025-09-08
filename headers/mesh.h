@@ -25,10 +25,10 @@ class mesh
 
     /** 
      * @brief Sets `mesh::polygon_mode_`.
-     * @param draw_mode must be one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
-     * @throws std::runtime_error if `draw_mode` is not one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
+     * @param polygon_mode must be one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
+     * @throws std::runtime_error if `polygon_mode` is not one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
      */
-    void set_draw_mode(GLenum draw_mode);
+    void set_polygon_mode(GLenum polygon_mode);
 
   protected:
     /// @brief The model-space coordinates of the mesh's vertices.

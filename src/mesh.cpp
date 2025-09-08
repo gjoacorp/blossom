@@ -68,9 +68,9 @@ void mesh::init_()
   glEnableVertexAttribArray(0);
 }
 
-void mesh::set_draw_mode(GLenum draw_mode)
+void mesh::set_polygon_mode(GLenum polygon_mode)
 {
-  if ( !( draw_mode == GL_FILL || draw_mode == GL_LINE || draw_mode == GL_POINT ) )
+  if ( !( polygon_mode == GL_FILL || polygon_mode == GL_LINE || polygon_mode == GL_POINT ) )
     throw std::runtime_error("ERROR: Invalid polygon mode. Must use one of: GL_FILL, GL_LINE, GL_POINT.");
-  polygon_mode_ = draw_mode;
+  polygon_mode_ = polygon_mode;
 }
