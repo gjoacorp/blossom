@@ -1,6 +1,8 @@
 #include "../headers/mesh.h"
 #include <stdexcept>
 
+using blossom::mesh;
+
 void mesh::draw() const
 {
   glUseProgram(shader_program_);

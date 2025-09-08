@@ -4,20 +4,23 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-class window 
+namespace blossom
 {
-  public:
-    GLFWwindow* window_ptr;
+  class window 
+  {
+    public:
+      GLFWwindow* window_ptr;
 
-    window (int width, int height, const char* title);
+      window (int width, int height, const char* title);
 
-    void enter_fullscreen() const;
+      void enter_fullscreen() const;
 
-    void init();
-    void destroy() const;
+      void init();
+      void destroy() const;
 
-  private:
-    static void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
-};
+    private:
+      static void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
+  };
+}
 
 #endif

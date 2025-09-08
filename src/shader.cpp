@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <stdexcept>
 
+using blossom::shader;
+
 shader::shader(const char* frag_path, const char* vert_path) : 
   frag_path(frag_path), 
   vert_path(vert_path) 

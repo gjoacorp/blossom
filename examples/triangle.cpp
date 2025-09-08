@@ -10,7 +10,7 @@ const GLfloat clear_color[] = { 0.0f, 0.0f, 0.0f, 0.0f};
 
 int main(void) 
 {
-  window w(1920, 1080, "Triangle Example");
+  blossom::window w(1920, 1080, "Triangle Example");
   w.enter_fullscreen();
   w.init();
 
@@ -21,9 +21,9 @@ int main(void)
     { 0.5f,  -0.289f, 0.0f}
   };
 
-  shader triangle_shader {"shaders/triangle.frag", "shaders/triangle.vert"};
+  blossom::shader triangle_shader {"shaders/triangle.frag", "shaders/triangle.vert"};
 
-  mesh triangle(vertices, triangle_shader.program_id);
+  blossom::mesh triangle(vertices, triangle_shader.program_id);
 
   while ( !glfwWindowShouldClose(w.window_ptr) )
   {

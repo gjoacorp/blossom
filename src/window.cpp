@@ -1,6 +1,8 @@
 #include "../headers/window.h"
 #include <iostream>
 
+using blossom::window;
+
 window::window(int width, int height, const char* title) 
 {
   if ( !glfwInit() ) 
