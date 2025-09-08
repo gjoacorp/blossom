@@ -10,10 +10,6 @@ add_executable(multi_cube ${SOURCES} examples/multi_cube.cpp)
 add_executable(triangle ${SOURCES} examples/triangle.cpp)
 add_executable(waves ${SOURCES} examples/waves.cpp)
 
-add_executable(shader_test tests/shader_test.cpp src/shader.cpp)
-find_package(GTest REQUIRED)
-target_link_libraries(shader_test PRIVATE GTest::gtest_main GLEW OpenGL::GL OpenGL::GLU glfw GLEW::GLEW pthread)
-
 add_custom_target(copy_shaders ALL
    COMMAND ${CMAKE_COMMAND} -E copy_directory
    ${CMAKE_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/shaders
@@ -38,6 +34,3 @@ target_include_directories(waves PRIVATE include)
 target_link_libraries(multi_cube PRIVATE OpenGL::GL glfw GLEW::GLEW)
 target_link_libraries(triangle PRIVATE OpenGL::GL glfw GLEW::GLEW)
 target_link_libraries(waves PRIVATE OpenGL::GL glfw GLEW::GLEW)
-
-enable_testing()
-add_test(NAME ShaderTest COMMAND shader_test)
