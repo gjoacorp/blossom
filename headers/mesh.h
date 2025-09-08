@@ -9,7 +9,6 @@
 class mesh
 {
   public:
-
     /// @brief Draws the mesh using the shader program `mesh::shader_program_` and with polygon mode `mesh::polygon_mode_`.
     void draw() const;
 
@@ -49,6 +48,13 @@ class mesh
     /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
     GLenum polygon_mode_ = GL_FILL;
 
+    /**
+     * @brief Initialises the mesh's OpenGL resources and sets up vertex array, vertex buffer, and element buffer objects.
+     *
+     * The IDs for the VAO, VBO, and EBO are stored in `mesh::vao_`, `mesh::vbo_`, and `mesh::ibo_` respectively.
+     *
+     * @throws std::runtime_error if there is no active OpenGL context when called.
+     */
     void init_();
 };
 

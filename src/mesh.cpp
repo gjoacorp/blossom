@@ -43,13 +43,6 @@ mesh::~mesh()
     glDeleteBuffers(1, &ibo_);
 }
 
-/**
- * @brief Initialises the mesh's OpenGL resources and sets up vertex array, vertex buffer, and element buffer objects.
- *
- * The IDs for the VAO, VBO, and EBO are stored in `vao_`, `vbo_`, and `ibo_` respectively.
- *
- * @throws std::runtime_error if there is no active OpenGL context when called.
- */
 void mesh::init_()
 {
   if (!glfwGetCurrentContext())
