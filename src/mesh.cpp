@@ -6,11 +6,12 @@ using blossom::mesh;
 void mesh::draw() const
 {
   glUseProgram(shader_program_);
+  glBindVertexArray(vao_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
 
   if (indices_.size() > 0) 
   { 
-    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0); 
+    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, (void*)0); 
   }
   else 
   { 
@@ -68,6 +69,7 @@ void mesh::init_()
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
   glEnableVertexAttribArray(0);
+  glBindVertexArray(0);
 }
 
 void mesh::set_polygon_mode(GLenum polygon_mode)
