@@ -13,10 +13,10 @@ namespace blossom
       {
         vertices_ = 
         {
-          glm::vec3{ 0.5f,  0.5f, 0.0f}, // top-right
-          glm::vec3{-0.5f,  0.5f, 0.0f}, // top-left
-          glm::vec3{-0.5f, -0.5f, 0.0f}, // bottom-left
-          glm::vec3{ 0.5f, -0.5f, 0.0f}  // bottom-right
+          glm::vec3{ 1.0f,  1.0f, 0.0f}, // top-right
+          glm::vec3{-1.0f,  1.0f, 0.0f}, // top-left
+          glm::vec3{-1.0f, -1.0f, 0.0f}, // bottom-left
+          glm::vec3{ 1.0f, -1.0f, 0.0f}  // bottom-right
         };
 
         indices_ = 
