@@ -28,7 +28,6 @@ void window::enter_fullscreen() const
 
 void window::init() 
 {
-
   if ( glewInit() != GLEW_OK ) 
   { 
     exit(EXIT_FAILURE); 
