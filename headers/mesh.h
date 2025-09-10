@@ -44,10 +44,10 @@ namespace blossom
        * 
        * This is intended to be obtained from `shader::program_id`.
        */
-      GLuint shader_program_;
-      GLuint vao_ = 0;
-      GLuint vbo_ = 0;
-      GLuint ebo_ = 0;
+      GLuint shader_program_ = 0;
+      GLuint vao_            = 0;
+      GLuint vbo_            = 0;
+      GLuint ebo_            = 0;
       /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
       GLenum polygon_mode_ = GL_FILL;
 
