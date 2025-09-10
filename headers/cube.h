@@ -23,15 +23,15 @@ namespace blossom
             vertices_ =
             {
                // bottom face 
-               glm::vec3{-0.5f, -0.5f, -0.5f},  //A
-               glm::vec3{0.5f, -0.5f, -0.5f},   //B
-               glm::vec3{0.5f, 0.5f, -0.5f},    //C
-               glm::vec3{-0.5f, 0.5f, -0.5f},   //D
+               glm::vec3{ -0.5f,  -0.5f,   0.5f},     //  A
+               glm::vec3{  0.5f,  -0.5f,   0.5f},    //  B
+               glm::vec3{  0.5f,  -0.5f,  -0.5f},   //  C
+               glm::vec3{ -0.5f,  -0.5f,  -0.5f},  //  D
                // top face 
-               glm::vec3{-0.5f, -0.5f, 0.5f},   //E
-               glm::vec3{0.5f, -0.5f, 0.5f},    //F
-               glm::vec3{0.5f, 0.5f, 0.5f},     //G
-               glm::vec3{-0.5f, 0.5f, 0.5f},    //H
+               glm::vec3{-0.5f,   0.5f,   0.5f},      //  E
+               glm::vec3{ 0.5f,   0.5f,   0.5f},     //  F
+               glm::vec3{ 0.5f,   0.5f,  -0.5f},    //  G
+               glm::vec3{-0.5f,   0.5f,  -0.5f},   //  H
             };
 
             indices_ =
@@ -42,16 +42,16 @@ namespace blossom
                // top face
                4, 5, 6,
                4, 6, 7,
-               // back face
+               // front face
                0, 1, 5,
                0, 5, 4,
-               // front face
+               // screen right face
                1, 5, 6,
                1, 6, 2,
-               // side face
+               // back face
                2, 6, 7,
                2, 7, 3,
-               // side face
+               // screen left face
                3, 7, 4,
                3, 4, 0,
             };
