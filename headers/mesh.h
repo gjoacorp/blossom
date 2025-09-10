@@ -17,10 +17,15 @@ namespace blossom
       mesh() = default;
       /**
        * @brief Constructs a mesh using a list of vertices and a shader program.
+       * @param vertices is the list of vertices to be passed to the VAO.
+       * @param shader_program is the ID of the shader program to use when `mesh::draw()` is called.
        */
       mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program);
       /**
        * @brief Constructs a mesh using a list of vertices, a list of indices, and a shader program.
+       * @param vertices is the list of vertices to be passed to the VAO.
+       * @param indices is the list of indices to be passed to the EBO.
+       * @param shader_program is the ID of the shader program to use when `mesh::draw()` is called.
        */
       mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, GLuint shader_program);
       /// @brief Deletes the vertex array object and buffers referenced in `mesh::vao_`, `mesh::vbo_`, and `mesh::ebo_`.
@@ -45,8 +50,11 @@ namespace blossom
        * This is intended to be obtained from `shader::program_id`.
        */
       GLuint shader_program_ = 0;
+      /// Vertex array object name.
       GLuint vao_            = 0;
+      /// Vertex buffer object name.
       GLuint vbo_            = 0;
+      /// Element buffer object name.
       GLuint ebo_            = 0;
       /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
       GLenum polygon_mode_ = GL_FILL;
