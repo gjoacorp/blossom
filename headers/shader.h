@@ -1,5 +1,5 @@
-#ifndef SHADER
-#define SHADER
+#ifndef BLOSSOM_SHADER_H
+#define BLOSSOM_SHADER_H
 
 #include <string>
 #include <fstream>
@@ -7,27 +7,27 @@
 #include <iostream>
 #include <gtest/gtest_prod.h>
 
-class shader 
+namespace blossom 
 {
-  private:
-    const char* frag_path;
-    const char* vert_path;
+  class shader 
+  {
+    private:
+      friend class ShaderTest;
+      const char* frag_path;
+      const char* vert_path;
 
-    void init();
+      void init();
 
-    std::string read_source(const char* path);
-    bool check_gl_error() const;
-    void print_log(GLuint shader) const;
+      std::string read_source(const char* path);
+      bool check_gl_error() const;
+      void print_log(GLuint shader) const;
 
-    FRIEND_TEST(ShaderTest, ReadSourceReadsFileCorrectly);
-    FRIEND_TEST(ShaderTest, ReadSourceThrowsOnMissingFile);
-    FRIEND_TEST(ShaderTest, ReadSourceReturnsEmptyStringOnEmptyFile);
+    public:
+      GLuint program_id;
 
-  public:
-    GLuint program_id;
-
-    shader(const char* frag_path, const char* vert_path);
-    shader() = default;
-};
+      shader(const char* frag_path, const char* vert_path);
+      shader() = default;
+  };
+}
 
 #endif

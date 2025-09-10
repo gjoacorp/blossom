@@ -1,6 +1,8 @@
 #include "../headers/window.h"
 #include <iostream>
 
+using blossom::window;
+
 window::window(int width, int height, const char* title) 
 {
   if ( !glfwInit() ) 
@@ -13,6 +15,7 @@ window::window(int width, int height, const char* title)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
   window_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
+  glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
 }
 
@@ -25,8 +28,6 @@ void window::enter_fullscreen() const
 
 void window::init() 
 {
-  glfwMakeContextCurrent(window_ptr);
-
   if ( glewInit() != GLEW_OK ) 
   { 
     exit(EXIT_FAILURE); 

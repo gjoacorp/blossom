@@ -91,12 +91,12 @@ void display(GLFWwindow* window, double time)
 int main(void) 
 {
   camera_pos = {0.0f, 0.0f, 420.0f};
-  window w (1920, 1080, "Blossom");
+  blossom::window w (1920, 1080, "Blossom");
 
   w.init();
   init_vertices();
 
-  shader s ("shaders/multi_cube.frag", "shaders/multi_cube.vert");
+  blossom::shader s ("shaders/multi_cube.frag", "shaders/multi_cube.vert");
   rendering_program = s.program_id;
 
   while ( !glfwWindowShouldClose(w.window_ptr) ) 
