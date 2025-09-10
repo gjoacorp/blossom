@@ -1,14 +1,14 @@
 #ifndef BLOSSOM_MESH_H
 #define BLOSSOM_MESH_H
 
+#include "transform.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <vector>
 
 namespace blossom
 {
-  class mesh
+  class mesh : public transform
   {
     public:
       /// @brief Draws the mesh using the shader program `mesh::shader_program_` and with polygon mode `mesh::polygon_mode_`.
