@@ -11,18 +11,24 @@ namespace blossom
     public:
       rectangle(GLuint shader_program)
       {
+        // B ──────────── A
+        // │              │
+        // │              │
+        // │              │
+        // C ──────────── D
+
         vertices_ = 
         {
-          glm::vec3{ 1.0f,  1.0f, 0.0f}, // top-right
-          glm::vec3{-1.0f,  1.0f, 0.0f}, // top-left
-          glm::vec3{-1.0f, -1.0f, 0.0f}, // bottom-left
-          glm::vec3{ 1.0f, -1.0f, 0.0f}  // bottom-right
+          glm::vec3{ 1.0f,  1.0f, 0.0f}, // A
+          glm::vec3{-1.0f,  1.0f, 0.0f}, // B
+          glm::vec3{-1.0f, -1.0f, 0.0f}, // C
+          glm::vec3{ 1.0f, -1.0f, 0.0f}  // D
         };
 
         indices_ = 
         {
-          0, 1, 2, 
-          0, 2, 3  
+          0, 1, 2, // ABC
+          0, 2, 3  // ACD
         };
 
         shader_program_ = shader_program;
