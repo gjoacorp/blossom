@@ -11,7 +11,7 @@ const GLfloat clear_color[] = { 0.0f, 0.0f, 0.0f, 0.0f};
 
 int main(void) 
 {
-  blossom::window w(1920, 1080, "Triangle Example");
+  blossom::window w(1920, 1080, "Blossom Rectangle Example");
   w.enter_fullscreen();
   w.init();
 
