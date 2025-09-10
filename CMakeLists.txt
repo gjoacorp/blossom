@@ -30,7 +30,7 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 
 target_include_directories(multi_cube PRIVATE include)
-target_include_directories(rectangle PRIVATE include)
+target_include_directories(fullscreen_rectangle PRIVATE include)
 target_include_directories(triangle PRIVATE include)
 target_include_directories(waves PRIVATE include)
 
