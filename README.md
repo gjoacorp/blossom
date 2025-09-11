@@ -2,6 +2,10 @@
 
 *blossom* is a work-in-progress OpenGL rendering engine written in C++. 
 
+![GitHub repo stars](https://img.shields.io/github/stars/gjoacorp/blossom?style=social)
+![GitHub forks](https://img.shields.io/github/forks/gjoacorp/blossom?style=social)
+![GitHub issues](https://img.shields.io/github/issues/gjoacorp/blossom)
+
 ## Building
 
 `mkdir build && cd build && cmake .. && make`
