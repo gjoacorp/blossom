@@ -110,7 +110,7 @@ int main()
     yaw_angle += 0.25f * delta_time;
 
     display(w.window_ptr);
-    grid.draw();
+    grid.draw(nullptr);
     glfwSwapBuffers(w.window_ptr); // swaps the front and back colour buffers
     glfwPollEvents();
   }

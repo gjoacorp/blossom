@@ -1,13 +1,28 @@
 #include "../headers/mesh.h"
+
 #include <stdexcept>
+#include <glm/gtc/type_ptr.hpp>
 
 using blossom::mesh;
 
-void mesh::draw() const
+void mesh::draw(const orthographic_camera* const camera) const
 {
   glUseProgram(shader_program_);
+  glUniformMatrix4fv(model_uniform_location_, 1, GL_FALSE, glm::value_ptr(calc_model_matrix()));
+
+  if (camera)
+  {
+    glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(camera->view_matrix));
+    glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(camera->projection_matrix));
+  }
+  else
+  {
+    glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+    glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+  }
   glBindVertexArray(vao_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
+
 
   if (indices_.size() > 0) 
   { 
@@ -23,6 +38,7 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program) :
   vertices_(vertices), 
   shader_program_(shader_program) 
   {
+    update_uniform_locations_();
     init_buffers_();
   }
 
@@ -31,6 +47,7 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& in
   indices_(indices),
   shader_program_(shader_program)
   {
+    update_uniform_locations_();
     init_buffers_();
   }
 
@@ -77,4 +94,11 @@ void mesh::set_polygon_mode(GLenum polygon_mode)
   if ( !( polygon_mode == GL_FILL || polygon_mode == GL_LINE || polygon_mode == GL_POINT ) )
     throw std::runtime_error("ERROR: Invalid polygon mode. Must use one of: GL_FILL, GL_LINE, GL_POINT.");
   polygon_mode_ = polygon_mode;
+}
+
+void mesh::update_uniform_locations_()
+{
+  model_uniform_location_ = glGetUniformLocation(shader_program_, "model");
+  view_uniform_location_ = glGetUniformLocation(shader_program_, "view");
+  projection_uniform_location_ = glGetUniformLocation(shader_program_, "projection");
 }

@@ -27,7 +27,7 @@ int main(void)
   while ( !glfwWindowShouldClose(w.window_ptr) )
   {
     glClearBufferfv(GL_COLOR, 0, clear_color);
-    triangle.draw();
+    triangle.draw(nullptr);
     glfwSwapBuffers(w.window_ptr);
     glfwPollEvents();
   }
