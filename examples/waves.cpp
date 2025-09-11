@@ -83,7 +83,6 @@ int main()
 {
   camera_pos = {0.0f, 1.0f, 5.0f};
   blossom::window w(WINDOW_WIDTH, WINDOW_HEIGHT, "Blossom Waves Example");
-  w.init();
 
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glEnable(GL_DEPTH_TEST);

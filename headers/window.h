@@ -14,8 +14,6 @@ namespace blossom
       window (int width, int height, const char* title);
 
       void enter_fullscreen() const;
-
-      void init();
       void destroy() const;
 
     private:

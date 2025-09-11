@@ -15,8 +15,16 @@ window::window(int width, int height, const char* title)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
   window_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
+
   glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
+
+  if ( glewInit() != GLEW_OK )
+  {
+    exit(EXIT_FAILURE);
+  }
+
+  glfwSwapInterval(1); 
 }
 
 void window::enter_fullscreen() const
@@ -24,16 +32,6 @@ void window::enter_fullscreen() const
   GLFWmonitor* monitor = glfwGetPrimaryMonitor();
   const GLFWvidmode* mode = glfwGetVideoMode(monitor);
   glfwSetWindowMonitor(window_ptr, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-}
-
-void window::init() 
-{
-  if ( glewInit() != GLEW_OK ) 
-  { 
-    exit(EXIT_FAILURE); 
-  }
-
-  glfwSwapInterval(1); // sets the color buffer swap interval (i.e. vsync)
 }
 
 void window::destroy() const 

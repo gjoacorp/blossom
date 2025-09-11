@@ -12,7 +12,6 @@ int main(void)
 {
   blossom::window w(1920, 1080, "Triangle Example");
   w.enter_fullscreen();
-  w.init();
 
   std::vector<glm::vec3> vertices =
   {

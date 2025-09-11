@@ -12,7 +12,6 @@ int main()
 {
   blossom::window w(1920, 1080, "Triangle Example");
   w.enter_fullscreen();
-  w.init();
 
   blossom::shader rect_shader {"shaders/default.frag", "shaders/default.vert"};
   blossom::rectangle rect {rect_shader.program_id};

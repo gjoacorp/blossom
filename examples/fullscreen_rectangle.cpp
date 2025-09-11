@@ -13,7 +13,6 @@ int main(void)
 {
   blossom::window w(1920, 1080, "Blossom Rectangle Example");
   w.enter_fullscreen();
-  w.init();
 
   blossom::shader rect_shader {"shaders/rectangle.frag", "shaders/rectangle.vert"};
   blossom::rectangle rect {rect_shader.program_id};
