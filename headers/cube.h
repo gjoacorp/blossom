@@ -1,4 +1,4 @@
-ifndef BLOSSOM_CUBE_H
+#ifndef BLOSSOM_CUBE_H
 #define BLOSSOM_CUBE_H
 
 #include "mesh.h"
@@ -57,7 +57,7 @@ namespace blossom
             };
 
             shader_program_ = shader_program;
-            init_();
+            init_buffers_();
          }
    };
 }

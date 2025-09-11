@@ -66,7 +66,7 @@ namespace blossom
        *
        * @throws std::runtime_error if there is no active OpenGL context when called.
        */
-      void init_();
+      void init_buffers_();
   };
 }
 

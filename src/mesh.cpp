@@ -23,7 +23,7 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program) :
   vertices_(vertices), 
   shader_program_(shader_program) 
   {
-    init_();
+    init_buffers_();
   }
 
 mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, GLuint shader_program) :
@@ -31,7 +31,7 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& in
   indices_(indices),
   shader_program_(shader_program)
   {
-    init_();
+    init_buffers_();
   }
 
 mesh::~mesh()
@@ -46,7 +46,7 @@ mesh::~mesh()
     glDeleteBuffers(1, &ebo_);
 }
 
-void mesh::init_()
+void mesh::init_buffers_()
 {
   if (!glfwGetCurrentContext())
   {
