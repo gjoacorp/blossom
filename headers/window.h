@@ -12,9 +12,10 @@ namespace blossom
       GLFWwindow* window_ptr;
 
       window (int width, int height, const char* title);
+      ~window();
 
       void enter_fullscreen() const;
-      void destroy() const;
+      void destroy();
 
     private:
       static void framebuffer_size_callback_(GLFWwindow* window, int width, int height);

@@ -1,5 +1,5 @@
 #include "../headers/window.h"
-#include <iostream>
+#include <stdexcept>
 
 using blossom::window;
 
@@ -7,8 +7,8 @@ window::window(int width, int height, const char* title)
 {
   if ( !glfwInit() ) 
   {
-    std::cout << "Failed to initialise GLFW." << std::endl;
-    exit(EXIT_FAILURE); 
+    glfwTerminate();
+    throw std::runtime_error("ERROR: Failed to initialise GLFW.");
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -21,7 +21,8 @@ window::window(int width, int height, const char* title)
 
   if ( glewInit() != GLEW_OK )
   {
-    exit(EXIT_FAILURE);
+    glfwTerminate();
+    throw std::runtime_error("ERROR: Failed to initialise GLEW.");
   }
 
   glfwSwapInterval(1); 
@@ -34,10 +35,15 @@ void window::enter_fullscreen() const
   glfwSetWindowMonitor(window_ptr, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 }
 
-void window::destroy() const 
+void window::destroy()
 {
-  glfwDestroyWindow(window_ptr);
   glfwTerminate();
+  window_ptr = nullptr;
+}
+
+window::~window()
+{
+  destroy();
 }
 
 void window::framebuffer_size_callback_(GLFWwindow* window, int width, int height)
