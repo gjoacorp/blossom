@@ -10,7 +10,7 @@ const GLfloat clear_color[] = { 0.0f, 0.0f, 0.0f, 0.0f};
 
 int main() 
 {
-  blossom::window w(1920, 1080, "Triangle Example");
+  blossom::window w(1920, 1080, "Blossom Rectangle Camera Example");
   w.enter_fullscreen();
 
   blossom::shader rect_shader {"shaders/default.frag", "shaders/default.vert"};
