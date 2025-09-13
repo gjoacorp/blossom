@@ -1,5 +1,5 @@
-#ifndef BLOSSOM
-#define BLOSSOM
+#ifndef BLOSSOM_ORTHOGRAPHIC_CAMERA_H
+#define BLOSSOM_ORTHOGRAPHIC_CAMERA_H
 
 #include "transform.h"
 #include <glm/glm.hpp>
