@@ -1,25 +1,18 @@
 #ifndef BLOSSOM_ORTHOGRAPHIC_CAMERA_H
 #define BLOSSOM_ORTHOGRAPHIC_CAMERA_H
 
-#include "transform.h"
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "transform.h"
+#include "camera.h"
 
 namespace blossom
 {
-  class orthographic_camera : public transform
+  class orthographic_camera : public camera, public transform
   {
     public:
-      int width;
-      int height;
-
-      glm::mat4 view_matrix = glm::mat4(1.0f);
-      glm::mat4 projection_matrix = glm::mat4(1.0f);
-
       orthographic_camera(const glm::vec3& position, int width, int height) :
         transform(position),
-        width(width),
-        height(height)
+        camera(width, height)
       {
         update_view_matrix();
         update_projection_matrix();
