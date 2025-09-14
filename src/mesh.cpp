@@ -5,15 +5,15 @@
 
 using blossom::mesh;
 
-void mesh::draw(const orthographic_camera* const camera) const
+void mesh::draw(const camera* const cam) const
 {
   glUseProgram(shader_program_);
   glUniformMatrix4fv(model_uniform_location_, 1, GL_FALSE, glm::value_ptr(calc_model_matrix()));
 
-  if (camera)
+  if (cam)
   {
-    glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(camera->view_matrix));
-    glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(camera->projection_matrix));
+    glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(cam->view_matrix));
+    glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(cam->projection_matrix));
   }
   else
   {
