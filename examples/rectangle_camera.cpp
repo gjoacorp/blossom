@@ -19,8 +19,8 @@ int main()
   blossom::rectangle rect {rect_shader.program_id};
 
   rect.position = {500.0f, 500.0f, 0.0f};
-  rect.scale = {200.0f, 100.0f, 0.0f};
-  blossom::orthographic_camera camera {{0.0f, 0.0f, 0.0f}, WINDOW_WIDTH, WINDOW_HEIGHT};
+  rect.scale = {200.0f, 100.0f, 1.0f};
+  blossom::orthographic_camera camera {{0.0f, 0.0f, 0.0f}, WINDOW_WIDTH, WINDOW_HEIGHT, -1.0f, 1.0f};
 
   while ( !glfwWindowShouldClose(window.window_ptr) )
   {

@@ -19,7 +19,12 @@ namespace blossom
       glm::mat4 view_matrix = glm::mat4(1.0f);
       glm::mat4 projection_matrix = glm::mat4(1.0f);
 
-      camera(const glm::vec3& position, int width, int height) : transform(position), width(width), height(height) {}
+      camera(const glm::vec3& position, int width, int height, float near, float far) : 
+        transform(position), 
+        width(width), 
+        height(height), 
+        near(near), 
+        far(far) {}
 
       virtual void update_view_matrix()
       {
