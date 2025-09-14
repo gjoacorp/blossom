@@ -20,7 +20,7 @@ int main()
 
   rect.position = {500.0f, 500.0, 0.0f};
   rect.scale = {200.0f, 100.0f, 0.0f};
-  blossom::orthographic_camera camera {{0.0f, 0.0f, 0.0f}, 1920, 1080};
+  blossom::orthographic_camera camera {{0.0f, 0.0f, 0.0f}, WINDOW_WIDTH, WINDOW_HEIGHT};
 
   while ( !glfwWindowShouldClose(window.window_ptr) )
   {
