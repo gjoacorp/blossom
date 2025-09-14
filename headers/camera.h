@@ -23,10 +23,10 @@ namespace blossom
 
       virtual void update_view_matrix()
       {
-        glm::mat4 view_matrix = glm::mat4(1.0f);
-        view_matrix = glm::rotate(view_matrix, -rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
-        view_matrix = glm::rotate(view_matrix, -rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        view_matrix = glm::mat4(1.0f);
         view_matrix = glm::rotate(view_matrix, -rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        view_matrix = glm::rotate(view_matrix, -rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        view_matrix = glm::rotate(view_matrix, -rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
         view_matrix = glm::scale(view_matrix, scale); 
         view_matrix = glm::translate(view_matrix, -position);
       }
