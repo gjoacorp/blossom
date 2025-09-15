@@ -1,8 +1,6 @@
 #ifndef BLOSSOM_GRID_H
 #define BLOSSOM_GRID_H
 
-#include <iostream>
-
 #include "mesh.h"
 #include "shader.h"
 
