@@ -13,7 +13,6 @@ int main(void)
 {
   blossom::window w(1920, 1080, "Blossom Rectangle Example");
   w.enter_fullscreen();
-  w.init();
 
   blossom::shader rect_shader {"shaders/rectangle.frag", "shaders/rectangle.vert"};
   blossom::rectangle rect {rect_shader.program_id};
@@ -21,7 +20,7 @@ int main(void)
   while ( !glfwWindowShouldClose(w.window_ptr) )
   {
     glClearBufferfv(GL_COLOR, 0, clear_color);
-    rect.draw();
+    rect.draw(nullptr);
     glfwSwapBuffers(w.window_ptr);
     glfwPollEvents();
   }

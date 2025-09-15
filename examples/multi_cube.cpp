@@ -93,7 +93,6 @@ int main(void)
   camera_pos = {0.0f, 0.0f, 420.0f};
   blossom::window w (1920, 1080, "Blossom");
 
-  w.init();
   init_vertices();
 
   blossom::shader s ("shaders/multi_cube.frag", "shaders/multi_cube.vert");

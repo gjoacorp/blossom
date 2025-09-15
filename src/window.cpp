@@ -1,5 +1,5 @@
 #include "../headers/window.h"
-#include <iostream>
+#include <stdexcept>
 
 using blossom::window;
 
@@ -7,16 +7,25 @@ window::window(int width, int height, const char* title)
 {
   if ( !glfwInit() ) 
   {
-    std::cout << "Failed to initialise GLFW." << std::endl;
-    exit(EXIT_FAILURE); 
+    glfwTerminate();
+    throw std::runtime_error("ERROR: Failed to initialise GLFW.");
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
   window_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
+
   glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
+
+  if ( glewInit() != GLEW_OK )
+  {
+    glfwTerminate();
+    throw std::runtime_error("ERROR: Failed to initialise GLEW.");
+  }
+
+  glfwSwapInterval(1); 
 }
 
 void window::enter_fullscreen() const
@@ -26,20 +35,15 @@ void window::enter_fullscreen() const
   glfwSetWindowMonitor(window_ptr, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 }
 
-void window::init() 
+void window::destroy()
 {
-  if ( glewInit() != GLEW_OK ) 
-  { 
-    exit(EXIT_FAILURE); 
-  }
-
-  glfwSwapInterval(1); // sets the color buffer swap interval (i.e. vsync)
+  glfwTerminate();
+  window_ptr = nullptr;
 }
 
-void window::destroy() const 
+window::~window()
 {
-  glfwDestroyWindow(window_ptr);
-  glfwTerminate();
+  destroy();
 }
 
 void window::framebuffer_size_callback_(GLFWwindow* window, int width, int height)

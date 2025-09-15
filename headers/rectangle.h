@@ -32,7 +32,8 @@ namespace blossom
         };
 
         shader_program_ = shader_program;
-        init_();
+        update_uniform_locations_();
+        init_buffers_();
       }
   };
 }

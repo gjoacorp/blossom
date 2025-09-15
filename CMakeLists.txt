@@ -1,15 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
-project(OpenGLExamples CXX)
+project(blossom)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES src/window.cpp src/shader.cpp src/mesh.cpp)
-
-add_executable(multi_cube ${SOURCES} examples/multi_cube.cpp)
-add_executable(triangle ${SOURCES} examples/triangle.cpp)
-add_executable(waves ${SOURCES} examples/waves.cpp)
-add_executable(fullscreen_rectangle ${SOURCES} examples/fullscreen_rectangle.cpp)
 
 add_custom_target(copy_shaders ALL
    COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -17,10 +12,12 @@ add_custom_target(copy_shaders ALL
    COMMENT "Copying shaders to build directory"
 )
 
-add_dependencies(multi_cube copy_shaders)
-add_dependencies(triangle copy_shaders)
-add_dependencies(waves copy_shaders)
-add_dependencies(fullscreen_rectangle copy_shaders)
+function(add_example name)
+    add_executable(${name} ${SOURCES} examples/${name}.cpp)
+    add_dependencies(${name} copy_shaders)
+    target_include_directories(${name} PRIVATE include)
+    target_link_libraries(${name} PRIVATE OpenGL::GL glfw GLEW::GLEW)
+endfunction()
 
 cmake_policy(SET CMP0072 NEW)
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -29,12 +26,8 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 
-target_include_directories(multi_cube PRIVATE include)
-target_include_directories(fullscreen_rectangle PRIVATE include)
-target_include_directories(triangle PRIVATE include)
-target_include_directories(waves PRIVATE include)
-
-target_link_libraries(multi_cube PRIVATE OpenGL::GL glfw GLEW::GLEW)
-target_link_libraries(triangle PRIVATE OpenGL::GL glfw GLEW::GLEW)
-target_link_libraries(waves PRIVATE OpenGL::GL glfw GLEW::GLEW)
-target_link_libraries(fullscreen_rectangle PRIVATE OpenGL::GL glfw GLEW::GLEW)
+add_example(multi_cube)
+add_example(triangle)
+add_example(waves)
+add_example(fullscreen_rectangle)
+add_example(rectangle_camera)
