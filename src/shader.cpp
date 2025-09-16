@@ -49,20 +49,6 @@ void shader::print_log_(GLuint shader) const
   }
 }
 
-bool shader::check_gl_error_() const 
-{
-  bool error_found = false;
-  int gl_error = glGetError();
-
-  while (gl_error != GL_NO_ERROR) 
-  {
-    std::cout << "gl_error: " << gl_error << std::endl;
-    error_found = true;
-    gl_error = glGetError();
-  }
-  return error_found;
-}
-
 void shader::init_() 
 {
   if (!glfwGetCurrentContext())
@@ -81,7 +67,6 @@ void shader::init_()
 
   glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
   glCompileShader(vertex_shader);
-  check_gl_error_(); // Checking that the vertex shader successfully compiles.
   
   GLint vertex_shader_compilation_status;
   glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &vertex_shader_compilation_status);
@@ -94,7 +79,6 @@ void shader::init_()
 
   glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
   glCompileShader(fragment_shader);
-  check_gl_error_(); // Checking that the fragment shader successfully compiles. 
 
   GLint fragment_shader_compilation_status;
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &fragment_shader_compilation_status);

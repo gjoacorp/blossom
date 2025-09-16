@@ -18,7 +18,6 @@ namespace blossom
       void init_();
 
       std::string read_source_(const char* path);
-      bool check_gl_error_() const;
       void print_log_(GLuint shader) const;
 
     public:
