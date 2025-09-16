@@ -9,7 +9,7 @@
 
 float pi_f = glm::pi<float>();
 
-std::vector<glm::vec3>& generate_sphere_verts(float radius, int sector_count, int stack_count) {
+std::vector<glm::vec3> generate_sphere_verts(float radius, int sector_count, int stack_count) {
 	std::vector<glm::vec3> verts;
 	float sector_step = 2 * pi_f / sector_count;
 	float stack_step = pi_f / stack_count;
@@ -31,7 +31,7 @@ std::vector<glm::vec3>& generate_sphere_verts(float radius, int sector_count, in
 	return verts;
 }
 
-std::vector<GLuint>& generate_sphere_indices(float radius, int sector_count, int stack_count) {
+std::vector<GLuint> generate_sphere_indices(float radius, int sector_count, int stack_count) {
 	std::vector<GLuint> indices;
 
 	int k1, k2;	// current and next index
