@@ -12,7 +12,6 @@ namespace blossom
   class shader 
   {
     private:
-      friend class ShaderTest;
       const char* frag_path;
       const char* vert_path;
 
