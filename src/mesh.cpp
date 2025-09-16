@@ -3,12 +3,13 @@
 
 using blossom::mesh;
 
-void mesh::draw() const
+void mesh::draw(GLuint texture = 0) const
 {
   glUseProgram(shader_program_);
+  if (texture)
+    glBindTexture(GL_TEXTURE_2D, texture);
   glBindVertexArray(vao_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
-
   if (indices_.size() > 0) 
   { 
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, (void*)0); 

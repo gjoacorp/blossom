@@ -12,7 +12,7 @@ namespace blossom
   {
     public:
       /// @brief Draws the mesh using the shader program `mesh::shader_program_` and with polygon mode `mesh::polygon_mode_`.
-      void draw() const;
+      void draw( GLuint texture ) const;
 
       mesh() = default;
       /**
