@@ -3,7 +3,7 @@
 #include "../headers/sphere.h"
 
 const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
+const int WINDOW_HEIGHT = 800;
 const char* WINDOW_TITLE = "Blossom Mesh View Example";
 
 int main()
@@ -18,8 +18,8 @@ int main()
     glfwGetFramebufferSize(window.window_ptr, &width, &height);
     float aspect = float(width) / float(height);
 
-    const glm::vec3 camera_position = { 0.0f, 1.0f, 5.0f };
-    blossom::perspective_camera camera{ camera_position, WINDOW_WIDTH, WINDOW_HEIGHT, 1.0472f, aspect, 100.0f };
+    const glm::vec3 camera_position = {0.0f, 1.0f, 1.0f};
+    blossom::perspective_camera camera { camera_position, WINDOW_WIDTH, WINDOW_HEIGHT, 90.0f, 0.1f, 200.0f };
     camera.rotation.x = -45.0f;
     camera.update_view_matrix();
 
