@@ -3,6 +3,7 @@
 
 #include "mesh.h"
 #include "shader.h"
+#include <exception>
 
 namespace blossom
 {
@@ -11,6 +12,16 @@ namespace blossom
     public:
       grid(GLuint shader_program, std::size_t iterations, float x_spacing, float z_spacing)
       {
+        if ( x_spacing < 0.0f )
+        {
+          throw std::runtime_error("ERROR: Cannot construct a grid with negative x_spacing.");
+        }
+
+        if ( z_spacing < 0.0f )
+        {
+          throw std::runtime_error("ERROR: Cannot construct a grid with negative z_spacing.");
+        }
+
         for (std::size_t z = 0; z < iterations; ++z) 
         {
           for (std::size_t x = 0; x < iterations; ++x) 
