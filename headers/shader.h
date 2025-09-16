@@ -12,14 +12,14 @@ namespace blossom
   class shader 
   {
     private:
-      const char* frag_path;
-      const char* vert_path;
+      const char* frag_path_;
+      const char* vert_path_;
 
-      void init();
+      void init_();
 
-      std::string read_source(const char* path);
-      bool check_gl_error() const;
-      void print_log(GLuint shader) const;
+      std::string read_source_(const char* path);
+      bool check_gl_error_() const;
+      void print_log_(GLuint shader) const;
 
     public:
       GLuint program_id;
