@@ -2,8 +2,8 @@
 #include "../headers/perspective_camera.h"
 #include "../headers/sphere.h"
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 800;
+const int WINDOW_WIDTH = 1000;
+const int WINDOW_HEIGHT = 1000;
 const char* WINDOW_TITLE = "Blossom Mesh View Example";
 
 int main()
@@ -13,10 +13,6 @@ int main()
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-
-    int width, height;
-    glfwGetFramebufferSize(window.window_ptr, &width, &height);
-    float aspect = float(width) / float(height);
 
     const glm::vec3 camera_position = {0.0f, 1.0f, 1.0f};
     blossom::perspective_camera camera { camera_position, WINDOW_WIDTH, WINDOW_HEIGHT, 90.0f, 0.1f, 200.0f };
@@ -37,5 +33,4 @@ int main()
     }
 
     window.destroy();
-    exit(EXIT_SUCCESS);
 }
