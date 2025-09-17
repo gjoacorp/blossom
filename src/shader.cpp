@@ -6,13 +6,13 @@
 using blossom::shader;
 
 shader::shader(const char* frag_path, const char* vert_path) : 
-  frag_path(frag_path), 
-  vert_path(vert_path) 
+  frag_path_(frag_path), 
+  vert_path_(vert_path) 
 {
-  init();
+  init_();
 }
 
-std::string shader::read_source(const char* path)
+std::string shader::read_source_(const char* path)
 {
   std::string file_content;
   std::ifstream file(path, std::ios::in);
@@ -32,7 +32,7 @@ std::string shader::read_source(const char* path)
   return file_content;
 }
 
-void shader::print_log(GLuint shader) const 
+void shader::print_log_(GLuint shader) const 
 {
   int length = 0;
   int char_written = 0;
@@ -49,72 +49,54 @@ void shader::print_log(GLuint shader) const
   }
 }
 
-bool shader::check_gl_error() const 
-{
-  bool error_found = false;
-  int gl_error = glGetError();
-
-  while (gl_error != GL_NO_ERROR) 
-  {
-    std::cout << "gl_error: " << gl_error << std::endl;
-    error_found = true;
-    gl_error = glGetError();
-  }
-  return error_found;
-}
-
-void shader::init() 
+void shader::init_() 
 {
   if (!glfwGetCurrentContext())
   {
     throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
   }
 
-  GLint vert_compiled, frag_compiled;
+  std::string vertex_shader_source_string = read_source_(vert_path_).c_str();
+  std::string fragment_shader_source_string = read_source_(frag_path_).c_str();
 
-  std::string v_string = read_source(vert_path);
-  std::string f_string = read_source(frag_path);
+  const char* vertex_shader_source = vertex_shader_source_string.c_str();
+  const char* fragment_shader_source = fragment_shader_source_string.c_str();
 
-  const char* vert_source = v_string.c_str();
-  const char* frag_source = f_string.c_str();
+  const GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  const GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-  GLuint v_shader = glCreateShader(GL_VERTEX_SHADER);
-  GLuint f_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
+  glCompileShader(vertex_shader);
+  
+  GLint vertex_shader_compilation_status;
+  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &vertex_shader_compilation_status);
 
-  glShaderSource(v_shader, 1, &vert_source, NULL);
-  glCompileShader(v_shader);
-
-  // Checking that the vertex shader successfully compiles.
-  check_gl_error();
-  glGetShaderiv(v_shader, GL_COMPILE_STATUS, &vert_compiled);
-
-  if (vert_compiled != 1) 
+  if (vertex_shader_compilation_status == GL_FALSE) 
   {
     std::cout << "ERROR: Vertex shader compilation failed." << std::endl;
-    print_log(v_shader);
+    print_log_(vertex_shader);
   }
 
-  glShaderSource(f_shader, 1, &frag_source, NULL);
-  glCompileShader(f_shader);
+  glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
+  glCompileShader(fragment_shader);
 
-  // Checking that the fragment shader successfully compiles. 
-  check_gl_error();
-  glGetShaderiv(f_shader, GL_COMPILE_STATUS, &frag_compiled);
+  GLint fragment_shader_compilation_status;
+  glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &fragment_shader_compilation_status);
 
-  if (frag_compiled != 1) 
+  if (fragment_shader_compilation_status == GL_FALSE) 
   {
     std::cout << "ERROR: Fragment shader compilation failed." << std::endl;
-    print_log(f_shader);
+    print_log_(fragment_shader);
   }
 
-  GLuint vf_program = glCreateProgram();
+  GLuint shader_program = glCreateProgram();
 
-  glAttachShader(vf_program, v_shader);
-  glAttachShader(vf_program, f_shader);
-  glLinkProgram(vf_program);
+  glAttachShader(shader_program, vertex_shader);
+  glAttachShader(shader_program, fragment_shader);
+  glLinkProgram(shader_program);
 
-  glDeleteShader(v_shader);
-  glDeleteShader(f_shader);
+  glDeleteShader(vertex_shader);
+  glDeleteShader(fragment_shader);
 
-  program_id = vf_program;
+  program_id = shader_program;
 }
