@@ -21,11 +21,12 @@ namespace blossom
 
         for (std::size_t i = 0; i < iterations; ++i)
         {
-          const float angle = (2.0f * glm::pi<float>() * i) / iterations;
-          const float x = glm::cos(angle);
-          const float y = glm::sin(angle);
+          const float ANGLE = (2.0f * glm::pi<float>() * i) / iterations;
 
-          vertices_.push_back(glm::vec3(x, y, 0.0f));
+          const float X = glm::cos(ANGLE);
+          const float Y = glm::sin(ANGLE);
+
+          vertices_.push_back(glm::vec3(X, Y, 0.0f));
 
           indices_.push_back(0);
           indices_.push_back(i + 1);
