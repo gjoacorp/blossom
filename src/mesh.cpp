@@ -102,3 +102,15 @@ void mesh::update_uniform_locations_()
   view_uniform_location_ = glGetUniformLocation(shader_program_, "view");
   projection_uniform_location_ = glGetUniformLocation(shader_program_, "projection");
 }
+
+void mesh::set_vec3(const char* uniform, float x1, float x2, float x3)
+{
+  GLuint uniform_location = glGetUniformLocation(shader_program_, uniform);
+  glUniform3f(uniform_location, x1, x2, x3);
+}
+
+void mesh::set_vec3(const char* uniform, const glm::vec3& vec)
+{
+  GLuint uniform_location = glGetUniformLocation(shader_program_, uniform);
+  glUniform3fv(uniform_location, 1, glm::value_ptr(vec));
+}

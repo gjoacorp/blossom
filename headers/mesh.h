@@ -39,6 +39,9 @@ namespace blossom
        */
       void set_polygon_mode(GLenum polygon_mode);
 
+      void set_vec3(const char* uniform, float x1, float x2, float x3);
+      void set_vec3(const char* uniform, const glm::vec3& vec);
+
     protected:
       /// @brief The model-space coordinates of the mesh's vertices.
       std::vector<glm::vec3> vertices_;
