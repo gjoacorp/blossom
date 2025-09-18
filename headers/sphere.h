@@ -9,8 +9,6 @@
 
 #include <exception>
 
-float pi_f = glm::pi<float>();
-
 namespace blossom
 {
 	class sphere : public mesh
@@ -24,19 +22,21 @@ namespace blossom
     */
 		static std::vector<glm::vec3> generate_sphere_verts(float radius, std::size_t sector_count, std::size_t stack_count)
 		{
+      const float PI_F = glm::pi<float>();
+
       if ( radius <= 0.0f )
       {
         throw std::invalid_argument ("ERROR : Radius must be a float greater than zero.");
       }
 
 			std::vector<glm::vec3> verts;	/* Array of `glm::vec3` vectors for vertices of the sphere*/
-			// brief Sets the increment spacing vertices in the loop.
-			float sector_step = 2 * pi_f / sector_count;
-			float stack_step = pi_f / stack_count;
+			// Sets the increment spacing vertices in the loop.
+			float sector_step = 2 * PI_F / sector_count;
+			float stack_step = PI_F / stack_count;
 			
 			for (std::size_t i = 0; i <= stack_count; ++i)
 			{
-				float stack_angle = pi_f / 2 - i * stack_step;	/* Fix angle for this vertical ring in this loop. */
+				float stack_angle = PI_F / 2 - i * stack_step;	/* Fix angle for this vertical ring in this loop. */
 
 				float z = radius * glm::sin(stack_angle);	/* Fix height at this angle via projection of radius at stack_angle. */
 				float zrad = radius * glm::cos(stack_angle);	/* Fix radius at specific height by projection.*/
