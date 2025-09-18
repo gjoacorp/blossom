@@ -9,13 +9,17 @@ namespace blossom
   class transform
   {
     public:
+      /// @brief Position in world space.
       glm::vec3 position = {0.0f, 0.0f, 0.0f};
       glm::vec3 rotation = {0.0f, 0.0f, 0.0f};
+      /// @brief The \f$x\f$, \f$y\f$ and \f$z\f$ scaling respectively.
       glm::vec3 scale    = {1.0f, 1.0f, 1.0f};
 
+      /// @param position is the world space position.
       transform(const glm::vec3& position) : position(position) {}
       transform() {}
 
+      /// @brief Constructs the \f$4\times4\f$ model matrix using `transform::position`, `transform::rotation`, and `transform::scale`.
       glm::mat4 calc_model_matrix() const
       {
         glm::mat4 model_matrix = glm::mat4(1.0f);
