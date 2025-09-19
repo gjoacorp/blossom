@@ -17,7 +17,7 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    const glm::vec3 camera_position = {0.0f, 1.0f, 1.0f};
+    const glm::vec3 camera_position = {0.0f, 2.0f, 2.0f};
     blossom::perspective_camera camera { camera_position, WINDOW_WIDTH, WINDOW_HEIGHT, 90.0f, 0.1f, 200.0f };
     camera.rotation.x = -45.0f;
     camera.update_view_matrix();
@@ -27,8 +27,10 @@ int main()
     blossom::shader lighting_shader("shaders/light.frag", "shaders/default.vert");
 
     blossom::sphere mesh{ shader.program_id };
+    mesh.scale = {0.5f, 0.5f, 0.5f};
 
     blossom::sphere light{ lighting_shader.program_id };
+    light.scale = {0.5f, 0.5f, 0.5f};
     light.position = {1.0f, 0.8f, 1.0f};
 
     while (!glfwWindowShouldClose(window.window_ptr))
