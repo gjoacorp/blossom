@@ -55,6 +55,19 @@ namespace blossom
           3, 4, 0,
         };
 
+        normals_ = 
+        {
+          glm::vec3{-0.577f, -0.577f,  0.577f},  // vertex 0
+          glm::vec3{ 0.577f, -0.577f,  0.577f},  // vertex 1
+          glm::vec3{ 0.577f, -0.577f, -0.577f},  // vertex 2
+          glm::vec3{-0.577f, -0.577f, -0.577f},  // vertex 3
+          glm::vec3{-0.577f,  0.577f,  0.577f},  // vertex 4
+          glm::vec3{ 0.577f,  0.577f,  0.577f},  // vertex 5
+          glm::vec3{ 0.577f,  0.577f, -0.577f},  // vertex 6
+          glm::vec3{-0.577f,  0.577f, -0.577f},  // vertex 7
+        };
+
+
         shader_program_ = shader_program;
         init_buffers_();
         update_uniform_locations_();
