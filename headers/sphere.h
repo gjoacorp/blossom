@@ -96,7 +96,11 @@ namespace blossom
       sphere(GLuint shader_program) // unit sphere with default parameters
       {
         vertices_ = generate_sphere_verts(1.0f, 32, 16);
-        normals_ = vertices_;
+        
+        for ( std::size_t i = 0; i < vertices_.size(); i++)
+        {
+          normals_.push_back(glm::normalize(vertices_[i]));
+        }
 
         indices_ = generate_sphere_indices(32, 16);
 
@@ -112,6 +116,11 @@ namespace blossom
       sphere(GLuint shader_program, std::size_t sector_count, std::size_t stack_count)  // sphere with specific parameters
       {
         vertices_ = generate_sphere_verts(1.0f, sector_count, stack_count);
+        
+        for ( std::size_t i = 0; i < vertices_.size(); i++)
+        {
+          normals_.push_back(glm::normalize(vertices_[i]));
+        }
 
         indices_ = generate_sphere_indices(sector_count, stack_count);
 
