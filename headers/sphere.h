@@ -96,6 +96,7 @@ namespace blossom
       sphere(GLuint shader_program) // unit sphere with default parameters
       {
         vertices_ = generate_sphere_verts(1.0f, 32, 16);
+        normals_ = vertices_;
 
         indices_ = generate_sphere_indices(32, 16);
 
