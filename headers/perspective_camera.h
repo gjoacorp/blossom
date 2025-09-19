@@ -28,7 +28,8 @@ namespace blossom
         update_projection_matrix();
       }
 
-      /// @brief Updates the inherited `camera::projection_matrix` using `camera::width`, `camera::height`, `camera::near`, `camera::far`, and `perspective_camera::fov_y`.
+      /// @brief Constructs a \f$4 \times 4\f$ projection matrix using [glm::perspective()](https://glm.g-truc.net/0.9.9/api/a00665.html#ga747c8cf99458663dd7ad1bb3a2f07787).
+      /// This matrix is stored in the inherited attribute `camera::projection_matrix`.
       void update_projection_matrix()
       {
         const float aspect = static_cast<float>(width) / static_cast<float>(height);
