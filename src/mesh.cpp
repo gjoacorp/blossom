@@ -51,6 +51,16 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& in
     init_buffers_();
   }
 
+mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, std::vector<glm::vec3>& normals, GLuint shader_program) :
+  vertices_(vertices),
+  indices_(indices),
+  normals_(normals),
+  shader_program_(shader_program)
+  {
+    update_uniform_locations_();
+    init_buffers_();
+  }
+
 mesh::~mesh()
 {
   if (vao_ != 0)
@@ -61,6 +71,9 @@ mesh::~mesh()
 
   if (ebo_ != 0)
     glDeleteBuffers(1, &ebo_);
+  
+  if (nbo_ != 0)
+    glDeleteBuffers(1, &nbo_);
 }
 
 void mesh::init_buffers_()
@@ -77,6 +90,9 @@ void mesh::init_buffers_()
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glNamedBufferStorage(vbo_, vertices_.size() * sizeof(glm::vec3), &vertices_[0], 0);
 
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+  glEnableVertexAttribArray(0);
+
   if (indices_.size() > 0)
   {
     glCreateBuffers(1, &ebo_);
@@ -84,8 +100,16 @@ void mesh::init_buffers_()
     glNamedBufferStorage(ebo_, indices_.size() * sizeof(GLuint), &indices_[0], 0);
   }
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
-  glEnableVertexAttribArray(0);
+  if (normals_.size() > 0)  // NORMAL CRIMES. EP2.
+  {
+    glCreateBuffers(1, &nbo_);
+    glBindBuffer(GL_ARRAY_BUFFER, nbo_);
+    glNamedBufferStorage(nbo_, normals_.size() * sizeof(GLuint), &normals_[0], 0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glEnableVertexAttribArray(1);
+  }
+
   glBindVertexArray(0);
 }
 

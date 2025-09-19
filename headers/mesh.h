@@ -30,6 +30,8 @@ namespace blossom
        */
       mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, GLuint shader_program);
       /// @brief Deletes the vertex array object and buffers referenced in `mesh::vao_`, `mesh::vbo_`, and `mesh::ebo_`.
+      mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, std::vector<glm::vec3>& normals, GLuint shader_program);
+
       ~mesh();
 
       /** 
@@ -45,6 +47,7 @@ namespace blossom
     protected:
       /// @brief The model-space coordinates of the mesh's vertices.
       std::vector<glm::vec3> vertices_;
+      std::vector<glm::vec3> normals_;
 
       /// @brief Each index refers to a vertex in `mesh::vertices`. Specifying indices can be used to avoid duplicating vertices, which can lead to improved performance when drawing larger meshes.
       std::vector<GLuint> indices_;
@@ -60,6 +63,8 @@ namespace blossom
       GLuint vbo_            = 0;
       /// Element buffer object name.
       GLuint ebo_            = 0;
+      /// NORMAL CRIMES.
+      GLuint nbo_            = 0;
       /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
       GLenum polygon_mode_ = GL_FILL;
 
