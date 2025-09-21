@@ -54,13 +54,19 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& in
 mesh::~mesh()
 {
   if (vao_ != 0)
+  {
     glDeleteVertexArrays(1, &vao_);
+  }
 
   if (vbo_ != 0)
+  {
     glDeleteBuffers(1, &vbo_);
+  }
 
   if (ebo_ != 0)
+  {
     glDeleteBuffers(1, &ebo_);
+  }
 }
 
 void mesh::init_buffers_()
@@ -92,7 +98,9 @@ void mesh::init_buffers_()
 void mesh::set_polygon_mode(GLenum polygon_mode)
 {
   if ( !( polygon_mode == GL_FILL || polygon_mode == GL_LINE || polygon_mode == GL_POINT ) )
+  {
     throw std::runtime_error("ERROR: Invalid polygon mode. Must use one of: GL_FILL, GL_LINE, GL_POINT.");
+  }
   polygon_mode_ = polygon_mode;
 }
 
