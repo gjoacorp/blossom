@@ -84,7 +84,7 @@ void mesh::init_buffers_()
   glNamedBufferStorage(
       vbo_, 
       static_cast<GLsizeiptr>( vertices_.size() * sizeof(glm::vec3) ), 
-      &vertices_[0], 
+      &vertices_, 
       0);
 
   if (indices_.size() > 0)
@@ -94,7 +94,7 @@ void mesh::init_buffers_()
     glNamedBufferStorage(
         ebo_, 
         static_cast<GLsizeiptr>( indices_.size() * sizeof(GLuint) ), 
-        &indices_[0], 
+        &indices_, 
         0);
   }
 
