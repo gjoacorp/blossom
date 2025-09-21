@@ -26,7 +26,7 @@ void mesh::draw(const camera* const cam) const
 
   if (indices_.size() > 0) 
   { 
-    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, (void*)0); 
+    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, nullptr); 
   }
   else 
   { 
@@ -98,7 +98,7 @@ void mesh::init_buffers_()
         0);
   }
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), nullptr);
   glEnableVertexAttribArray(0);
   glBindVertexArray(0);
 }
