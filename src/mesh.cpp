@@ -10,7 +10,7 @@ void mesh::draw(const camera* const cam) const
   glUseProgram(shader_program_);
   glUniformMatrix4fv(model_uniform_location_, 1, GL_FALSE, glm::value_ptr(calc_model_matrix()));
 
-  if (cam)
+  if (cam != nullptr)
   {
     glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(cam->view_matrix));
     glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(cam->projection_matrix));
@@ -71,7 +71,7 @@ mesh::~mesh()
 
 void mesh::init_buffers_()
 {
-  if (!glfwGetCurrentContext())
+  if (glfwGetCurrentContext() == nullptr)
   {
     throw std::runtime_error("ERROR: Cannot initialise mesh without current GL context.");
   }
