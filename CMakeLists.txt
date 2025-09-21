@@ -4,7 +4,7 @@ project(blossom)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCES src/window.cpp src/shader.cpp src/mesh.cpp)
+set(SOURCES src/window.cpp src/shader.cpp src/camera.cpp src/mesh.cpp)
 
 add_custom_target(copy_shaders ALL
    COMMAND ${CMAKE_COMMAND} -E copy_directory

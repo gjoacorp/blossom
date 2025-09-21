@@ -35,3 +35,21 @@ To build the documentation, install [Doxygen](https://www.doxygen.nl/) and then 
 doxygen Doxyfile
 ```
 This will generate the directories `blossom/html` and `blossom/latex` containing the documentation. 
+
+## Styling guidelines for contributions
+
+- Identation is 2 spaces.
+- Brace style is [Allman](https://en.wikipedia.org/wiki/Indentation_style#Allman_style).
+- Strictly use `snake_case` for everything that is not declared `const`.
+- `const` declared variables and enum types should use `SCREAMING_SNAKE_CASE`.
+- Private and protected class attributes and methods should have an `_` suffix.
+- Raw and smart pointers should have an `_ptr` suffix.
+
+## Useful resources and tools for contributors
+### Documentation
+- [GLFW documentation](https://www.glfw.org/docs/latest/topics.html)
+- [glm documentation](https://glm.g-truc.net/0.9.9/api/index.html)
+- [OpenGL documentation](https://docs.gl/#)
+- [C++ reference](https://www.cppreference.com/)
+### Tools
+- [apitrace](https://github.com/apitrace/apitrace) can be used for stepping through OpenGL calls. Very useful for debugging mysterious errors.

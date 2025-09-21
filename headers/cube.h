@@ -9,6 +9,9 @@ namespace blossom
   class cube : public mesh
   {
     public:
+      /// @brief Initialises the inherited attributes `mesh::vertices_` and `mesh::indices_` with the vertices and indices of a unit cube,
+      /// sets the inherited attribute `mesh::shader_program_` to `shader_program`, and calls `mesh::init_buffers_()` and `mesh::update_uniform_locations_()`.
+      /// @param shader_program is the OpenGL handle (ID) of a program object returned from [`glCreateProgram()`](https://docs.gl/gl4/glCreateProgram) or otherwise.
       cube(GLuint shader_program)
       {
         //     H──────G

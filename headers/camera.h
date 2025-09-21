@@ -10,32 +10,31 @@ namespace blossom
   class camera : public transform
   {
     public:
+      /// @brief The width of the camera's viewport rectangle.
       int width;
+      /// @brief The height of the camera's viewport rectangle.
       int height;
 
+      /// @brief Distance to the camera's near clipping plane.
       float near;
+      /// @brief Distance to the camera's far clipping plane.
       float far;
 
+      /// @brief The camera's view matrix.
       glm::mat4 view_matrix = glm::mat4(1.0f);
+      /// @brief The camera's projection matrix.
       glm::mat4 projection_matrix = glm::mat4(1.0f);
 
-      camera(const glm::vec3& position, int width, int height, float near, float far) : 
-        transform(position), 
-        width(width), 
-        height(height), 
-        near(near), 
-        far(far) {}
+      /// @param position is the world space position of the camera.
+      /// @param width is the width of the camera's viewport rectangle.
+      /// @param height is the height of the camera's viewport rectangle.
+      /// @param near is the distance to the camera's near clipping plane.
+      /// @param far is the distance to the camera's far clipping plane.
+      camera(const glm::vec3& position, int width, int height, float near, float far);
 
-      virtual void update_view_matrix()
-      {
-        view_matrix = glm::mat4(1.0f);
-        view_matrix = glm::rotate(view_matrix, glm::radians(-rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-        view_matrix = glm::rotate(view_matrix, glm::radians(-rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-        view_matrix = glm::rotate(view_matrix, glm::radians(-rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-        view_matrix = glm::scale(view_matrix, scale); 
-        view_matrix = glm::translate(view_matrix, -position);
-      }
-
+      /// @brief Updates `camera::view_matrix` using the camera's inherited `transform::position`, `transform::rotation`, and `transform::scale` data.
+      virtual void update_view_matrix();
+      /// @brief Pure virtual function to be implemented in `camera` derived classes.
       virtual void update_projection_matrix() = 0;
   };
 }

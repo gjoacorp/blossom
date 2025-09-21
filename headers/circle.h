@@ -10,6 +10,10 @@ namespace blossom
   class circle : public mesh
   {
     public:
+      /// @brief Approximates a unit circle by computing `iterations` equally-spaced points on the unit circle's circumference.
+      /// @param shader_program is an OpenGL handle (ID) of a program object obtained from [`glCreateProgram()`](https://docs.gl/gl4/glCreateProgram).
+      /// @param iterations is the number of equally-spaced points to use in the circle's approximation.
+      /// @throws std::invalid_argument if `iterations` is less than 3.
       circle(GLuint shader_program, std::size_t iterations)
       {
         if (iterations < 3)
