@@ -45,11 +45,17 @@ void mesh::draw(const camera* const cam) const
   glBindVertexArray(vao_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
 
-  if (indices_.size() > 0) 
+  if ( !indices_.empty() ) 
   { 
+
+    if ( indices_.size() > static_cast<size_t>(std::numeric_limits<GLsizei>::max()) )
+    {
+      throw std::runtime_error("ERROR: indices_.size() is too large to safely cast to GLsizei");
+    }
+
     glDrawElements(
         GL_TRIANGLES, 
-        indices_.size(), 
+        static_cast<GLsizei>( indices_.size() ),
         GL_UNSIGNED_INT, 
         nullptr ); 
   }

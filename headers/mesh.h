@@ -13,6 +13,7 @@ namespace blossom
   {
     public:
       /// @brief Draws the mesh using the shader program `mesh::shader_program_` and with polygon mode `mesh::polygon_mode_`.
+      /// @throws std::runtime_error if `mesh::indices_.size()` is too large to safely cast to `GLsizei`.
       void draw(const camera* camera) const;
 
       mesh() = default;
