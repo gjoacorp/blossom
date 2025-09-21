@@ -8,29 +8,57 @@ using blossom::mesh;
 void mesh::draw(const camera* const cam) const
 {
   glUseProgram(shader_program_);
-  glUniformMatrix4fv(model_uniform_location_, 1, GL_FALSE, glm::value_ptr(calc_model_matrix()));
+  glUniformMatrix4fv(
+      model_uniform_location_, 
+      1, 
+      GL_FALSE, 
+      glm::value_ptr( calc_model_matrix() ) );
 
   if (cam != nullptr)
   {
-    glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(cam->view_matrix));
-    glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(cam->projection_matrix));
+    glUniformMatrix4fv(
+        view_uniform_location_, 
+        1, 
+        GL_FALSE, 
+        glm::value_ptr(cam->view_matrix) );
+    
+    glUniformMatrix4fv(
+        projection_uniform_location_, 
+        1, 
+        GL_FALSE, 
+        glm::value_ptr(cam->projection_matrix) );
   }
   else
   {
-    glUniformMatrix4fv(view_uniform_location_, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
-    glUniformMatrix4fv(projection_uniform_location_, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+    glUniformMatrix4fv(
+        view_uniform_location_, 
+        1, 
+        GL_FALSE, 
+        glm::value_ptr( glm::mat4(1.0f) ) );
+
+    glUniformMatrix4fv(
+        projection_uniform_location_, 
+        1, 
+        GL_FALSE, 
+        glm::value_ptr( glm::mat4(1.0f) ) );
   }
   glBindVertexArray(vao_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
 
-
   if (indices_.size() > 0) 
   { 
-    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, nullptr); 
+    glDrawElements(
+        GL_TRIANGLES, 
+        indices_.size(), 
+        GL_UNSIGNED_INT, 
+        nullptr ); 
   }
   else 
   { 
-    glDrawArrays(GL_TRIANGLES, 0, (GLsizei)vertices_.size()); 
+    glDrawArrays(
+        GL_TRIANGLES, 
+        0, 
+        (GLsizei)vertices_.size() ); 
   }
 }
 
@@ -98,7 +126,14 @@ void mesh::init_buffers_()
         0);
   }
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), nullptr);
+  glVertexAttribPointer(
+      0, 
+      3, 
+      GL_FLOAT, 
+      GL_FALSE, 
+      sizeof(glm::vec3), 
+      nullptr );
+
   glEnableVertexAttribArray(0);
   glBindVertexArray(0);
 }
