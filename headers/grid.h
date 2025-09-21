@@ -10,6 +10,12 @@ namespace blossom
   class grid : public mesh
   {
     public:
+      /// @brief Constructs a grid on the \f$xz\f$ plane. The grid's top left corner is taken to be its origin.
+      /// @note The grid's origin is taken to be its top left corner. Furthermore, the \f$x\f$ width of the grid is `iterations * x_spacing` and the \f$z\f$ width of the grid is `iterations * z_spacing`.
+      /// @param shader_program The program object used during rendering.
+      /// @param iterations The number of grid squares to create in both the \f$x\f$ and \f$z\f$ directions.
+      /// @param x_spacing The width of the grid squares in the \f$x\f$ direction.
+      /// @param z_spacing The width of the grid squares in the \f$z\f$ direction.
       grid(GLuint shader_program, std::size_t iterations, float x_spacing, float z_spacing)
       {
         if ( x_spacing < 0.0f )
