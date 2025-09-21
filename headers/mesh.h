@@ -2,7 +2,7 @@
 #define BLOSSOM_MESH_H
 
 #include "transform.h"
-#include "orthographic_camera.h"
+#include "camera.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
