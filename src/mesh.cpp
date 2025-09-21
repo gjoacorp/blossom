@@ -81,13 +81,21 @@ void mesh::init_buffers_()
 
   glCreateBuffers(1, &vbo_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glNamedBufferStorage(vbo_, vertices_.size() * sizeof(glm::vec3), &vertices_[0], 0);
+  glNamedBufferStorage(
+      vbo_, 
+      static_cast<GLsizeiptr>( vertices_.size() * sizeof(glm::vec3) ), 
+      &vertices_[0], 
+      0);
 
   if (indices_.size() > 0)
   {
     glCreateBuffers(1, &ebo_);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-    glNamedBufferStorage(ebo_, indices_.size() * sizeof(GLuint), &indices_[0], 0);
+    glNamedBufferStorage(
+        ebo_, 
+        static_cast<GLsizeiptr>( indices_.size() * sizeof(GLuint) ), 
+        &indices_[0], 
+        0);
   }
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
