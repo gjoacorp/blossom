@@ -34,13 +34,13 @@ void mesh::draw(const camera* const cam) const
         view_uniform_location_, 
         1, 
         GL_FALSE, 
-        glm::value_ptr( glm::mat4(1.0f) ) );
+        glm::value_ptr( glm::mat4(1.0F) ) );
 
     glUniformMatrix4fv(
         projection_uniform_location_, 
         1, 
         GL_FALSE, 
-        glm::value_ptr( glm::mat4(1.0f) ) );
+        glm::value_ptr( glm::mat4(1.0F) ) );
   }
   glBindVertexArray(vao_);
   glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
