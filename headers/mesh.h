@@ -61,9 +61,9 @@ namespace blossom
       /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
       GLenum polygon_mode_ = GL_FILL;
 
-      GLuint model_uniform_location_ = 0;
-      GLuint view_uniform_location_ = 0;
-      GLuint projection_uniform_location_ = 0;
+      GLint model_uniform_location_ = 0;
+      GLint view_uniform_location_ = 0;
+      GLint projection_uniform_location_ = 0;
 
       /**
        * @brief Initialises the mesh's OpenGL resources and sets up vertex array, vertex buffer, and element buffer objects.
