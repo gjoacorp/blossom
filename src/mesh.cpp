@@ -47,7 +47,7 @@ void mesh::draw(const camera* const cam) const
 
   if ( !indices_.empty() ) 
   { 
-
+    // this check is probably irrelevant
     if ( indices_.size() > static_cast<size_t>(std::numeric_limits<GLsizei>::max()) )
     {
       throw std::runtime_error("ERROR: indices_.size() is too large to safely cast to GLsizei");
@@ -72,6 +72,14 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program) :
   vertices_(vertices), 
   shader_program_(shader_program) 
   {
+    if (glfwGetCurrentContext() == nullptr)
+    {
+      throw std::runtime_error("ERROR: mesh construction failed. There is no current OpenGL context.");
+    }
+    if ( glIsProgram(shader_program) == GL_FALSE )
+    {
+      throw std::invalid_argument("ERROR: shader_program must be a valid program object.");
+    }
     update_uniform_locations_();
     init_buffers_();
   }
@@ -81,6 +89,14 @@ mesh::mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& in
   indices_(indices),
   shader_program_(shader_program)
   {
+    if (glfwGetCurrentContext() == nullptr)
+    {
+      throw std::runtime_error("ERROR: mesh construction failed. There is no current OpenGL context.");
+    }
+    if ( glIsProgram(shader_program) == GL_FALSE )
+    {
+      throw std::invalid_argument("ERROR: shader_program must be a valid program object.");
+    }
     update_uniform_locations_();
     init_buffers_();
   }
@@ -105,11 +121,6 @@ mesh::~mesh()
 
 void mesh::init_buffers_()
 {
-  if (glfwGetCurrentContext() == nullptr)
-  {
-    throw std::runtime_error("ERROR: Cannot initialise mesh without current GL context.");
-  }
-
   glCreateVertexArrays(1, &vao_);
   glBindVertexArray(vao_);
 
