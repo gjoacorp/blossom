@@ -2,7 +2,7 @@
 #define BLOSSOM_MESH_H
 
 #include "transform.h"
-#include "orthographic_camera.h"
+#include "camera.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
@@ -13,7 +13,8 @@ namespace blossom
   {
     public:
       /// @brief Draws the mesh using the shader program `mesh::shader_program_` and with polygon mode `mesh::polygon_mode_`.
-      void draw(const camera* const camera) const;
+      /// @throws std::runtime_error if `mesh::indices_.size()` is too large to safely cast to `GLsizei`.
+      void draw(const camera* camera) const;
 
       mesh() = default;
       /**
@@ -60,9 +61,9 @@ namespace blossom
       /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
       GLenum polygon_mode_ = GL_FILL;
 
-      GLuint model_uniform_location_ = 0;
-      GLuint view_uniform_location_ = 0;
-      GLuint projection_uniform_location_ = 0;
+      GLint model_uniform_location_ = 0;
+      GLint view_uniform_location_ = 0;
+      GLint projection_uniform_location_ = 0;
 
       /**
        * @brief Initialises the mesh's OpenGL resources and sets up vertex array, vertex buffer, and element buffer objects.
