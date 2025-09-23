@@ -159,7 +159,7 @@ void mesh::set_polygon_mode(GLenum polygon_mode)
 {
   if ( polygon_mode != GL_FILL && polygon_mode != GL_LINE && polygon_mode != GL_POINT )
   {
-    throw std::runtime_error("ERROR: Invalid polygon mode. Must use one of: GL_FILL, GL_LINE, GL_POINT.");
+    throw std::invalid_argument("ERROR: Invalid polygon mode. Must use one of: GL_FILL, GL_LINE, GL_POINT.");
   }
   polygon_mode_ = polygon_mode;
 }
