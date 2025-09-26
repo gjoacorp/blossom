@@ -16,11 +16,14 @@ namespace blossom
       /// @throws std::runtime_error if `mesh::indices_.size()` is too large to safely cast to `GLsizei`.
       void draw(const camera* camera) const;
 
+      /// @brief Defaulted constructor.
       mesh() = default;
       /**
        * @brief Constructs a mesh using a list of vertices and a shader program.
        * @param vertices is the list of vertices to be passed to the VAO.
        * @param shader_program is the ID of the shader program to use when `mesh::draw()` is called.
+       * @throws std::runtime_error if there is no current OpenGL context.
+       * @throws std::invalid_argument if `shader_program` is not a valid program object.
        */
       mesh(const std::vector<glm::vec3>& vertices, GLuint shader_program);
       /**
@@ -28,6 +31,8 @@ namespace blossom
        * @param vertices is the list of vertices to be passed to the VAO.
        * @param indices is the list of indices to be passed to the EBO.
        * @param shader_program is the ID of the shader program to use when `mesh::draw()` is called.
+       * @throws std::runtime_error if there is no current OpenGL context.
+       * @throws std::invalid_argument if `shader_program` is not a valid program object.
        */
       mesh(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices, GLuint shader_program);
       /// @brief Deletes the vertex array object and buffers referenced in `mesh::vao_`, `mesh::vbo_`, and `mesh::ebo_`.
@@ -36,7 +41,7 @@ namespace blossom
       /** 
        * @brief Sets `mesh::polygon_mode_`.
        * @param polygon_mode must be one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
-       * @throws std::runtime_error if `polygon_mode` is not one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
+       * @throws std::invalid_argument if `polygon_mode` is not one of: `GL_LINE`, `GL_POINT`, `GL_FILL`.
        */
       void set_polygon_mode(GLenum polygon_mode);
 
@@ -58,7 +63,7 @@ namespace blossom
       GLuint vbo_            = 0;
       /// Element buffer object name.
       GLuint ebo_            = 0;
-      /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`.
+      /// @brief This is the mode passed to [`glPolygonMode()`](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glPolygonMode.xhtml) in `mesh::draw()`. Its default value is `GL_FILL`.
       GLenum polygon_mode_ = GL_FILL;
 
       GLint model_uniform_location_ = 0;
@@ -70,7 +75,6 @@ namespace blossom
        *
        * The IDs for the VAO, VBO, and EBO are stored in `mesh::vao_`, `mesh::vbo_`, and `mesh::ebo_` respectively.
        *
-       * @throws std::runtime_error if there is no active OpenGL context when called.
        */
       void init_buffers_();
       void update_uniform_locations_();
