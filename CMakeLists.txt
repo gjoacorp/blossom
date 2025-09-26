@@ -32,3 +32,24 @@ add_example(waves)
 add_example(fullscreen_rectangle)
 add_example(rectangle_camera)
 add_example(view)
+
+find_package(GTest REQUIRED)
+set(TEST_SOURCES
+    tests/mesh_test.cpp
+)
+
+add_executable(run_tests ${SOURCES} ${TEST_SOURCES})
+
+target_include_directories(run_tests PRIVATE include)
+
+target_link_libraries(run_tests
+    PRIVATE
+        OpenGL::GL
+        glfw
+        GLEW::GLEW
+        GTest::gtest
+        GTest::gtest_main
+)
+
+enable_testing()
+add_test(NAME mesh_tests COMMAND run_tests)
