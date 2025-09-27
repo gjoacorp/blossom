@@ -56,8 +56,8 @@ void shader::init_()
     throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
   }
 
-  std::string vertex_shader_source_string = read_source_(vert_path_).c_str();
-  std::string fragment_shader_source_string = read_source_(frag_path_).c_str();
+  std::string vertex_shader_source_string = read_source_(vert_path_);
+  std::string fragment_shader_source_string = read_source_(frag_path_);
 
   const char* vertex_shader_source = vertex_shader_source_string.c_str();
   const char* fragment_shader_source = fragment_shader_source_string.c_str();
