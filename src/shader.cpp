@@ -12,7 +12,7 @@ shader::shader(const char* frag_path, const char* vert_path) :
   init_();
 }
 
-std::string shader::read_source_(const char* path)
+auto shader::read_source_(const char* path) -> std::string
 {
   std::string file_content;
   std::ifstream file(path, std::ios::in);
