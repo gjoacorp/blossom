@@ -65,7 +65,7 @@ void shader::init_()
   const GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
   const GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 
-  glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
+  glShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
   glCompileShader(vertex_shader);
   
   GLint vertex_shader_compilation_status;
@@ -77,7 +77,7 @@ void shader::init_()
     print_log_(vertex_shader);
   }
 
-  glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
+  glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
   glCompileShader(fragment_shader);
 
   GLint fragment_shader_compilation_status;
