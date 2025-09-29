@@ -62,41 +62,41 @@ void shader::init_()
   const char* vertex_shader_source = vertex_shader_source_string.c_str();
   const char* fragment_shader_source = fragment_shader_source_string.c_str();
 
-  const GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  const GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  const GLuint VERTEX_SHADER = glCreateShader(GL_VERTEX_SHADER);
+  const GLuint FRAGMENT_SHADER = glCreateShader(GL_FRAGMENT_SHADER);
 
-  glShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
-  glCompileShader(vertex_shader);
+  glShaderSource(VERTEX_SHADER, 1, &vertex_shader_source, nullptr);
+  glCompileShader(VERTEX_SHADER);
   
   GLint vertex_shader_compilation_status;
-  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &vertex_shader_compilation_status);
+  glGetShaderiv(VERTEX_SHADER, GL_COMPILE_STATUS, &vertex_shader_compilation_status);
 
   if (vertex_shader_compilation_status == GL_FALSE) 
   {
     std::cout << "ERROR: Vertex shader compilation failed." << "\n";
-    print_log_(vertex_shader);
+    print_log_(VERTEX_SHADER);
   }
 
-  glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
-  glCompileShader(fragment_shader);
+  glShaderSource(FRAGMENT_SHADER, 1, &fragment_shader_source, nullptr);
+  glCompileShader(FRAGMENT_SHADER);
 
   GLint fragment_shader_compilation_status;
-  glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &fragment_shader_compilation_status);
+  glGetShaderiv(FRAGMENT_SHADER, GL_COMPILE_STATUS, &fragment_shader_compilation_status);
 
   if (fragment_shader_compilation_status == GL_FALSE) 
   {
     std::cout << "ERROR: Fragment shader compilation failed." << "\n";
-    print_log_(fragment_shader);
+    print_log_(FRAGMENT_SHADER);
   }
 
   GLuint shader_program = glCreateProgram();
 
-  glAttachShader(shader_program, vertex_shader);
-  glAttachShader(shader_program, fragment_shader);
+  glAttachShader(shader_program, VERTEX_SHADER);
+  glAttachShader(shader_program, FRAGMENT_SHADER);
   glLinkProgram(shader_program);
 
-  glDeleteShader(vertex_shader);
-  glDeleteShader(fragment_shader);
+  glDeleteShader(VERTEX_SHADER);
+  glDeleteShader(FRAGMENT_SHADER);
 
   program_id = shader_program;
 }
