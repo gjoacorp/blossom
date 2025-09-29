@@ -51,7 +51,7 @@ void shader::print_log_(GLuint shader) const
 
 void shader::init_() 
 {
-  if (!glfwGetCurrentContext())
+  if (glfwGetCurrentContext() == nullptr)
   {
     throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
   }
