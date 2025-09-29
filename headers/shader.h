@@ -2,9 +2,7 @@
 #define BLOSSOM_SHADER_H
 
 #include <string>
-#include <fstream>
 #include <GL/glew.h>
-#include <iostream>
 #include <gtest/gtest_prod.h>
 
 namespace blossom 

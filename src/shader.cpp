@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include <stdexcept>
+#include <fstream>
+#include <iostream>
 
 using blossom::shader;
 
