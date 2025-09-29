@@ -34,7 +34,7 @@ auto shader::read_source_(const char* path) -> std::string
   return file_content;
 }
 
-void shader::print_log_(GLuint shader) const 
+void shader::print_log_(GLuint shader)
 {
   int length = 0;
   int char_written = 0;
