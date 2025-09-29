@@ -14,7 +14,7 @@ shader::shader(const char* frag_path, const char* vert_path) :
   init_();
 }
 
-auto shader::read_source_(const char* path) -> std::string
+auto shader::read_source(const char* path) -> std::string
 {
   std::string file_content;
   std::ifstream file(path, std::ios::in);
@@ -34,7 +34,7 @@ auto shader::read_source_(const char* path) -> std::string
   return file_content;
 }
 
-void shader::print_log_(GLuint shader)
+void shader::print_log(GLuint shader)
 {
   int length = 0;
   int char_written = 0;
@@ -58,8 +58,8 @@ void shader::init_()
     throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
   }
 
-  std::string vertex_shader_source_string = read_source_(vert_path_);
-  std::string fragment_shader_source_string = read_source_(frag_path_);
+  std::string vertex_shader_source_string = read_source(vert_path_);
+  std::string fragment_shader_source_string = read_source(frag_path_);
 
   const char* vertex_shader_source = vertex_shader_source_string.c_str();
   const char* fragment_shader_source = fragment_shader_source_string.c_str();
@@ -76,7 +76,7 @@ void shader::init_()
   if (vertex_shader_compilation_status == GL_FALSE) 
   {
     std::cout << "ERROR: Vertex shader compilation failed." << "\n";
-    print_log_(VERTEX_SHADER);
+    print_log(VERTEX_SHADER);
   }
 
   glShaderSource(FRAGMENT_SHADER, 1, &fragment_shader_source, nullptr);
@@ -88,7 +88,7 @@ void shader::init_()
   if (fragment_shader_compilation_status == GL_FALSE) 
   {
     std::cout << "ERROR: Fragment shader compilation failed." << "\n";
-    print_log_(FRAGMENT_SHADER);
+    print_log(FRAGMENT_SHADER);
   }
 
   GLuint shader_program = glCreateProgram();
