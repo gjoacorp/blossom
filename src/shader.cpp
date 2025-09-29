@@ -44,7 +44,7 @@ void shader::print_log_(GLuint shader) const
   {
     log = (char*)malloc(length);
     glGetShaderInfoLog(shader, length, &char_written, log);
-    std::cout << "Shader Log: " << log << std::endl;
+    std::cout << "Shader Log: " << log << "\n";
     free(log);
   }
 }
@@ -73,7 +73,7 @@ void shader::init_()
 
   if (vertex_shader_compilation_status == GL_FALSE) 
   {
-    std::cout << "ERROR: Vertex shader compilation failed." << std::endl;
+    std::cout << "ERROR: Vertex shader compilation failed." << "\n";
     print_log_(vertex_shader);
   }
 
@@ -85,7 +85,7 @@ void shader::init_()
 
   if (fragment_shader_compilation_status == GL_FALSE) 
   {
-    std::cout << "ERROR: Fragment shader compilation failed." << std::endl;
+    std::cout << "ERROR: Fragment shader compilation failed." << "\n";
     print_log_(fragment_shader);
   }
 
