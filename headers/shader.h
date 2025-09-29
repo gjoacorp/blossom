@@ -23,7 +23,7 @@ namespace blossom
       /// @brief Reads the source located at `path` into the output.
       /// @return a `std::string` containing the source.
       /// @throws std::runtime_error if the source located at `path` cannot be found.
-      std::string read_source_(const char* path);
+      auto read_source_(const char* path) -> std::string;
       /// @brief Retrieves and prints the info log for the shader object `shader`.
       /// Used primarily for debugging shader compilation errors and warnings.
       /// @param shader A shader object returned from [`glCreateShader()`](https://docs.gl/gl4/glCreateShader) or otherwise.
