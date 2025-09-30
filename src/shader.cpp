@@ -20,7 +20,7 @@ auto shader::read_source(const char* path) -> std::string
   std::ifstream file(path, std::ios::in);
   std::string line;
 
-  while (std::getline(file, line)) 
+  while ( std::getline(file, line) ) 
   {
     file_content.append(line + '\n');
   }
@@ -36,12 +36,12 @@ auto shader::read_source(const char* path) -> std::string
 
 void shader::print_log(GLuint shader)
 {
-  if (glfwGetCurrentContext() == nullptr)
+  if ( glfwGetCurrentContext() == nullptr )
   {
     throw std::runtime_error("ERROR: Cannot print shader log. There is no current OpenGL context.");
   }
 
-  if (glIsShader(shader) == GL_FALSE)
+  if ( glIsShader(shader) == GL_FALSE )
   {
     throw std::runtime_error("ERROR: Unable to print the shader log of an invalid shader object.");
   }
@@ -52,7 +52,7 @@ void shader::print_log(GLuint shader)
 
   glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
-  if (length > 0) 
+  if ( length > 0 ) 
   {
     log = (char*)malloc(length);
     glGetShaderInfoLog(shader, length, &char_written, log);
@@ -63,7 +63,7 @@ void shader::print_log(GLuint shader)
 
 void shader::init_() 
 {
-  if (glfwGetCurrentContext() == nullptr)
+  if ( glfwGetCurrentContext() == nullptr )
   {
     throw std::runtime_error("ERROR: Cannot initialise shader (there is no current OpenGL context.) Ensure that a GL context is active before shader initialisation.");
   }
@@ -83,7 +83,7 @@ void shader::init_()
   GLint vertex_shader_compilation_status;
   glGetShaderiv(VERTEX_SHADER, GL_COMPILE_STATUS, &vertex_shader_compilation_status);
 
-  if (vertex_shader_compilation_status == GL_FALSE) 
+  if ( vertex_shader_compilation_status == GL_FALSE ) 
   {
     std::cout << "ERROR: Vertex shader compilation failed." << "\n";
     print_log(VERTEX_SHADER);
@@ -95,7 +95,7 @@ void shader::init_()
   GLint fragment_shader_compilation_status;
   glGetShaderiv(FRAGMENT_SHADER, GL_COMPILE_STATUS, &fragment_shader_compilation_status);
 
-  if (fragment_shader_compilation_status == GL_FALSE) 
+  if ( fragment_shader_compilation_status == GL_FALSE ) 
   {
     std::cout << "ERROR: Fragment shader compilation failed." << "\n";
     print_log(FRAGMENT_SHADER);
