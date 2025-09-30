@@ -27,6 +27,9 @@ namespace blossom
       /// Used primarily for debugging shader compilation errors and warnings.
       /// @param shader A shader object returned from [`glCreateShader()`](https://docs.gl/gl4/glCreateShader) or otherwise.
 
+      /// @brief Prints the shader log of the shader object with name `shader`.
+      /// @throws std::runtime_error if there is no current OpenGL context.
+      /// @throws std::runtime_error if `shader` is not the name of a valid shader object.
       static void print_log(GLuint shader);
       /// @brief The OpenGL handle (ID) of the program object created in `shader::init_()`.
       GLuint program_id;
