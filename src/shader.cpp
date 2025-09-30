@@ -36,6 +36,16 @@ auto shader::read_source(const char* path) -> std::string
 
 void shader::print_log(GLuint shader)
 {
+  if (glfwGetCurrentContext() == nullptr)
+  {
+    throw std::runtime_error("ERROR: Cannot print shader log. There is no current OpenGL context.");
+  }
+
+  if (glIsShader(shader) == GL_FALSE)
+  {
+    throw std::runtime_error("ERROR: Unable to print the shader log of an invalid shader object.");
+  }
+
   int length = 0;
   int char_written = 0;
   char* log;
