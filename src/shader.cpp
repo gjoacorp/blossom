@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 using blossom::shader;
 
@@ -46,18 +47,19 @@ void shader::print_log(GLuint shader)
     throw std::runtime_error("ERROR: Unable to print the shader log of an invalid shader object.");
   }
 
-  int length = 0;
-  int char_written = 0;
-  char* log;
+  GLsizei max_length = 0;
 
-  glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+  glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &max_length);
 
-  if ( length > 0 ) 
+  if ( max_length > 0 ) 
   {
-    log = (char*)malloc(length);
-    glGetShaderInfoLog(shader, length, &char_written, log);
-    std::cout << "Shader Log: " << log << "\n";
-    free(log);
+    std::vector<GLchar> info_log(max_length);
+    GLsizei length = 0;
+
+    glGetShaderInfoLog(shader, max_length, &length, info_log.data());
+
+    const std::string INFO_LOG_STR(info_log.begin(), info_log.begin() + length);
+    std::cout << "Shader Log: " << INFO_LOG_STR << "\n";
   }
 }
 
