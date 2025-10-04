@@ -7,7 +7,7 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>
 
-#include <exception>
+#include <stdexcept>
 
 namespace blossom
 {
