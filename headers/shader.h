@@ -2,9 +2,7 @@
 #define BLOSSOM_SHADER_H
 
 #include <string>
-#include <fstream>
 #include <GL/glew.h>
-#include <iostream>
 #include <gtest/gtest_prod.h>
 
 namespace blossom 
@@ -20,16 +18,19 @@ namespace blossom
       /// @brief Compiles and links the vertex and fragment shader sources into an OpenGL program object. The OpenGL handle (ID) of this program object is stored in `shader::program_id`.
       void init_();
 
+    public:
       /// @brief Reads the source located at `path` into the output.
       /// @return a `std::string` containing the source.
       /// @throws std::runtime_error if the source located at `path` cannot be found.
-      std::string read_source_(const char* path);
+      static auto read_source(const char* path) -> std::string;
       /// @brief Retrieves and prints the info log for the shader object `shader`.
       /// Used primarily for debugging shader compilation errors and warnings.
       /// @param shader A shader object returned from [`glCreateShader()`](https://docs.gl/gl4/glCreateShader) or otherwise.
-      void print_log_(GLuint shader) const;
 
-    public:
+      /// @brief Prints the shader log of the shader object with name `shader`.
+      /// @throws std::runtime_error if there is no current OpenGL context.
+      /// @throws std::runtime_error if `shader` is not the name of a valid shader object.
+      static void print_log(GLuint shader);
       /// @brief The OpenGL handle (ID) of the program object created in `shader::init_()`.
       GLuint program_id;
 

@@ -3,7 +3,7 @@
 
 #include "mesh.h"
 #include "shader.h"
-#include <exception>
+#include <stdexcept>
 
 namespace blossom
 {

@@ -36,6 +36,7 @@ add_example(view)
 find_package(GTest REQUIRED)
 set(TEST_SOURCES
     tests/mesh_test.cpp
+    tests/shader_test.cpp
 )
 
 add_executable(run_tests ${SOURCES} ${TEST_SOURCES})
@@ -52,4 +53,4 @@ target_link_libraries(run_tests
 )
 
 enable_testing()
-add_test(NAME mesh_tests COMMAND run_tests)
+gtest_discover_tests(run_tests)
