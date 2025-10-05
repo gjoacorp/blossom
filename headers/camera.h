@@ -21,9 +21,9 @@ namespace blossom
       float far;
 
       /// @brief The camera's view matrix.
-      glm::mat4 view_matrix = glm::mat4(1.0f);
+      glm::mat4 view_matrix = glm::mat4(1.0F);
       /// @brief The camera's projection matrix.
-      glm::mat4 projection_matrix = glm::mat4(1.0f);
+      glm::mat4 projection_matrix = glm::mat4(1.0F);
 
       /// @param position is the world space position of the camera.
       /// @param width is the width of the camera's viewport rectangle.
