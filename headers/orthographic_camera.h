@@ -15,7 +15,7 @@ namespace blossom
       /// @param height is the height of the camera's viewport rectangle.
       /// @param near is the distance to the camera's near clipping plane.
       /// @param far is the distance to the camera's far clipping plane.
-      orthographic_camera(const glm::vec3& position, int width, int height, float near, float far) :
+      orthographic_camera(const glm::vec3& position, uint16_t width, uint16_t height, float near, float far) :
         camera(position, width, height, near, far)
       {
         update_view_matrix();

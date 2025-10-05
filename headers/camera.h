@@ -11,9 +11,9 @@ namespace blossom
   {
     public:
       /// @brief The width of the camera's viewport rectangle.
-      int width;
+      uint16_t width;
       /// @brief The height of the camera's viewport rectangle.
-      int height;
+      uint16_t height;
 
       /// @brief Distance to the camera's near clipping plane.
       float near;
@@ -30,7 +30,7 @@ namespace blossom
       /// @param height is the height of the camera's viewport rectangle.
       /// @param near is the distance to the camera's near clipping plane.
       /// @param far is the distance to the camera's far clipping plane.
-      camera(const glm::vec3& position, int width, int height, float near, float far);
+      camera(const glm::vec3& position, uint16_t width, uint16_t height, float near, float far);
 
       /// @brief Updates `camera::view_matrix` using the camera's inherited `transform::position`, `transform::rotation`, and `transform::scale` data.
       virtual void update_view_matrix();

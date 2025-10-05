@@ -17,7 +17,7 @@ namespace blossom
       /// @param fov_y is the field of view angle in the \f$y\f$ direction (expressed in degrees.)
       /// @param near is the distance to the camera's near clipping plane.
       /// @param far is the distance to the camera's far clipping plane.
-      perspective_camera(const glm::vec3& position, int width, int height, float fov_y, float near, float far) :
+      perspective_camera(const glm::vec3& position, uint16_t width, uint16_t height, float fov_y, float near, float far) :
       camera(position, width, height, near, far),
       fov_y(fov_y)
       {
