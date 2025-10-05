@@ -2,7 +2,7 @@
 
 using blossom::camera;
 
-camera::camera(const glm::vec3& position, int width, int height, float near, float far) : 
+camera::camera(const glm::vec3& position, uint16_t width, uint16_t height, float near, float far) : 
   transform(position), 
   width(width), 
   height(height), 
