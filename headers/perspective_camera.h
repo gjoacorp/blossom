@@ -10,8 +10,6 @@ namespace blossom
     public:
       /// @brief Specifies the field of view angle in the \f$y\f$ direction. Expressed in degrees. 
       float fov_y; 
-      float near;
-      float far;
 
       /// @param position is the position of the camera in world space.
       /// @param width is the width of the camera's viewport rectangle.
