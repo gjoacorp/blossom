@@ -24,7 +24,7 @@ namespace blossom
 
       /// @brief Constructs a \f$4 \times 4\f$ projection matrix using [glm::ortho()](https://glm.g-truc.net/0.9.9/api/a00665.html#ga6615d8a9d39432e279c4575313ecb456).
       /// This matrix is stored in the inherited attribute `camera::projection_matrix`.
-      void update_projection_matrix()
+      void update_projection_matrix() override
       {
         projection_matrix = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), near, far);
       }
