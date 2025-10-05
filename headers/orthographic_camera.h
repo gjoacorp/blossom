@@ -26,7 +26,7 @@ namespace blossom
       /// This matrix is stored in the inherited attribute `camera::projection_matrix`.
       void update_projection_matrix() override
       {
-        projection_matrix = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), near, far);
+        projection_matrix = glm::ortho(0.0F, static_cast<float>(width), 0.0F, static_cast<float>(height), near, far);
       }
   };
 }
