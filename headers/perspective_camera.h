@@ -32,8 +32,8 @@ namespace blossom
       /// This matrix is stored in the inherited attribute `camera::projection_matrix`.
       void update_projection_matrix() override
       {
-        const float aspect = static_cast<float>(width) / static_cast<float>(height);
-        projection_matrix = glm::perspective(glm::radians(fov_y), aspect, near, far);
+        const float ASPECT = static_cast<float>(width) / static_cast<float>(height);
+        projection_matrix = glm::perspective(glm::radians(fov_y), ASPECT, near, far);
       }
   };
 }
