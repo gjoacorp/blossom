@@ -9,7 +9,7 @@ struct transform_c
   glm::vec3 rotation = { 0.0F, 0.0F, 0.0F };
   glm::vec3 scale    = { 1.0F, 1.0F, 1.0F };
 
-  glm::mat4 transform_matrix = glm::mat4(1.0F);
+  glm::mat4 matrix = glm::mat4(1.0F);
 };
 
 #endif 
