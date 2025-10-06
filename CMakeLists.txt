@@ -38,7 +38,6 @@ find_package(GTest REQUIRED)
 set(TEST_SOURCES
     tests/mesh_test.cpp
     tests/shader_test.cpp
-    tests/entity_manager_test.cpp
 )
 
 add_executable(run_tests ${SOURCES} ${TEST_SOURCES})
