@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(blossom)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES src/window.cpp src/shader.cpp src/camera.cpp src/mesh.cpp)
@@ -37,6 +38,7 @@ find_package(GTest REQUIRED)
 set(TEST_SOURCES
     tests/mesh_test.cpp
     tests/shader_test.cpp
+    tests/entity_manager_test.cpp
 )
 
 add_executable(run_tests ${SOURCES} ${TEST_SOURCES})
