@@ -8,7 +8,7 @@
 struct mesh_c
 {
   std::vector<glm::vec3> vertices;
-  std::vector<glm::vec3> indices;
+  std::vector<GLuint> indices;
 
   GLuint shader_program = 0;
 

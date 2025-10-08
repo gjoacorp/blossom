@@ -29,6 +29,7 @@ namespace blossom
         auto mesh_view = registry.view<transform_c, mesh_c>();
         for ( auto [entity, transform, mesh] : mesh_view.each() )
         {
+          draw_(mesh, transform, view_matrix, projection_matrix);
         }
       }
     private:
