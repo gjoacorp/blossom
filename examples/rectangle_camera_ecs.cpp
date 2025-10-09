@@ -6,7 +6,7 @@
 #include "../headers/systems/mesh_system.h"
 #include "../headers/systems/render_system.h"
 #include "../headers/factories/orthographic_camera_factory.h"
-#include "../headers/factories/mesh_factory.h"
+#include "../headers/factories/rectangle_factory.h"
 
 constexpr unsigned int WINDOW_WIDTH  = 1920;
 constexpr unsigned int WINDOW_HEIGHT = 1080;
@@ -21,32 +21,16 @@ auto main() -> int
 
   blossom::shader rectangle_shader {"shaders/default.frag", "shaders/default.vert"};
 
-  std::vector<glm::vec3> rectangle_vertices = 
-  {
-    glm::vec3{ 1.0F,  1.0F, 0.0F}, 
-    glm::vec3{-1.0F,  1.0F, 0.0F}, 
-    glm::vec3{-1.0F, -1.0F, 0.0F},
-    glm::vec3{ 1.0F, -1.0F, 0.0F} 
-  };
-
-  std::vector<GLuint> rectangle_indices = 
-  {
-    0, 1, 2, 
-    0, 2, 3 
-  };
-
   entt::registry registry;
 
   constexpr glm::vec3 RECTANGLE_POSITION = { 500.0F, 500.0F, 0.0F };
-  constexpr glm::vec3 RECTANGLE_SCALE    = { 200.0F, 100.0F, 1.0F };
+  constexpr glm::vec2 RECTANGLE_SCALE    = { 200.0F, 100.0F };
 
-  blossom::factory::mesh{registry}
-    .with_position (RECTANGLE_POSITION)
-    .with_scale    (RECTANGLE_SCALE)
-    .with_vertices (rectangle_vertices)
-    .with_indices  (rectangle_indices)
-    .with_shader_program (rectangle_shader.program_id)
-    .build();
+  blossom::factory::rectangle(
+      registry, 
+      RECTANGLE_POSITION, 
+      RECTANGLE_SCALE,
+      rectangle_shader.program_id);
 
   blossom::factory::orthographic_camera{registry}
     .with_width  (WINDOW_WIDTH)
