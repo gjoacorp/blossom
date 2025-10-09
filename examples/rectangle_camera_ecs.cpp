@@ -1,13 +1,6 @@
 #include "../headers/window.h"
 #include "../headers/shader.h"
-#include <glm/fwd.hpp>
-#include <vector>
-#include <entt/entt.hpp>
-#include <glm/glm.hpp>
 
-#include "../headers/components/camera_c.h"
-#include "../headers/components/transform_c.h"
-#include "../headers/components/mesh_c.h"
 #include "../headers/systems/camera_system.h"
 #include "../headers/systems/transform_system.h"
 #include "../headers/systems/mesh_system.h"
@@ -15,15 +8,15 @@
 #include "../headers/factories/orthographic_camera_factory.h"
 #include "../headers/factories/mesh_factory.h"
 
-const unsigned int WINDOW_WIDTH = 1920;
-const unsigned int WINDOW_HEIGHT = 1080;
-const char* WINDOW_TITLE = "Blossom Rectangle Camera ECS Example";
+constexpr unsigned int WINDOW_WIDTH  = 1920;
+constexpr unsigned int WINDOW_HEIGHT = 1080;
+const char* window_title = "Blossom Rectangle Camera ECS Example";
 
 const std::array<GLfloat,4> CLEAR_COLOR = { 0.0F, 0.0F, 0.0F, 1.0F};
 
 auto main() -> int 
 {
-  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
   blossom::shader rectangle_shader {"shaders/default.frag", "shaders/default.vert"};
@@ -60,7 +53,7 @@ auto main() -> int
     .with_height (WINDOW_HEIGHT)
     .build();
 
-  while ( !glfwWindowShouldClose(window.window_ptr) )
+  while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
     blossom::transform_system::update(registry);
     blossom::camera_system::update(registry);
