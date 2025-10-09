@@ -1,3 +1,6 @@
+#ifndef BLOSSOM_MESH_FACTORY_H
+#define BLOSSOM_MESH_FACTORY_H
+
 #include <entt/entt.hpp>
 #include "../components/transform_c.h"
 #include "../components/mesh_c.h"
@@ -57,3 +60,5 @@ namespace blossom::factory
       mesh_c*         mesh_;
   };
 }
+
+#endif
