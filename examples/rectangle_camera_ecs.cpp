@@ -12,6 +12,7 @@
 #include "../headers/systems/transform_system.h"
 #include "../headers/systems/mesh_system.h"
 #include "../headers/systems/render_system.h"
+#include "../headers/factories/orthographic_camera_factory.h"
 
 const unsigned int WINDOW_WIDTH = 1920;
 const unsigned int WINDOW_HEIGHT = 1080;
@@ -54,18 +55,10 @@ auto main() -> int
   rectangle_mesh.indices  = rectangle_indices;
   rectangle_mesh.shader_program = rectangle_shader.program_id;
 
-  // Camera
-  auto camera_entity = registry.create();
-  registry.emplace<transform_c>(camera_entity);
-
-  auto &camera = registry.emplace<camera_c>(camera_entity);
-  camera.type = camera_type::ORTHOGRAPHIC;
-  camera.near = -1.0F;
-  camera.far  =  1.0F;
-  camera.width = WINDOW_WIDTH;
-  camera.height = WINDOW_HEIGHT;
-
-  blossom::mesh_system::init(registry);
+  blossom::factory::orthographic_camera{registry}
+    .with_width  (WINDOW_WIDTH)
+    .with_height (WINDOW_HEIGHT)
+    .build();
 
   while ( !glfwWindowShouldClose(window.window_ptr) )
   {
