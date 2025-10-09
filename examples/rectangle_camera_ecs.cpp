@@ -13,6 +13,7 @@
 #include "../headers/systems/mesh_system.h"
 #include "../headers/systems/render_system.h"
 #include "../headers/factories/orthographic_camera_factory.h"
+#include "../headers/factories/mesh_factory.h"
 
 const unsigned int WINDOW_WIDTH = 1920;
 const unsigned int WINDOW_HEIGHT = 1080;
@@ -43,17 +44,16 @@ auto main() -> int
 
   entt::registry registry;
 
-  // Rectangle
-  auto rectangle_entity = registry.create();
-  auto &rectangle_transform = registry.emplace<transform_c>(rectangle_entity);
-  auto &rectangle_mesh = registry.emplace<mesh_c>(rectangle_entity);
+  constexpr glm::vec3 RECTANGLE_POSITION = { 500.0F, 500.0F, 0.0F };
+  constexpr glm::vec3 RECTANGLE_SCALE    = { 200.0F, 100.0F, 1.0F };
 
-  rectangle_transform.position = {500.0f, 500.0f, 0.0f};
-  rectangle_transform.scale    = {200.0f, 100.0f, 1.0f};
-
-  rectangle_mesh.vertices = rectangle_vertices;
-  rectangle_mesh.indices  = rectangle_indices;
-  rectangle_mesh.shader_program = rectangle_shader.program_id;
+  blossom::factory::mesh{registry}
+    .with_position (RECTANGLE_POSITION)
+    .with_scale    (RECTANGLE_SCALE)
+    .with_vertices (rectangle_vertices)
+    .with_indices  (rectangle_indices)
+    .with_shader_program (rectangle_shader.program_id)
+    .build();
 
   blossom::factory::orthographic_camera{registry}
     .with_width  (WINDOW_WIDTH)
