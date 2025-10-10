@@ -33,6 +33,7 @@ add_example(waves)
 add_example(fullscreen_rectangle)
 add_example(rectangle_camera)
 add_example(rectangle_camera_ecs)
+add_example(triangle_ecs)
 add_example(view)
 
 find_package(GTest REQUIRED)
