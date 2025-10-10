@@ -1,9 +1,6 @@
 #include "../headers/window.h"
 #include "../headers/shader.h"
 
-#include "../headers/systems/camera_system.h"
-#include "../headers/systems/transform_system.h"
-#include "../headers/systems/mesh_system.h"
 #include "../headers/systems/render_system.h"
 #include "../headers/factories/orthographic_camera_factory.h"
 #include "../headers/factories/rectangle_factory.h"
@@ -39,10 +36,6 @@ auto main() -> int
 
   while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
-    blossom::transform_system::update(registry);
-    blossom::camera_system::update(registry);
-    blossom::mesh_system::update(registry);
-
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
     blossom::render_system::update(registry);
     glfwSwapBuffers(window.window_ptr);
