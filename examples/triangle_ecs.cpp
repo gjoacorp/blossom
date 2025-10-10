@@ -1,7 +1,5 @@
 #include "../headers/shader.h"
 #include "../headers/window.h"
-#include "../headers/systems/camera_system.h"
-#include "../headers/systems/transform_system.h"
 #include "../headers/systems/mesh_system.h"
 #include "../headers/systems/render_system.h"
 #include "../headers/factories/orthographic_camera_factory.h"
