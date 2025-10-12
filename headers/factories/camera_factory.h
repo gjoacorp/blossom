@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_ORTHOGRAPHIC_CAMERA_FACTORY_H
-#define BLOSSOM_ORTHOGRAPHIC_CAMERA_FACTORY_H
+#ifndef BLOSSOM_CAMERA_FACTORY_H
+#define BLOSSOM_CAMERA_FACTORY_H
 
 #include <entt/entt.hpp>
 #include "../components/transform_c.h"
@@ -7,10 +7,10 @@
 
 namespace blossom::factory
 {
-  class orthographic_camera
+  class camera
   {
     public:
-      explicit orthographic_camera(entt::registry& registry) 
+      explicit camera(entt::registry& registry) 
         : registry_(registry)
       {
         entity_    =  registry_.create();
@@ -20,15 +20,21 @@ namespace blossom::factory
         camera_->type = camera_type::ORTHOGRAPHIC;
       }
 
-      auto with_width(const uint16_t width) -> orthographic_camera&
+      auto with_width(const uint16_t width) -> camera&
       {
         width_ = width;
         return *this;
       }
 
-      auto with_height(const uint16_t height) -> orthographic_camera&
+      auto with_height(const uint16_t height) -> camera&
       {
         height_ = height;
+        return *this;
+      }
+
+      auto with_fov_y(float fov_y) -> camera&
+      {
+        fov_y_ = fov_y;
         return *this;
       }
 
@@ -38,20 +44,24 @@ namespace blossom::factory
         camera_->height = height_;
         camera_->near   = near_;
         camera_->far    = far_;
+        camera_->fov_y  = fov_y_;
         return entity_;
       }
 
     private:
       static constexpr uint16_t DEFAULT_WIDTH  = 800;
       static constexpr uint16_t DEFAULT_HEIGHT = 600;
-      static constexpr float DEFAULT_NEAR =   0.00F;
-      static constexpr float DEFAULT_FAR  = 100.00F;
+
+      static constexpr float DEFAULT_NEAR   =   0.00F;
+      static constexpr float DEFAULT_FAR    = 100.00F;
+      static constexpr float DEFAULT_FOV_Y  =  90.00F;
 
       uint16_t width_  = DEFAULT_WIDTH;
       uint16_t height_ = DEFAULT_HEIGHT;
 
-      float near_ = DEFAULT_NEAR;
-      float far_  = DEFAULT_FAR;
+      float near_  = DEFAULT_NEAR;
+      float far_   = DEFAULT_FAR;
+      float fov_y_ = DEFAULT_FOV_Y;
 
       entt::registry& registry_;
       entt::entity    entity_;

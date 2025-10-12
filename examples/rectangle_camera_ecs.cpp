@@ -2,7 +2,7 @@
 #include "../headers/shader.h"
 
 #include "../headers/systems/render_system.h"
-#include "../headers/factories/orthographic_camera_factory.h"
+#include "../headers/factories/camera_factory.h"
 #include "../headers/factories/rectangle_factory.h"
 
 constexpr unsigned int WINDOW_WIDTH  = 1920;
@@ -29,7 +29,7 @@ auto main() -> int
       RECTANGLE_SCALE,
       rectangle_shader.program_id);
 
-  blossom::factory::orthographic_camera{registry}
+  blossom::factory::camera{registry}
     .with_width  (WINDOW_WIDTH)
     .with_height (WINDOW_HEIGHT)
     .build();
