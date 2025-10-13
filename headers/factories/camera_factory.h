@@ -16,8 +16,6 @@ namespace blossom::factory
         entity_    =  registry_.create();
         camera_    = &registry_.emplace<camera_c>(entity_);
         transform_ = &registry_.emplace<transform_c>(entity_);
-
-        camera_->type = camera_type::ORTHOGRAPHIC;
       }
 
       auto with_width(const uint16_t width) -> camera&
@@ -51,6 +49,7 @@ namespace blossom::factory
         camera_->near   = near_;
         camera_->far    = far_;
         camera_->fov_y  = fov_y_;
+        camera_->type   = type_;
 
         transform_->rotation = rotation_;
 
@@ -65,6 +64,8 @@ namespace blossom::factory
       static constexpr float DEFAULT_FAR    = 100.00F;
       static constexpr float DEFAULT_FOV_Y  =  90.00F;
 
+      static constexpr camera_type DEFAULT_TYPE = camera_type::ORTHOGRAPHIC;
+
       uint16_t width_  = DEFAULT_WIDTH;
       uint16_t height_ = DEFAULT_HEIGHT;
 
@@ -73,6 +74,8 @@ namespace blossom::factory
       float fov_y_ = DEFAULT_FOV_Y;
 
       glm::vec3 rotation_;
+
+      camera_type type_ = DEFAULT_TYPE;
 
       entt::registry& registry_;
       entt::entity    entity_;
