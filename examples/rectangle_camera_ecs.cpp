@@ -2,6 +2,9 @@
 #include "../headers/shader.h"
 
 #include "../headers/systems/render_system.h"
+#include "../headers/systems/mesh_system.h"
+#include "../headers/systems/camera_system.h"
+#include "../headers/systems/transform_system.h"
 #include "../headers/factories/camera_factory.h"
 #include "../headers/factories/rectangle_factory.h"
 
@@ -33,6 +36,10 @@ auto main() -> int
     .with_width  (WINDOW_WIDTH)
     .with_height (WINDOW_HEIGHT)
     .build();
+
+  blossom::camera_system::update(registry);
+  blossom::transform_system::update(registry);
+  blossom::mesh_system::init(registry);
 
   while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
