@@ -38,6 +38,12 @@ namespace blossom::factory
         return *this;
       }
 
+      auto with_rotation(const glm::vec3& rotation)
+      {
+        rotation_ = rotation;
+        return *this;
+      }
+
       auto build() -> entt::entity
       {
         camera_->width  = width_;
@@ -45,6 +51,9 @@ namespace blossom::factory
         camera_->near   = near_;
         camera_->far    = far_;
         camera_->fov_y  = fov_y_;
+
+        transform_->rotation = rotation_;
+
         return entity_;
       }
 
@@ -62,6 +71,8 @@ namespace blossom::factory
       float near_  = DEFAULT_NEAR;
       float far_   = DEFAULT_FAR;
       float fov_y_ = DEFAULT_FOV_Y;
+
+      glm::vec3 rotation_;
 
       entt::registry& registry_;
       entt::entity    entity_;
