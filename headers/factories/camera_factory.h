@@ -18,6 +18,12 @@ namespace blossom::factory
         transform_ = &registry_.emplace<transform_c>(entity_);
       }
 
+      auto with_type(const camera_type type)
+      {
+        type_ = type;
+        return *this;
+      }
+
       auto with_width(const uint16_t width) -> camera&
       {
         width_ = width;
