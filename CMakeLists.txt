@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCES src/window.cpp src/shader.cpp src/camera.cpp src/mesh.cpp)
+set(SOURCES src/window.cpp src/shader.cpp)
 
 add_custom_target(copy_shaders ALL
    COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -28,14 +28,13 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 
 add_example(multi_cube)
-add_example(waves_ecs)
-add_example(rectangle_camera_ecs)
-add_example(triangle_ecs)
+add_example(waves)
+add_example(rectangle_camera)
+add_example(triangle)
 add_example(view)
 
 find_package(GTest REQUIRED)
 set(TEST_SOURCES
-    tests/mesh_test.cpp
     tests/shader_test.cpp
 )
 
