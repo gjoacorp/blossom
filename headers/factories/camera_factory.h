@@ -42,6 +42,12 @@ namespace blossom::factory
         return *this;
       }
 
+      auto with_position(const glm::vec3& position)
+      {
+        position_ = position;
+        return *this;
+      }
+
       auto with_rotation(const glm::vec3& rotation)
       {
         rotation_ = rotation;
@@ -57,6 +63,7 @@ namespace blossom::factory
         camera_->fov_y  = fov_y_;
         camera_->type   = type_;
 
+        transform_->position = position_;
         transform_->rotation = rotation_;
 
         return entity_;
@@ -80,6 +87,7 @@ namespace blossom::factory
       float fov_y_ = DEFAULT_FOV_Y;
 
       glm::vec3 rotation_;
+      glm::vec3 position_;
 
       camera_type type_ = DEFAULT_TYPE;
 
