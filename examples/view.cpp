@@ -1,36 +1,61 @@
 #include "../headers/window.h"
-#include "../headers/perspective_camera.h"
-#include "../headers/sphere.h"
+#include "../headers/shader.h"
+#include "../headers/systems/render_system.h"
+#include "../headers/systems/transform_system.h"
+#include "../headers/systems/camera_system.h"
+#include "../headers/systems/mesh_system.h"
+#include "../headers/factories/camera_factory.h"
+#include "../headers/factories/sphere_factory.h"
 
 const int WINDOW_WIDTH = 1000;
 const int WINDOW_HEIGHT = 1000;
-const char* WINDOW_TITLE = "Blossom Mesh View Example";
+const char* window_title = "Blossom Mesh View Example";
 
-int main()
+auto main() -> int
 {
-    blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+    blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    const glm::vec3 camera_position = {0.0f, 1.0f, 1.0f};
-    blossom::perspective_camera camera { camera_position, WINDOW_WIDTH, WINDOW_HEIGHT, 90.0f, 0.1f, 200.0f };
-    camera.rotation.x = -45.0f;
-    camera.update_view_matrix();
+    entt::registry registry;
 
-    blossom::shader shader("shaders/default.frag", "shaders/default.vert");
+    constexpr glm::vec3 CAMERA_POSITION = { 0.0f, 1.0f, 1.0f };
+    constexpr glm::vec3 CAMERA_ROTATION = {-45.0F, 0.0F,  0.0F};
 
-    blossom::sphere mesh{ shader.program_id };
+    constexpr float CAMERA_FOV_Y = 90.0F;
 
-    while (!glfwWindowShouldClose(window.window_ptr))
+    blossom::factory::camera{registry}
+    .with_type(camera_type::PERSPECTIVE)
+       .with_width (WINDOW_WIDTH)
+       .with_height(WINDOW_HEIGHT)
+       .with_fov_y (CAMERA_FOV_Y)
+       .with_position(CAMERA_POSITION)
+       .with_rotation(CAMERA_ROTATION)
+       .build();
+
+    blossom::shader waves_shader("shaders/default.frag", "shaders/default.vert");
+
+    blossom::factory::sphere(
+          registry,
+          1.0f,
+          32,
+          16,
+          waves_shader.program_id);
+
+
+    blossom::mesh_system::init(registry);
+    blossom::transform_system::update(registry);
+    blossom::camera_system::update(registry);
+
+    while (glfwWindowShouldClose(window.window_ptr) == 0) 
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        mesh.draw(&camera);
-        glfwSwapBuffers(window.window_ptr); // swaps the front and back colour buffers
-        glfwPollEvents();
+       blossom::render_system::update(registry);
+       glfwSwapBuffers(window.window_ptr); 
+       glfwPollEvents();
     }
-
     window.destroy();
 }
