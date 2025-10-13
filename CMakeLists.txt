@@ -29,6 +29,7 @@ find_package(glfw3 REQUIRED)
 
 add_example(multi_cube)
 add_example(waves)
+add_example(waves_ecs)
 add_example(fullscreen_rectangle)
 add_example(rectangle_camera_ecs)
 add_example(triangle_ecs)
