@@ -3,7 +3,7 @@
 
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../components/camera_c.h"
+#include "../components/camera.h"
 #include "../components/transform_c.h"
 #include "../components/mesh_c.h"
 
@@ -17,7 +17,7 @@ namespace blossom
         glm::mat4 view_matrix;
         glm::mat4 projection_matrix;
 
-        auto camera_view = registry.view<transform_c, camera_c>();
+        auto camera_view = registry.view<transform_c, component::camera>();
 
         for (auto [camera_entity, camera_transform, camera] : camera_view.each() )
         {

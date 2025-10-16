@@ -27,7 +27,7 @@ auto main() -> int
   constexpr float CAMERA_FOV_Y = 90.0F;
 
   blossom::factory::camera{registry}
-    .with_type(camera_type::PERSPECTIVE)
+    .with_type(blossom::component::camera_type::PERSPECTIVE)
     .with_width (WINDOW_WIDTH)
     .with_height(WINDOW_HEIGHT)
     .with_fov_y (CAMERA_FOV_Y)

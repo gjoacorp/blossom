@@ -1,7 +1,7 @@
 #ifndef BLOSSOM_CAMERA_SYSTEM_H
 #define BLOSSOM_CAMERA_SYSTEM_H
 
-#include "../components/camera_c.h"
+#include "../components/camera.h"
 #include "../components/transform_c.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include <stdexcept>
@@ -14,7 +14,7 @@ namespace blossom
     public:
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<transform_c, camera_c>();
+        auto view = registry.view<transform_c, component::camera>();
         for (auto [entity, transform, camera] : view.each())
         {
           update_projection_matrix_(camera);
@@ -23,18 +23,18 @@ namespace blossom
       }
 
     private:
-      static void update_projection_matrix_(camera_c& camera)
+      static void update_projection_matrix_(component::camera& camera)
       {
         switch(camera.type)
         {
-          case camera_type::PERSPECTIVE: 
+          case component::camera_type::PERSPECTIVE: 
             {
               const float ASPECT = static_cast<float>(camera.width) / static_cast<float>(camera.height);
               camera.projection_matrix = glm::perspective(glm::radians(camera.fov_y), ASPECT, camera.near, camera.far);
               break;
             }
 
-          case camera_type::ORTHOGRAPHIC:
+          case component::camera_type::ORTHOGRAPHIC:
             camera.projection_matrix = glm::ortho(
                 0.0F, 
                 static_cast<float>(camera.width), 

@@ -3,7 +3,7 @@
 
 #include <entt/entt.hpp>
 #include "../components/transform_c.h"
-#include "../components/camera_c.h"
+#include "../components/camera.h"
 
 namespace blossom::factory
 {
@@ -14,11 +14,11 @@ namespace blossom::factory
         : registry_(registry)
       {
         entity_    =  registry_.create();
-        camera_    = &registry_.emplace<camera_c>(entity_);
+        camera_    = &registry_.emplace<component::camera>(entity_);
         transform_ = &registry_.emplace<transform_c>(entity_);
       }
 
-      auto with_type(const camera_type type)
+      auto with_type(const component::camera_type type)
       {
         type_ = type;
         return *this;
@@ -77,7 +77,7 @@ namespace blossom::factory
       static constexpr float DEFAULT_FAR    = 100.00F;
       static constexpr float DEFAULT_FOV_Y  =  90.00F;
 
-      static constexpr camera_type DEFAULT_TYPE = camera_type::ORTHOGRAPHIC;
+      static constexpr component::camera_type DEFAULT_TYPE = component::camera_type::ORTHOGRAPHIC;
 
       uint16_t width_  = DEFAULT_WIDTH;
       uint16_t height_ = DEFAULT_HEIGHT;
@@ -89,12 +89,12 @@ namespace blossom::factory
       glm::vec3 rotation_;
       glm::vec3 position_;
 
-      camera_type type_ = DEFAULT_TYPE;
+      component::camera_type type_ = DEFAULT_TYPE;
 
-      entt::registry& registry_;
-      entt::entity    entity_;
-      camera_c*       camera_;
-      transform_c*    transform_;
+      entt::registry&     registry_;
+      entt::entity        entity_;
+      component::camera* camera_;
+      transform_c*        transform_;
   };
 }
 
