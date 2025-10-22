@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_COMPONENTS_CAMERA_H
-#define BLOSSOM_COMPONENTS_CAMERA_H
+#ifndef BLOSSOM_COMPONENT_CAMERA_H
+#define BLOSSOM_COMPONENT_CAMERA_H
 
 #include <cstdint>
 #include <glm/ext/matrix_float4x4.hpp>
