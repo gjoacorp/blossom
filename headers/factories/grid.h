@@ -2,7 +2,7 @@
 #define BLOSSOM_GRID_FACTORY_H
 
 #include <entt/entt.hpp>
-#include "../factories/mesh_factory.h"
+#include "../factories/mesh.h"
 
 namespace blossom::factory
 {

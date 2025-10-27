@@ -2,7 +2,7 @@
 #define BLOSSOM_SPHERE_FACTORY_H
 
 #include <entt/entt.hpp>
-#include "../factories/mesh_factory.h"
+#include "../factories/mesh.h"
 
 #include <glm/gtc/constants.hpp>
 #include <glm/trigonometric.hpp>

@@ -4,8 +4,8 @@
 #include "../headers/systems/transform_system.h"
 #include "../headers/systems/camera_system.h"
 #include "../headers/systems/mesh_system.h"
-#include "../headers/factories/camera_factory.h"
-#include "../headers/factories/grid_factory.h"
+#include "../headers/factories/camera.h"
+#include "../headers/factories/grid.h"
 
 const int WINDOW_WIDTH = 1920;
 const int WINDOW_HEIGHT = 1080;

@@ -5,8 +5,8 @@
 #include "../headers/systems/mesh_system.h"
 #include "../headers/systems/camera_system.h"
 #include "../headers/systems/transform_system.h"
-#include "../headers/factories/camera_factory.h"
-#include "../headers/factories/rectangle_factory.h"
+#include "../headers/factories/camera.h"
+#include "../headers/factories/rectangle.h"
 
 constexpr unsigned int WINDOW_WIDTH  = 1920;
 constexpr unsigned int WINDOW_HEIGHT = 1080;

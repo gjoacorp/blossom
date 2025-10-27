@@ -2,8 +2,8 @@
 #include "../headers/window.h"
 #include "../headers/systems/mesh_system.h"
 #include "../headers/systems/render_system.h"
-#include "../headers/factories/camera_factory.h"
-#include "../headers/factories/mesh_factory.h"
+#include "../headers/factories/camera.h"
+#include "../headers/factories/mesh.h"
 
 const unsigned int WINDOW_WIDTH = 1920;
 const unsigned int WINDOW_HEIGHT = 1080;
