@@ -2,7 +2,7 @@
 #define BLOSSOM_CAMERA_SYSTEM_H
 
 #include "../components/camera.h"
-#include "../components/transform_c.h"
+#include "../components/transform.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include <stdexcept>
 #include <entt/entt.hpp>
@@ -14,7 +14,7 @@ namespace blossom
     public:
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<transform_c, component::camera>();
+        auto view = registry.view<component::transform, component::camera>();
         for (auto [entity, transform, camera] : view.each())
         {
           update_projection_matrix_(camera);

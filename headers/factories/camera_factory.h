@@ -2,7 +2,7 @@
 #define BLOSSOM_CAMERA_FACTORY_H
 
 #include <entt/entt.hpp>
-#include "../components/transform_c.h"
+#include "../components/transform.h"
 #include "../components/camera.h"
 
 namespace blossom::factory
@@ -15,7 +15,7 @@ namespace blossom::factory
       {
         entity_    =  registry_.create();
         camera_    = &registry_.emplace<component::camera>(entity_);
-        transform_ = &registry_.emplace<transform_c>(entity_);
+        transform_ = &registry_.emplace<component::transform>(entity_);
       }
 
       auto with_type(const component::camera_type type)
@@ -91,10 +91,10 @@ namespace blossom::factory
 
       component::camera_type type_ = DEFAULT_TYPE;
 
-      entt::registry&     registry_;
-      entt::entity        entity_;
-      component::camera* camera_;
-      transform_c*        transform_;
+      entt::registry&       registry_;
+      entt::entity          entity_;
+      component::camera*    camera_;
+      component::transform* transform_;
   };
 }
 

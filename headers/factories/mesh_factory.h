@@ -2,7 +2,7 @@
 #define BLOSSOM_MESH_FACTORY_H
 
 #include <entt/entt.hpp>
-#include "../components/transform_c.h"
+#include "../components/transform.h"
 #include "../components/mesh.h"
 
 namespace blossom::factory
@@ -14,7 +14,7 @@ namespace blossom::factory
         : registry_(registry)
       {
         entity_    = registry_.create();
-        transform_ = &registry_.emplace<transform_c>(entity_);
+        transform_ = &registry_.emplace<component::transform>(entity_);
         mesh_      = &registry_.emplace<component::mesh>(entity_);
       }
 
@@ -54,10 +54,10 @@ namespace blossom::factory
       }
 
     private:
-      entt::registry&  registry_;
-      entt::entity     entity_;
-      transform_c*     transform_;
-      component::mesh* mesh_;
+      entt::registry&       registry_;
+      entt::entity          entity_;
+      component::transform* transform_;
+      component::mesh*      mesh_;
   };
 }
 

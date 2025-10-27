@@ -3,7 +3,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <entt/entt.hpp>
-#include "../components/transform_c.h"
+#include "../components/transform.h"
 
 namespace blossom
 {
@@ -12,7 +12,7 @@ namespace blossom
     public:
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<transform_c>();
+        auto view = registry.view<component::transform>();
         for ( auto [entity, transform] : view.each() )
         {
           update_transform_matrix_(transform);
@@ -20,7 +20,7 @@ namespace blossom
       }
 
     private:
-      static void update_transform_matrix_(transform_c& transform)
+      static void update_transform_matrix_(component::transform& transform)
       {
         auto transform_matrix = glm::mat4(1.0F);
 
