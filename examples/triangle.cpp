@@ -1,7 +1,7 @@
 #include "../headers/shader.h"
 #include "../headers/window.h"
-#include "../headers/systems/mesh_system.h"
-#include "../headers/systems/render_system.h"
+#include "../headers/systems/mesh.h"
+#include "../headers/systems/render.h"
 #include "../headers/factories/camera.h"
 #include "../headers/factories/mesh.h"
 
@@ -37,12 +37,12 @@ auto main() -> int
     .with_vertices(TRIANGLE_VERTICES)
     .with_shader_program(triangle_shader.program_id);
 
-  blossom::mesh_system::init(registry);
+  blossom::system::mesh::init(registry);
 
   while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
-    blossom::render_system::update(registry);
+    blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);
     glfwPollEvents();
   }

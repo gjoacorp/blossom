@@ -1,10 +1,10 @@
 #include "../headers/window.h"
 #include "../headers/shader.h"
 
-#include "../headers/systems/render_system.h"
-#include "../headers/systems/mesh_system.h"
-#include "../headers/systems/camera_system.h"
-#include "../headers/systems/transform_system.h"
+#include "../headers/systems/render.h"
+#include "../headers/systems/mesh.h"
+#include "../headers/systems/camera.h"
+#include "../headers/systems/transform.h"
 #include "../headers/factories/camera.h"
 #include "../headers/factories/rectangle.h"
 
@@ -37,14 +37,14 @@ auto main() -> int
     .with_height (WINDOW_HEIGHT)
     .build();
 
-  blossom::camera_system::update(registry);
-  blossom::transform_system::update(registry);
-  blossom::mesh_system::init(registry);
+  blossom::system::camera::update(registry);
+  blossom::system::transform::update(registry);
+  blossom::system::mesh::init(registry);
 
   while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
-    blossom::render_system::update(registry);
+    blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);
     glfwPollEvents();
   }

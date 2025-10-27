@@ -1,12 +1,12 @@
-#ifndef BLOSSOM_MESH_SYSTEM_H
-#define BLOSSOM_MESH_SYSTEM_H
+#ifndef BLOSSOM_SYSTEM_MESH_H
+#define BLOSSOM_SYSTEM_MESH_H
 
 #include <entt/entt.hpp>
 #include "../components/mesh.h"
 
-namespace blossom
+namespace blossom::system
 {
-  class mesh_system
+  class mesh
   {
     public:
       static void init(entt::registry& registry)

@@ -1,13 +1,13 @@
-#ifndef BLOSSOM_TRANSFORM_SYSTEM_H
-#define BLOSSOM_TRANSFORM_SYSTEM_H
+#ifndef BLOSSOM_SYSTEM_TRANSFORM_H
+#define BLOSSOM_SYSTEM_TRANSFORM_H
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <entt/entt.hpp>
 #include "../components/transform.h"
 
-namespace blossom
+namespace blossom::system
 {
-  class transform_system
+  class transform
   {
     public:
       static void update(entt::registry& registry)

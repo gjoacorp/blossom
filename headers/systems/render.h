@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_RENDER_SYSTEM_H
-#define BLOSSOM_RENDER_SYSTEM_H
+#ifndef BLOSSOM_SYSTEM_RENDER_H
+#define BLOSSOM_SYSTEM_RENDER_H
 
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -7,9 +7,9 @@
 #include "../components/transform.h"
 #include "../components/mesh.h"
 
-namespace blossom
+namespace blossom::system
 {
-  class render_system
+  class render
   {
     public:
       static void update(entt::registry& registry)

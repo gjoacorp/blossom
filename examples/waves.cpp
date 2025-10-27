@@ -1,9 +1,9 @@
 #include "../headers/window.h"
 #include "../headers/shader.h"
-#include "../headers/systems/render_system.h"
-#include "../headers/systems/transform_system.h"
-#include "../headers/systems/camera_system.h"
-#include "../headers/systems/mesh_system.h"
+#include "../headers/systems/render.h"
+#include "../headers/systems/transform.h"
+#include "../headers/systems/camera.h"
+#include "../headers/systems/mesh.h"
 #include "../headers/factories/camera.h"
 #include "../headers/factories/grid.h"
 
@@ -47,16 +47,16 @@ auto main() -> int
       GRID_TILE_WIDTH,
       waves_shader.program_id);
 
-  blossom::mesh_system::init(registry);
-  blossom::transform_system::update(registry);
-  blossom::camera_system::update(registry);
+  blossom::system::mesh::init(registry);
+  blossom::system::transform::update(registry);
+  blossom::system::camera::update(registry);
 
   while (glfwWindowShouldClose(window.window_ptr) == 0) 
   {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUniform1f(time_uniform_location, static_cast<float>(glfwGetTime()));
-    blossom::render_system::update(registry);
+    blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr); 
     glfwPollEvents();
   }

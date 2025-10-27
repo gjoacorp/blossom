@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_CAMERA_SYSTEM_H
-#define BLOSSOM_CAMERA_SYSTEM_H
+#ifndef BLOSSOM_SYSTEM_CAMERA_H
+#define BLOSSOM_SYSTEM_CAMERA_H
 
 #include "../components/camera.h"
 #include "../components/transform.h"
@@ -7,9 +7,9 @@
 #include <stdexcept>
 #include <entt/entt.hpp>
 
-namespace blossom
+namespace blossom::system
 {
-  class camera_system
+  class camera
   {
     public:
       static void update(entt::registry& registry)
