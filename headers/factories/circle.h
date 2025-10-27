@@ -1,10 +1,10 @@
-#ifndef BLOSSOM_CIRCLE_FACTORY_H
-#define BLOSSOM_CIRCLE_FACTORY_H
+#ifndef BLOSSOM_FACTORY_CAMERA_H
+#define BLOSSOM_FACTORY_CAMERA_H
 
 #include <entt/entt.hpp>
 #include <stdexcept>
 #include <glm/gtc/constants.hpp>
-#include "../factories/mesh_factory.h"
+#include "../factories/mesh.h"
 
 namespace blossom::factory
 {

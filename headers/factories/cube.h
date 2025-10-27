@@ -1,8 +1,8 @@
-#ifndef BLOSSOM_CUBE_FACTORY_H
-#define BLOSSOM_CUBE_FACTORY_H
+#ifndef BLOSSOM_FACTORY_CUBE_H
+#define BLOSSOM_FACTORY_CUBE_H
 
 #include <entt/entt.hpp>
-#include "../factories/mesh_factory.h"
+#include "../factories/mesh.h"
 
 namespace blossom::factory
 {

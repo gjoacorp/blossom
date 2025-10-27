@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_MESH_FACTORY_H
-#define BLOSSOM_MESH_FACTORY_H
+#ifndef BLOSSOM_FACTORY_MESH_H
+#define BLOSSOM_FACTORY_MESH_H
 
 #include <entt/entt.hpp>
 #include "../components/transform.h"

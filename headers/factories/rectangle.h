@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_RECTANGLE_FACTORY_H
-#define BLOSSOM_RECTANGLE_FACTORY_H
+#ifndef BLOSSOM_FACTORY_RECTANGLE_H
+#define BLOSSOM_FACTORY_RECTANGLE_H
 
 #include <entt/entt.hpp>
 #include "../factories/mesh.h"

@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_SPHERE_FACTORY_H
-#define BLOSSOM_SPHERE_FACTORY_H
+#ifndef BLOSSOM_FACTORY_SPHERE_H
+#define BLOSSOM_FACTORY_SPHERE_H
 
 #include <entt/entt.hpp>
 #include "../factories/mesh.h"

@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_CAMERA_FACTORY_H
-#define BLOSSOM_CAMERA_FACTORY_H
+#ifndef BLOSSOM_FACTORY_CAMERA_H
+#define BLOSSOM_FACTORY_CAMERA_H
 
 #include <entt/entt.hpp>
 #include "../components/transform.h"
