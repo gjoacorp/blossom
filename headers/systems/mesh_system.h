@@ -2,7 +2,7 @@
 #define BLOSSOM_MESH_SYSTEM_H
 
 #include <entt/entt.hpp>
-#include "../components/mesh_c.h"
+#include "../components/mesh.h"
 
 namespace blossom
 {
@@ -11,7 +11,7 @@ namespace blossom
     public:
       static void init(entt::registry& registry)
       {
-        auto view = registry.view<mesh_c>();
+        auto view = registry.view<component::mesh>();
         for ( auto [entity, mesh] : view.each() )
         {
           init_uniform_locations_(mesh);
@@ -21,7 +21,7 @@ namespace blossom
 
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<mesh_c>();
+        auto view = registry.view<component::mesh>();
         for ( auto [entity, mesh] : view.each() )
         {
           init_uniform_locations_(mesh);
@@ -30,14 +30,14 @@ namespace blossom
       }
 
     private:
-      static void init_uniform_locations_(mesh_c& mesh)
+      static void init_uniform_locations_(component::mesh& mesh)
       {
         mesh.model_uniform_location      = glGetUniformLocation(mesh.shader_program, "model");
         mesh.view_uniform_location       = glGetUniformLocation(mesh.shader_program, "view");
         mesh.projection_uniform_location = glGetUniformLocation(mesh.shader_program, "projection");
       }
 
-      static void init_buffers_(mesh_c& mesh)
+      static void init_buffers_(component::mesh& mesh)
       {
         glCreateVertexArrays(1, &mesh.vao);
         glBindVertexArray(mesh.vao);

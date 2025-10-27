@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../components/camera.h"
 #include "../components/transform_c.h"
-#include "../components/mesh_c.h"
+#include "../components/mesh.h"
 
 namespace blossom
 {
@@ -26,14 +26,14 @@ namespace blossom
           break;
         }
 
-        auto mesh_view = registry.view<transform_c, mesh_c>();
+        auto mesh_view = registry.view<transform_c, component::mesh>();
         for ( auto [entity, transform, mesh] : mesh_view.each() )
         {
           draw_(mesh, transform, view_matrix, projection_matrix);
         }
       }
     private:
-      static void draw_(const mesh_c& mesh, const transform_c& transform, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
+      static void draw_(const component::mesh& mesh, const transform_c& transform, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
       {
         glUseProgram(mesh.shader_program);
         glUniformMatrix4fv(

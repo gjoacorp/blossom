@@ -3,7 +3,7 @@
 
 #include <entt/entt.hpp>
 #include "../components/transform_c.h"
-#include "../components/mesh_c.h"
+#include "../components/mesh.h"
 
 namespace blossom::factory
 {
@@ -15,7 +15,7 @@ namespace blossom::factory
       {
         entity_    = registry_.create();
         transform_ = &registry_.emplace<transform_c>(entity_);
-        mesh_      = &registry_.emplace<mesh_c>(entity_);
+        mesh_      = &registry_.emplace<component::mesh>(entity_);
       }
 
       auto with_position(const glm::vec3& position) -> mesh&
@@ -54,10 +54,10 @@ namespace blossom::factory
       }
 
     private:
-      entt::registry& registry_;
-      entt::entity    entity_;
-      transform_c*    transform_;
-      mesh_c*         mesh_;
+      entt::registry&  registry_;
+      entt::entity     entity_;
+      transform_c*     transform_;
+      component::mesh* mesh_;
   };
 }
 
