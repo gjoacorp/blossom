@@ -1,31 +1,50 @@
 #include "../headers/window.h"
-#include "../headers/rectangle.h"
-#include "../headers/orthographic_camera.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "../headers/shader.h"
 
-const unsigned int WINDOW_WIDTH = 1920;
-const unsigned int WINDOW_HEIGHT = 1080;
-const char* WINDOW_TITLE = "Blossom Rectangle Camera Example";
+#include "../headers/systems/render.h"
+#include "../headers/systems/mesh.h"
+#include "../headers/systems/camera.h"
+#include "../headers/systems/transform.h"
+#include "../headers/factories/camera.h"
+#include "../headers/factories/rectangle.h"
 
-const GLfloat CLEAR_COLOR[] = { 0.0f, 0.0f, 0.0f, 0.0f};
+constexpr unsigned int WINDOW_WIDTH  = 1920;
+constexpr unsigned int WINDOW_HEIGHT = 1080;
+const char* window_title = "Blossom Rectangle Camera ECS Example";
 
-int main() 
+const std::array<GLfloat,4> CLEAR_COLOR = { 0.0F, 0.0F, 0.0F, 1.0F};
+
+auto main() -> int 
 {
-  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  blossom::shader rect_shader {"shaders/default.frag", "shaders/default.vert"};
-  blossom::rectangle rect {rect_shader.program_id};
+  blossom::shader rectangle_shader {"shaders/default.frag", "shaders/default.vert"};
 
-  rect.position = {500.0f, 500.0f, 0.0f};
-  rect.scale = {200.0f, 100.0f, 1.0f};
-  blossom::orthographic_camera camera {{0.0f, 0.0f, 0.0f}, WINDOW_WIDTH, WINDOW_HEIGHT, -1.0f, 1.0f};
+  entt::registry registry;
 
-  while ( !glfwWindowShouldClose(window.window_ptr) )
+  constexpr glm::vec3 RECTANGLE_POSITION = { 500.0F, 500.0F, 0.0F };
+  constexpr glm::vec2 RECTANGLE_SCALE    = { 200.0F, 100.0F };
+
+  blossom::factory::rectangle(
+      registry, 
+      RECTANGLE_POSITION, 
+      RECTANGLE_SCALE,
+      rectangle_shader.program_id);
+
+  blossom::factory::camera{registry}
+    .with_width  (WINDOW_WIDTH)
+    .with_height (WINDOW_HEIGHT)
+    .build();
+
+  blossom::system::camera::update(registry);
+  blossom::system::transform::update(registry);
+  blossom::system::mesh::init(registry);
+
+  while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
-    glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR);
-    rect.draw(&camera);
+    glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
+    blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);
     glfwPollEvents();
   }

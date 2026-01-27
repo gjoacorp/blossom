@@ -1,37 +1,63 @@
 #include "../headers/window.h"
-#include "../headers/grid.h"
-#include "../headers/perspective_camera.h"
+#include "../headers/shader.h"
+#include "../headers/systems/render.h"
+#include "../headers/systems/transform.h"
+#include "../headers/systems/camera.h"
+#include "../headers/systems/mesh.h"
+#include "../headers/factories/camera.h"
+#include "../headers/factories/grid.h"
 
 const int WINDOW_WIDTH = 1920;
 const int WINDOW_HEIGHT = 1080;
-const char* WINDOW_TITLE = "Blossom Waves Example";
+const char* window_title = "Blossom Waves Example";
 
-int main() 
+auto main() -> int 
 {
-  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
+  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
 
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LEQUAL);
 
-  const glm::vec3 camera_position = {25.0f, 7.5f, 25.0f};
-  blossom::perspective_camera camera { camera_position, WINDOW_WIDTH, WINDOW_HEIGHT, 90.0f, 0.1f, 200.0f };
-  camera.rotation.x = -45.0f;
-  camera.update_view_matrix();
+  entt::registry registry;
+
+  constexpr glm::vec3 CAMERA_POSITION = { 25.0F, 7.5F, 25.0F};
+  constexpr glm::vec3 CAMERA_ROTATION = {-45.0F, 0.0F,  0.0F};
+
+  constexpr float CAMERA_FOV_Y = 90.0F;
+
+  blossom::factory::camera{registry}
+    .with_type(blossom::component::camera_type::PERSPECTIVE)
+    .with_width (WINDOW_WIDTH)
+    .with_height(WINDOW_HEIGHT)
+    .with_fov_y (CAMERA_FOV_Y)
+    .with_position(CAMERA_POSITION)
+    .with_rotation(CAMERA_ROTATION)
+    .build();
 
   blossom::shader waves_shader("shaders/waves.frag", "shaders/waves.vert");
-  GLuint time_uniform_location = glGetUniformLocation(waves_shader.program_id, "time");
+  GLint time_uniform_location = glGetUniformLocation(waves_shader.program_id, "time");
 
-  blossom::grid grid(waves_shader.program_id, 500, 0.25f, 0.25f);
-  grid.set_polygon_mode(GL_LINE);
+  constexpr uint32_t TOTAL_GRID_TILES = 500;
+  constexpr glm::vec2 GRID_TILE_WIDTH = {0.25F, 0.25F};
 
-  while (!glfwWindowShouldClose(window.window_ptr)) 
+  blossom::factory::grid(
+      registry,
+      TOTAL_GRID_TILES,
+      GRID_TILE_WIDTH,
+      waves_shader.program_id);
+
+  blossom::system::mesh::init(registry);
+  blossom::system::transform::update(registry);
+  blossom::system::camera::update(registry);
+
+  while (glfwWindowShouldClose(window.window_ptr) == 0) 
   {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    grid.draw(&camera);
-    glUniform1f(time_uniform_location, glfwGetTime());
-    glfwSwapBuffers(window.window_ptr); // swaps the front and back colour buffers
+    glUniform1f(time_uniform_location, static_cast<float>(glfwGetTime()));
+    blossom::system::render::update(registry);
+    glfwSwapBuffers(window.window_ptr); 
     glfwPollEvents();
   }
   window.destroy();

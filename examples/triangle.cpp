@@ -1,35 +1,49 @@
 #include "../headers/shader.h"
-#include "../headers/mesh.h"
 #include "../headers/window.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "../headers/systems/mesh.h"
+#include "../headers/systems/render.h"
+#include "../headers/factories/camera.h"
+#include "../headers/factories/mesh.h"
 
 const unsigned int WINDOW_WIDTH = 1920;
 const unsigned int WINDOW_HEIGHT = 1080;
-const GLfloat clear_color[] = { 0.0f, 0.0f, 0.0f, 0.0f};
+const char* window_title = "Blossom Triangle Example";
 
-int main(void) 
+const std::array<GLfloat,4> CLEAR_COLOR = { 0.0F, 0.0F, 0.0F, 1.0F};
+
+auto main() -> int 
 {
-  blossom::window w(1920, 1080, "Triangle Example");
-  w.enter_fullscreen();
-
-  std::vector<glm::vec3> vertices =
-  {
-    { 0.0f,   0.577f, 0.0f},
-    {-0.5f,  -0.289f,  0.0f},
-    { 0.5f,  -0.289f, 0.0f}
-  };
+  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
+  window.enter_fullscreen();
 
   blossom::shader triangle_shader {"shaders/triangle.frag", "shaders/triangle.vert"};
-  blossom::mesh triangle(vertices, triangle_shader.program_id);
 
-  while ( !glfwWindowShouldClose(w.window_ptr) )
+  const std::vector<glm::vec3> TRIANGLE_VERTICES =
   {
-    glClearBufferfv(GL_COLOR, 0, clear_color);
-    triangle.draw(nullptr);
-    glfwSwapBuffers(w.window_ptr);
+    // NOLINTNEXTLINE(modernize-use-std-numbers)
+    { 0.0F,   0.577F,  0.0F},
+    {-0.5F,  -0.289F,  0.0F},
+    { 0.5F,  -0.289F,  0.0F}
+  };
+
+  entt::registry registry;
+
+  blossom::factory::camera{registry}
+    .with_width  (WINDOW_WIDTH)
+    .with_height (WINDOW_HEIGHT)
+    .build();
+
+  blossom::factory::mesh(registry)
+    .with_vertices(TRIANGLE_VERTICES)
+    .with_shader_program(triangle_shader.program_id);
+
+  blossom::system::mesh::init(registry);
+
+  while ( glfwWindowShouldClose(window.window_ptr) == 0 )
+  {
+    glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
+    blossom::system::render::update(registry);
+    glfwSwapBuffers(window.window_ptr);
     glfwPollEvents();
   }
-
-  w.destroy();
 }
