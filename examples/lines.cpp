@@ -20,8 +20,19 @@ auto main() -> int
 
   blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
 
-  const glm::vec3 LINE_START = {-200.0F, 0.0F, 0.0F};
-  const glm::vec3 LINE_END   = { 200.0F, 0.0F, 0.0F};
+  // Vertices (start and end points) for a line
+  const glm::vec3 LINE_START_POINT = {-200.0F, 0.0F, 0.0F};
+  const glm::vec3 LINE_END_POINT   = { 200.0F, 0.0F, 0.0F};
+
+  // Vertices for a line strip
+  const std::vector<glm::vec3> LINE_STRIP_POINTS = 
+  {
+    {-200.0F, 100.0F, 0.0F},
+    {-100.0F,  50.0F, 0.0F},
+    {   0.0F, 100.0F, 0.0F},
+    {100.0F,   50.0F, 0.0F},
+    {200.0F,  100.0F, 0.0F}
+  };
 
   const glm::vec3 CAMERA_POSITION = { 0.0F, 0.0F, 5.0F };
 
@@ -36,8 +47,13 @@ auto main() -> int
   blossom::factory::line(
       registry,
       default_shader.program_id,
-      LINE_START,
-      LINE_END);
+      LINE_START_POINT,
+      LINE_END_POINT);
+
+  blossom::factory::line(
+      registry,
+      default_shader.program_id,
+      LINE_STRIP_POINTS);
 
   blossom::system::mesh::init(registry);
   blossom::system::transform::update(registry);
