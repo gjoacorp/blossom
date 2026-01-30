@@ -3,14 +3,13 @@
 #include "../headers/systems/mesh.h"
 #include "../headers/systems/render.h"
 #include "../headers/factories/camera.h"
-#include "../headers/factories/mesh.h"
 #include "../headers/systems/transform.h"
 #include "../headers/systems/camera.h"
 #include "../headers/factories/line.h"
 
 const unsigned int WINDOW_WIDTH = 1920;
 const unsigned int WINDOW_HEIGHT = 1080;
-const char* window_title = "Blossom Triangle Example";
+const char* window_title = "Blossom Line Example";
 
 const std::array<GLfloat,4> CLEAR_COLOR = { 0.0F, 0.0F, 0.0F, 1.0F};
 
