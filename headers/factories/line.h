@@ -8,9 +8,6 @@
 
 namespace blossom::factory
 {
-  struct circle_radius     { float   value; };
-  struct circle_iterations { uint8_t value; };
-
   inline auto line(
       entt::registry& registry, 
       const GLuint shader_program, 
