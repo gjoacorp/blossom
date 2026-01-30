@@ -16,7 +16,6 @@ namespace blossom::system
       {
         glm::mat4 view_matrix(1.0F);
         glm::mat4 projection_matrix(1.0F);
-        glm::mat4 model_matrix(1.0F);
 
         auto camera_view = registry.view<component::transform, component::camera>();
 
