@@ -32,7 +32,6 @@ namespace blossom::system
 
         transform.matrix = transform_matrix;
       }
-
   };
 }
 
