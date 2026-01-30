@@ -23,8 +23,10 @@ auto main() -> int
 
   entt::registry registry;
 
-  constexpr glm::vec3 RECTANGLE_POSITION = { 500.0F, 500.0F, 0.0F };
+  constexpr glm::vec3 RECTANGLE_POSITION = { 0.0F, 0.0F, 0.0F };
   constexpr glm::vec2 RECTANGLE_SCALE    = { 200.0F, 100.0F };
+
+  constexpr glm::vec3 CAMERA_POSITION = { 0.0F, 0.0F, 5.0F };
 
   blossom::factory::rectangle(
       registry, 
@@ -33,12 +35,14 @@ auto main() -> int
       rectangle_shader.program_id);
 
   blossom::factory::camera{registry}
-    .with_width  (WINDOW_WIDTH)
-    .with_height (WINDOW_HEIGHT);
+    .with_type     (blossom::component::camera_type::ORTHOGRAPHIC)
+    .with_width    (WINDOW_WIDTH)
+    .with_height   (WINDOW_HEIGHT)
+    .with_position (CAMERA_POSITION);
 
-  blossom::system::camera::update(registry);
-  blossom::system::transform::update(registry);
   blossom::system::mesh::init(registry);
+  blossom::system::transform::update(registry);
+  blossom::system::camera::update(registry);
 
   while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
