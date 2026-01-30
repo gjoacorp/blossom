@@ -34,8 +34,7 @@ auto main() -> int
 
   blossom::factory::camera{registry}
     .with_width  (WINDOW_WIDTH)
-    .with_height (WINDOW_HEIGHT)
-    .build();
+    .with_height (WINDOW_HEIGHT);
 
   blossom::system::camera::update(registry);
   blossom::system::transform::update(registry);
