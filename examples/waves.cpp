@@ -32,8 +32,7 @@ auto main() -> int
     .with_height(WINDOW_HEIGHT)
     .with_fov_y (CAMERA_FOV_Y)
     .with_position(CAMERA_POSITION)
-    .with_rotation(CAMERA_ROTATION)
-    .build();
+    .with_rotation(CAMERA_ROTATION);
 
   blossom::shader waves_shader("shaders/waves.frag", "shaders/waves.vert");
   GLint time_uniform_location = glGetUniformLocation(waves_shader.program_id, "time");

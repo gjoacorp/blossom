@@ -48,6 +48,12 @@ namespace blossom::factory
         return *this;
       }
 
+      auto with_primitive_type(const GLenum primitive_type) -> mesh&
+      {
+        mesh_->primitive_type = primitive_type;
+        return *this;
+      }
+
       auto build() -> entt::entity
       {
         return entity_;

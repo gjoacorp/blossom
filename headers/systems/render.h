@@ -14,8 +14,8 @@ namespace blossom::system
     public:
       static void update(entt::registry& registry)
       {
-        glm::mat4 view_matrix;
-        glm::mat4 projection_matrix;
+        glm::mat4 view_matrix(1.0F);
+        glm::mat4 projection_matrix(1.0F);
 
         auto camera_view = registry.view<component::transform, component::camera>();
 
@@ -66,7 +66,7 @@ namespace blossom::system
           }
 
           glDrawElements(
-              GL_TRIANGLES, 
+              mesh.primitive_type, 
               static_cast<GLsizei>( mesh.indices.size() ),
               GL_UNSIGNED_INT, 
               nullptr ); 
@@ -74,7 +74,7 @@ namespace blossom::system
         else 
         { 
           glDrawArrays(
-              GL_TRIANGLES, 
+              mesh.primitive_type, 
               0, 
               (GLsizei)mesh.vertices.size() ); 
         }

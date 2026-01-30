@@ -35,14 +35,17 @@ namespace blossom::system
             }
 
           case component::camera_type::ORTHOGRAPHIC:
+          {
+            const float HALF_WIDTH = static_cast<float>(camera.width) / 2.0F;
+            const float HALF_HEIGHT = static_cast<float>(camera.height) / 2.0F;
+
             camera.projection_matrix = glm::ortho(
-                0.0F, 
-                static_cast<float>(camera.width), 
-                0.0F, static_cast<float>(camera.height), 
-                camera.near, 
-                camera.far
+                -HALF_WIDTH,  HALF_WIDTH, 
+                -HALF_HEIGHT, HALF_HEIGHT,
+                 camera.near, camera.far
                 );
             break;
+          }
 
           default:
             throw std::runtime_error("BLOSSOM_ERROR: Invalid camera type.");
