@@ -3,7 +3,8 @@
 
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../components/camera.h"
+#include "../components/orthographic_camera.h"
+#include "../components/perspective_camera.h"
 #include "../components/transform.h"
 #include "../components/mesh.h"
 
@@ -17,9 +18,17 @@ namespace blossom::system
         glm::mat4 view_matrix(1.0F);
         glm::mat4 projection_matrix(1.0F);
 
-        auto camera_view = registry.view<component::transform, component::camera>();
+        auto orthographic_camera_view = registry.view<component::transform, component::orthographic_camera>();
 
-        for (auto [camera_entity, camera_transform, camera] : camera_view.each() )
+        for (auto [entity, transform, camera] : orthographic_camera_view.each() )
+        {
+          view_matrix = camera.view_matrix;
+          projection_matrix = camera.projection_matrix;
+          break;
+        }
+
+        auto perspective_camera_view = registry.view<component::transform, component::perspective_camera>();
+        for (auto [entity, transform, camera] : perspective_camera_view.each() )
         {
           view_matrix = camera.view_matrix;
           projection_matrix = camera.projection_matrix;
@@ -32,6 +41,7 @@ namespace blossom::system
           draw_(mesh, transform, view_matrix, projection_matrix);
         }
       }
+
     private:
       static void draw_(const component::mesh& mesh, const component::transform& transform, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
       {

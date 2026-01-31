@@ -2,7 +2,7 @@
 #include "../headers/window.h"
 #include "../headers/systems/mesh.h"
 #include "../headers/systems/render.h"
-#include "../headers/factories/camera.h"
+#include "../headers/factories/orthographic_camera.h"
 #include "../headers/factories/mesh.h"
 
 const unsigned int WINDOW_WIDTH = 1920;
@@ -28,7 +28,7 @@ auto main() -> int
 
   entt::registry registry;
 
-  blossom::factory::camera{registry}
+  blossom::factory::orthographic_camera{registry}
     .with_width  (WINDOW_WIDTH)
     .with_height (WINDOW_HEIGHT);
 
