@@ -31,7 +31,8 @@ auto main() -> int
       .with_height(WINDOW_HEIGHT)
       .with_fov_y (CAMERA_FOV_Y)
       .with_position(CAMERA_POSITION)
-      .with_rotation(CAMERA_ROTATION);
+      .with_rotation(CAMERA_ROTATION)
+      .make_active();
 
     blossom::shader waves_shader("shaders/default.frag", "shaders/default.vert");
 

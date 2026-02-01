@@ -30,7 +30,8 @@ auto main() -> int
 
   blossom::factory::orthographic_camera{registry}
     .with_width  (WINDOW_WIDTH)
-    .with_height (WINDOW_HEIGHT);
+    .with_height (WINDOW_HEIGHT)
+    .make_active();
 
   blossom::factory::mesh(registry)
     .with_vertices(TRIANGLE_VERTICES)

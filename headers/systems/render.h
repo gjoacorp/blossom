@@ -3,7 +3,9 @@
 
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 #include "../components/orthographic_camera.h"
+#include "../components/tags/active_camera.h"
 #include "../components/perspective_camera.h"
 #include "../components/transform.h"
 #include "../components/mesh.h"
@@ -18,21 +20,29 @@ namespace blossom::system
         glm::mat4 view_matrix(1.0F);
         glm::mat4 projection_matrix(1.0F);
 
-        auto orthographic_camera_view = registry.view<component::transform, component::orthographic_camera>();
+        auto active_camera_view = registry.view<component::tag::active_camera>();
+        bool active_camera_exists = !active_camera_view.empty();
 
-        for (auto [entity, transform, camera] : orthographic_camera_view.each() )
+        if (active_camera_exists)
         {
-          view_matrix = camera.view_matrix;
-          projection_matrix = camera.projection_matrix;
-          break;
+          auto active_camera_entity = active_camera_view.front();
+
+          // Checking whether the active camera is an orthographic camera
+          if (auto* orthographic_camera = registry.try_get<component::orthographic_camera>(active_camera_entity))
+          {
+            view_matrix = orthographic_camera->view_matrix;
+            projection_matrix = orthographic_camera->projection_matrix;
+          }
+          // Checking whether the active camera is a perspective camera
+          else if (auto* perspective_camera = registry.try_get<component::perspective_camera>(active_camera_entity))
+          {
+            view_matrix = perspective_camera->view_matrix;
+            projection_matrix = perspective_camera->projection_matrix;
+          }
         }
-
-        auto perspective_camera_view = registry.view<component::transform, component::perspective_camera>();
-        for (auto [entity, transform, camera] : perspective_camera_view.each() )
+        else
         {
-          view_matrix = camera.view_matrix;
-          projection_matrix = camera.projection_matrix;
-          break;
+          std::cout << "WARNING (blossom::system::render): No active camera detected. Drawing without a camera." << "\n";
         }
 
         auto mesh_view = registry.view<component::transform, component::mesh>();

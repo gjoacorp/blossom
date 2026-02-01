@@ -41,7 +41,8 @@ auto main() -> int
   blossom::factory::orthographic_camera{registry}
     .with_width    (WINDOW_WIDTH)
     .with_position (CAMERA_POSITION)
-    .with_height   (WINDOW_HEIGHT);
+    .with_height   (WINDOW_HEIGHT)
+    .make_active();
 
   blossom::factory::line(
       registry,

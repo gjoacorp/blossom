@@ -4,6 +4,7 @@
 #include <entt/entt.hpp>
 #include "../components/transform.h"
 #include "../components/perspective_camera.h"
+#include "../components/tags/active_camera.h"
 
 namespace blossom::factory
 {
@@ -45,6 +46,14 @@ namespace blossom::factory
       auto with_rotation(const glm::vec3& rotation) -> perspective_camera&
       {
         transform_->rotation = rotation;
+        return *this;
+      }
+
+      auto make_active() -> perspective_camera&
+      {
+        auto view = registry_.view<component::tag::active_camera>();
+        registry_.remove<component::tag::active_camera>(view.begin(), view.end());
+        registry_.emplace<component::tag::active_camera>(entity_);
         return *this;
       }
 
