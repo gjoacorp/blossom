@@ -1,5 +1,5 @@
-#ifndef BLOSSOM_FACTORY_CAMERA_H
-#define BLOSSOM_FACTORY_CAMERA_H
+#ifndef BLOSSOM_FACTORY_CIRCLE_H
+#define BLOSSOM_FACTORY_CIRCLE_H
 
 #include <entt/entt.hpp>
 #include <stdexcept>

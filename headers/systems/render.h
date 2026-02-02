@@ -3,7 +3,10 @@
 
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../components/camera.h"
+#include <iostream>
+#include "../components/orthographic_camera.h"
+#include "../components/tags/active_camera.h"
+#include "../components/perspective_camera.h"
 #include "../components/transform.h"
 #include "../components/mesh.h"
 
@@ -14,16 +17,32 @@ namespace blossom::system
     public:
       static void update(entt::registry& registry)
       {
-        glm::mat4 view_matrix;
-        glm::mat4 projection_matrix;
+        glm::mat4 view_matrix(1.0F);
+        glm::mat4 projection_matrix(1.0F);
 
-        auto camera_view = registry.view<component::transform, component::camera>();
+        auto active_camera_view = registry.view<component::tag::active_camera>();
+        bool active_camera_exists = !active_camera_view.empty();
 
-        for (auto [camera_entity, camera_transform, camera] : camera_view.each() )
+        if (active_camera_exists)
         {
-          view_matrix = camera.view_matrix;
-          projection_matrix = camera.projection_matrix;
-          break;
+          auto active_camera_entity = active_camera_view.front();
+
+          // Checking whether the active camera is an orthographic camera
+          if (auto* orthographic_camera = registry.try_get<component::orthographic_camera>(active_camera_entity))
+          {
+            view_matrix = orthographic_camera->view_matrix;
+            projection_matrix = orthographic_camera->projection_matrix;
+          }
+          // Checking whether the active camera is a perspective camera
+          else if (auto* perspective_camera = registry.try_get<component::perspective_camera>(active_camera_entity))
+          {
+            view_matrix = perspective_camera->view_matrix;
+            projection_matrix = perspective_camera->projection_matrix;
+          }
+        }
+        else
+        {
+          std::cout << "WARNING (blossom::system::render): No active camera detected. Drawing without a camera." << "\n";
         }
 
         auto mesh_view = registry.view<component::transform, component::mesh>();
@@ -32,6 +51,7 @@ namespace blossom::system
           draw_(mesh, transform, view_matrix, projection_matrix);
         }
       }
+
     private:
       static void draw_(const component::mesh& mesh, const component::transform& transform, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
       {
@@ -66,7 +86,7 @@ namespace blossom::system
           }
 
           glDrawElements(
-              GL_TRIANGLES, 
+              mesh.primitive_type, 
               static_cast<GLsizei>( mesh.indices.size() ),
               GL_UNSIGNED_INT, 
               nullptr ); 
@@ -74,7 +94,7 @@ namespace blossom::system
         else 
         { 
           glDrawArrays(
-              GL_TRIANGLES, 
+              mesh.primitive_type, 
               0, 
               (GLsizei)mesh.vertices.size() ); 
         }
