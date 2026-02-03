@@ -10,11 +10,11 @@ namespace blossom::factory
   {
     if (tile_width.x < 0.0F)
     {
-      throw std::invalid_argument("BLOSSOM_ERROR: tilde_width.x must be non-negative.");
+      throw std::invalid_argument("BLOSSOM_ERROR: tile_width.x must be non-negative.");
     }
     if (tile_width.y < 0.0F)
     {
-      throw std::invalid_argument("BLOSSOM_ERROR: tilde_width.y must be non-negative.");
+      throw std::invalid_argument("BLOSSOM_ERROR: tile_width.y must be non-negative.");
     }
 
     std::vector<glm::vec3> grid_vertices;
