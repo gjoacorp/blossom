@@ -19,16 +19,6 @@ namespace blossom::system
         }
       }
 
-      static void update(entt::registry& registry)
-      {
-        auto view = registry.view<component::mesh>();
-        for ( auto [entity, mesh] : view.each() )
-        {
-          init_uniform_locations_(mesh);
-          init_buffers_(mesh);
-        }
-      }
-
     private:
       static void init_uniform_locations_(component::mesh& mesh)
       {
