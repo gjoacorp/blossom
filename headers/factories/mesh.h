@@ -54,6 +54,12 @@ namespace blossom::factory
         return *this;
       }
 
+      auto with_polygon_mode(const GLenum polygon_mode) -> mesh&
+      {
+        registry_.get<component::mesh>(entity_).polygon_mode = polygon_mode;
+        return *this;
+      }
+
       auto build() -> entt::entity
       {
         return entity_;
