@@ -44,6 +44,7 @@ namespace blossom::factory
       .with_vertices(grid_vertices)
       .with_indices(grid_indices)
       .with_shader_program(shader_program)
+      .with_polygon_mode(GL_LINE)
       .build();
   }
 }
