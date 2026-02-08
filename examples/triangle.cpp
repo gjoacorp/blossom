@@ -1,6 +1,5 @@
 #include "../headers/shader.h"
 #include "../headers/window.h"
-#include "../headers/systems/mesh.h"
 #include "../headers/systems/render.h"
 #include "../headers/systems/transform.h"
 #include "../headers/systems/orthographic_camera.h"
@@ -20,9 +19,8 @@ auto main() -> int
 
   blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
 
-  const std::vector<glm::vec3> TRIANGLE_VERTICES =
+  std::vector<glm::vec3> triangle_vertices =
   {
-    // NOLINTNEXTLINE(modernize-use-std-numbers)
     { 0.0F,   0.577F,  0.0F},
     {-0.5F,  -0.289F,  0.0F},
     { 0.5F,  -0.289F,  0.0F}
@@ -41,11 +39,11 @@ auto main() -> int
     .make_active();
 
   blossom::factory::mesh(registry)
-    .with_vertices(TRIANGLE_VERTICES)
+    .with_vertices(triangle_vertices)
     .with_scale(TRIANGLE_SCALE)
-    .with_shader_program(default_shader.program_id);
+    .with_shader_program(default_shader.program_id)
+    .build();
 
-  blossom::system::mesh::init(registry);
   blossom::system::transform::update(registry);
   blossom::system::orthographic_camera::update(registry);
 

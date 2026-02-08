@@ -2,7 +2,6 @@
 #include "../headers/shader.h"
 #include "../headers/systems/render.h"
 #include "../headers/systems/transform.h"
-#include "../headers/systems/mesh.h"
 #include "../headers/systems/perspective_camera.h"
 #include "../headers/factories/perspective_camera.h"
 #include "../headers/factories/grid.h"
@@ -46,7 +45,6 @@ auto main() -> int
       GRID_TILE_WIDTH,
       waves_shader.program_id);
 
-  blossom::system::mesh::init(registry);
   blossom::system::transform::update(registry);
   blossom::system::perspective_camera::update(registry);
 

@@ -1,8 +1,6 @@
 #include "../headers/window.h"
 #include "../headers/shader.h"
-
 #include "../headers/systems/render.h"
-#include "../headers/systems/mesh.h"
 #include "../headers/systems/orthographic_camera.h"
 #include "../headers/systems/transform.h"
 #include "../headers/factories/orthographic_camera.h"
@@ -40,7 +38,6 @@ auto main() -> int
     .with_position (CAMERA_POSITION)
     .make_active();
 
-  blossom::system::mesh::init(registry);
   blossom::system::transform::update(registry);
   blossom::system::orthographic_camera::update(registry);
 

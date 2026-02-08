@@ -1,18 +1,16 @@
 #ifndef BLOSSOM_COMPONENT_MESH_H
 #define BLOSSOM_COMPONENT_MESH_H
 
-#include <vector>
-#include <glm/glm.hpp>
 #include <GL/glew.h>
 
 namespace blossom::component
 {
   struct mesh
   {
-    std::vector<glm::vec3> vertices;
-    std::vector<GLuint> indices;
-
     GLuint shader_program = 0;
+
+    GLsizei vertex_count = 0;
+    GLsizei index_count = 0;
 
     GLuint vao = 0;
     GLuint vbo = 0;
