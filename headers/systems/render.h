@@ -77,26 +77,22 @@ namespace blossom::system
         glBindVertexArray(mesh.vao);
         glPolygonMode(GL_FRONT_AND_BACK, mesh.polygon_mode);
 
-        if ( !mesh.indices.empty() ) 
+        if ( !(mesh.index_count == 0) ) 
         { 
-          // this check is probably irrelevant
-          if ( mesh.indices.size() > static_cast<size_t>(std::numeric_limits<GLsizei>::max()) )
-          {
-            throw std::runtime_error("ERROR: indices_.size() is too large to safely cast to GLsizei");
-          }
-
           glDrawElements(
               mesh.primitive_type, 
-              static_cast<GLsizei>( mesh.indices.size() ),
+              mesh.index_count,
               GL_UNSIGNED_INT, 
-              nullptr ); 
+              nullptr
+              ); 
         }
         else 
         { 
           glDrawArrays(
               mesh.primitive_type, 
               0, 
-              (GLsizei)mesh.vertices.size() ); 
+              mesh.vertex_count
+              ); 
         }
       }
   };
