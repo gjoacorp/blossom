@@ -2,8 +2,6 @@
 #define BLOSSOM_FACTORY_LINE_H
 
 #include <entt/entt.hpp>
-#include <stdexcept>
-#include <glm/gtc/constants.hpp>
 #include "../factories/mesh.h"
 
 namespace blossom::factory
@@ -24,7 +22,7 @@ namespace blossom::factory
   inline auto line(
       entt::registry& registry, 
       const GLuint shader_program, 
-      const std::vector<glm::vec3>& points) -> entt::entity
+      std::vector<glm::vec3>& points) -> entt::entity
   {
     return mesh(registry)
       .with_vertices(points)
