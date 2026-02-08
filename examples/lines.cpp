@@ -1,6 +1,5 @@
 #include "../headers/shader.h"
 #include "../headers/window.h"
-#include "../headers/systems/mesh.h"
 #include "../headers/systems/render.h"
 #include "../headers/factories/orthographic_camera.h"
 #include "../headers/systems/transform.h"
@@ -25,7 +24,7 @@ auto main() -> int
   const glm::vec3 LINE_END_POINT   = { 200.0F, 0.0F, 0.0F};
 
   // Vertices for a line strip
-  const std::vector<glm::vec3> LINE_STRIP_POINTS = 
+  std::vector<glm::vec3> line_strip_points = 
   {
     {-200.0F, 100.0F, 0.0F},
     {-100.0F,  50.0F, 0.0F},
@@ -53,9 +52,8 @@ auto main() -> int
   blossom::factory::line(
       registry,
       default_shader.program_id,
-      LINE_STRIP_POINTS);
+      line_strip_points);
 
-  blossom::system::mesh::init(registry);
   blossom::system::transform::update(registry);
   blossom::system::orthographic_camera::update(registry);
 
