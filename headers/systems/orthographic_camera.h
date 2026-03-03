@@ -2,7 +2,7 @@
 #define BLOSSOM_SYSTEM_ORTHOGRAPHIC_CAMERA_H
 
 #include "../components/orthographic_camera.h"
-#include "../components/transform.h"
+#include "../components/transform_matrix.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include <entt/entt.hpp>
 
@@ -13,11 +13,11 @@ namespace blossom::system
     public:
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<component::transform, component::orthographic_camera>();
-        for (auto [entity, transform, camera] : view.each())
+        auto view = registry.view<component::transform_matrix, component::orthographic_camera>();
+        for (auto [entity, transform_matrix, camera] : view.each())
         {
           update_projection_matrix_(camera);
-          camera.view_matrix = glm::inverse(transform.matrix);
+          camera.view_matrix = glm::inverse(transform_matrix.matrix);
         }
       }
 
