@@ -7,7 +7,7 @@
 #include "../components/orthographic_camera.h"
 #include "../components/tags/active_camera.h"
 #include "../components/perspective_camera.h"
-#include "../components/transform.h"
+#include "../components/transform_matrix.h"
 #include "../components/mesh.h"
 
 namespace blossom::system
@@ -45,22 +45,23 @@ namespace blossom::system
           std::cout << "WARNING (blossom::system::render): No active camera detected. Drawing without a camera." << "\n";
         }
 
-        auto mesh_view = registry.view<component::transform, component::mesh>();
-        for ( auto [entity, transform, mesh] : mesh_view.each() )
+        auto mesh_view = registry.view<component::transform_matrix, component::mesh>();
+        for ( auto [entity, transform_matrix, mesh] : mesh_view.each() )
         {
-          draw_(mesh, transform, view_matrix, projection_matrix);
+          const auto MODEL_MATRIX = transform_matrix.matrix;
+          draw_(mesh, MODEL_MATRIX, view_matrix, projection_matrix);
         }
       }
 
     private:
-      static void draw_(const component::mesh& mesh, const component::transform& transform, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
+      static void draw_(const component::mesh& mesh, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
       {
         glUseProgram(mesh.shader_program);
         glUniformMatrix4fv(
             mesh.model_uniform_location, 
             1, 
             GL_FALSE, 
-            glm::value_ptr( transform.matrix ) );
+            glm::value_ptr(model_matrix) );
 
         glUniformMatrix4fv(
             mesh.view_uniform_location, 
