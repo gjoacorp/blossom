@@ -17,8 +17,8 @@ namespace blossom::system
         auto view = registry.view<component::transform_matrix, component::view_projection_matrix, component::orthographic_camera>();
         for (auto [entity, transform_matrix, vp_matrix, camera] : view.each())
         {
-          auto view_projection_matrix= glm::inverse(transform_matrix.matrix);
-          view_projection_matrix *= calculate_projection_matrix_(camera);
+          auto view_projection_matrix = calculate_projection_matrix_(camera);
+          view_projection_matrix *= glm::inverse(transform_matrix.matrix);
           vp_matrix.matrix = view_projection_matrix;
         }
       }
