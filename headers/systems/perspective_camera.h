@@ -4,6 +4,7 @@
 #include "../components/perspective_camera.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include "../components/transform_matrix.h"
+#include "../components/view_projection_matrix.h"
 #include <entt/entt.hpp>
 
 namespace blossom::system
@@ -13,19 +14,20 @@ namespace blossom::system
     public:
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<component::transform_matrix, component::perspective_camera>();
-        for (auto [entity, transform_matrix, camera] : view.each())
+        auto view = registry.view<component::transform_matrix, component::view_projection_matrix, component::perspective_camera>();
+        for (auto [entity, transform_matrix, vp_matrix, camera] : view.each())
         {
-          update_projection_matrix_(camera);
-          camera.view_matrix = glm::inverse(transform_matrix.matrix);
+          auto view_projection_matrix= glm::inverse(transform_matrix.matrix);
+          view_projection_matrix *= calculate_projection_matrix_(camera);
+          vp_matrix.matrix = view_projection_matrix;
         }
       }
 
     private:
-      static void update_projection_matrix_(component::perspective_camera& camera)
+      static auto calculate_projection_matrix_(const component::perspective_camera& camera) -> glm::mat4
       {
         const float ASPECT = static_cast<float>(camera.width) / static_cast<float>(camera.height);
-        camera.projection_matrix = glm::perspective(glm::radians(camera.fov_y), ASPECT, camera.near, camera.far);
+        return glm::perspective(glm::radians(camera.fov_y), ASPECT, camera.near, camera.far);
       }
   };
 }
