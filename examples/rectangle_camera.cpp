@@ -17,7 +17,7 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  blossom::shader rectangle_shader {"shaders/default.frag", "shaders/default.vert"};
+  blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
 
   entt::registry registry;
 
@@ -30,7 +30,7 @@ auto main() -> int
       registry, 
       RECTANGLE_POSITION, 
       RECTANGLE_SCALE,
-      rectangle_shader.program_id);
+      default_shader.program_id);
 
   blossom::factory::orthographic_camera{registry}
     .with_width    (WINDOW_WIDTH)
