@@ -42,7 +42,7 @@ namespace blossom::system
         auto mesh_view = registry.view<component::transform_matrix, component::mesh>();
         for ( auto [entity, transform_matrix, mesh] : mesh_view.each() )
         {
-          const auto MVP_MATRIX = transform_matrix.matrix * view_projection_matrix;
+          const auto MVP_MATRIX = view_projection_matrix * transform_matrix.matrix;
           draw_(mesh, MVP_MATRIX);
         }
       }
