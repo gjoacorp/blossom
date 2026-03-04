@@ -52,7 +52,7 @@ namespace blossom::system
       {
         glUseProgram(mesh.shader_program);
         glUniformMatrix4fv(
-            mesh.model_uniform_location, 
+            mesh.mvp_uniform_location, 
             1, 
             GL_FALSE, 
             glm::value_ptr(mvp_matrix) );
