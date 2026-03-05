@@ -4,10 +4,9 @@
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "../components/orthographic_camera.h"
 #include "../components/tags/active_camera.h"
-#include "../components/perspective_camera.h"
-#include "../components/transform.h"
+#include "../components/view_projection_matrix.h"
+#include "../components/transform_matrix.h"
 #include "../components/mesh.h"
 
 namespace blossom::system
@@ -17,8 +16,7 @@ namespace blossom::system
     public:
       static void update(entt::registry& registry)
       {
-        glm::mat4 view_matrix(1.0F);
-        glm::mat4 projection_matrix(1.0F);
+        glm::mat4 view_projection_matrix(1.0F);
 
         auto active_camera_view = registry.view<component::tag::active_camera>();
         bool active_camera_exists = !active_camera_view.empty();
@@ -27,17 +25,13 @@ namespace blossom::system
         {
           auto active_camera_entity = active_camera_view.front();
 
-          // Checking whether the active camera is an orthographic camera
-          if (auto* orthographic_camera = registry.try_get<component::orthographic_camera>(active_camera_entity))
+          if (auto* vp_matrix = registry.try_get<component::view_projection_matrix>(active_camera_entity))
           {
-            view_matrix = orthographic_camera->view_matrix;
-            projection_matrix = orthographic_camera->projection_matrix;
+            view_projection_matrix = vp_matrix->matrix;
           }
-          // Checking whether the active camera is a perspective camera
-          else if (auto* perspective_camera = registry.try_get<component::perspective_camera>(active_camera_entity))
+          else
           {
-            view_matrix = perspective_camera->view_matrix;
-            projection_matrix = perspective_camera->projection_matrix;
+            std::cout << "WARNING (blossom::system::render): Active camera doesn't have component::view_projection_matrix." << "\n";
           }
         }
         else
@@ -45,34 +39,23 @@ namespace blossom::system
           std::cout << "WARNING (blossom::system::render): No active camera detected. Drawing without a camera." << "\n";
         }
 
-        auto mesh_view = registry.view<component::transform, component::mesh>();
-        for ( auto [entity, transform, mesh] : mesh_view.each() )
+        auto mesh_view = registry.view<component::transform_matrix, component::mesh>();
+        for ( auto [entity, transform_matrix, mesh] : mesh_view.each() )
         {
-          draw_(mesh, transform, view_matrix, projection_matrix);
+          const auto MVP_MATRIX = view_projection_matrix * transform_matrix.matrix;
+          draw_(mesh, MVP_MATRIX);
         }
       }
 
     private:
-      static void draw_(const component::mesh& mesh, const component::transform& transform, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
+      static void draw_(const component::mesh& mesh, const glm::mat4& mvp_matrix)
       {
         glUseProgram(mesh.shader_program);
         glUniformMatrix4fv(
-            mesh.model_uniform_location, 
+            mesh.mvp_uniform_location, 
             1, 
             GL_FALSE, 
-            glm::value_ptr( transform.matrix ) );
-
-        glUniformMatrix4fv(
-            mesh.view_uniform_location, 
-            1, 
-            GL_FALSE, 
-            glm::value_ptr(view_matrix) );
-
-        glUniformMatrix4fv(
-            mesh.projection_uniform_location, 
-            1, 
-            GL_FALSE, 
-            glm::value_ptr(projection_matrix) );
+            glm::value_ptr(mvp_matrix) );
 
         glBindVertexArray(mesh.vao);
         glPolygonMode(GL_FRONT_AND_BACK, mesh.polygon_mode);
