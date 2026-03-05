@@ -5,22 +5,33 @@
 #include <entt/entt.hpp>
 #include "../components/transform.h"
 #include "../components/transform_matrix.h"
+#include "../components/tags/dirty.h"
 
 namespace blossom::system
 {
   class transform
   {
     public:
+      static void init(entt::registry& registry)
+      {
+        registry.on_construct<component::transform>().connect<&on_construct_>();
+      }
       static void update(entt::registry& registry)
       {
-        auto view = registry.view<component::transform, component::transform_matrix>();
+        auto view = registry.view<component::transform, component::transform_matrix, component::tag::dirty>();
         for ( auto [entity, transform, transform_matrix] : view.each() )
         {
           update_transform_matrix_(transform, transform_matrix);
         }
+        registry.clear<component::tag::dirty>();
       }
 
     private:
+      static void on_construct_(entt::registry& registry, entt::entity entity)
+      {
+        registry.emplace_or_replace<component::tag::dirty>(entity);
+        registry.emplace_or_replace<component::transform_matrix>(entity);
+      }
       static void update_transform_matrix_(const component::transform& transform, component::transform_matrix& transform_matrix)
       {
         auto local_to_world = glm::mat4(1.0F);
