@@ -20,6 +20,7 @@ auto main() -> int
   blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
 
   entt::registry registry;
+  blossom::system::transform::init(registry);
 
   constexpr glm::vec3 RECTANGLE_POSITION = { 0.0F, 0.0F, 0.0F };
   constexpr glm::vec2 RECTANGLE_SCALE    = { 200.0F, 100.0F };

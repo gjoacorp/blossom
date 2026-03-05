@@ -36,6 +36,7 @@ auto main() -> int
   const glm::vec3 CAMERA_POSITION = { 0.0F, 0.0F, 5.0F };
 
   entt::registry registry;
+  blossom::system::transform::init(registry);
 
   blossom::factory::orthographic_camera{registry}
     .with_width    (WINDOW_WIDTH)

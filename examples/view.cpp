@@ -19,6 +19,7 @@ auto main() -> int
     glDepthFunc(GL_LEQUAL);
 
     entt::registry registry;
+    blossom::system::transform::init(registry);
 
     constexpr glm::vec3 CAMERA_POSITION = { 0.0F, 1.0F, 1.0F };
     constexpr glm::vec3 CAMERA_ROTATION = {-45.0F, 0.0F,  0.0F};
