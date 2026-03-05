@@ -3,7 +3,6 @@
 
 #include <entt/entt.hpp>
 #include "../components/transform.h"
-#include "../components/transform_matrix.h"
 #include "../components/orthographic_camera.h"
 #include "../components/view_projection_matrix.h"
 #include "../components/tags/active_camera.h"
@@ -18,7 +17,6 @@ namespace blossom::factory
         entity_                 =  registry_.create();
         registry_.emplace<component::orthographic_camera>(entity_);
         registry_.emplace<component::transform>(entity_);
-        registry_.emplace<component::transform_matrix>(entity_);
         registry_.emplace<component::view_projection_matrix>(entity_);
       }
 
