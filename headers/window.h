@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <string>
 
 namespace blossom
 {
@@ -30,6 +31,10 @@ namespace blossom
     private:
       /// @brief Resizes the viewport when the window is resized.
       static void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
+      /// @brief Error callback function for GLFW.
+      static void fatal_error_callback_(int error, const char* description);
+      /// @brief Manually defined retrieval of error name from GLFW error int.
+      static std::string get_error_name_(int error);
   };
 }
 
