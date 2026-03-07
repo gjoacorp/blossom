@@ -12,21 +12,13 @@ window::window(int width, int height, const char* title)
     throw std::runtime_error("ERROR: Failed to initialise GLFW.");
   }
 
-  int platform = glfwGetPlatform();
-  std::cout << platform << std::endl;
-
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-  if (platform == GLFW_PLATFORM_WAYLAND) {
-      std::cout << "Wayland detected by GLFW." << std::endl;
-      glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
-  }
 
   window_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
 
   if (window_ptr == NULL ) {
-      std::cout << "Failed to create GLFW window." << std::endl;
+      throw std::runtime_error("Failed to create GLFW window.");
       glfwTerminate();
   }
 
