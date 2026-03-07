@@ -61,17 +61,39 @@ void window::fatal_error_callback_(int error, const char* description)
 
 std::string window::get_error_name_(int error) 
 {
+    std::string output = "";
     switch (error) 
     {
-        case GLFW_NO_ERROR:  return "GLFW_NO_ERROR";
-        case GLFW_NOT_INITIALIZED:  return "GLFW_NOT_INITIALIZED";
-        case GLFW_NO_CURRENT_CONTEXT:  return "GLFW_NO_CURRENT_CONTEXT";
-        case GLFW_INVALID_ENUM:  return "GLFW_INVALID_ENUM";
-        case GLFW_OUT_OF_MEMORY:  return "GLFW_OUT_OF_MEMORY";;
-        case GLFW_API_UNAVAILABLE:  return "GLFW_API_UNAVAILABLE";;
-        case GLFW_VERSION_UNAVAILABLE:  return "GLFW_VERSION_UNAVAILABLE";
-        case GLFW_PLATFORM_ERROR:  return "GLFW_PLATFORM_ERROR";
-        case GLFW_FORMAT_UNAVAILABLE:  return "GLFW_FORMAT_UNAVAILABLE";
-        case GLFW_NO_WINDOW_CONTEXT:  return "GLFW_NO_WINDOW_CONTEXT";
+        case GLFW_NO_ERROR:
+            output = "GLFW_NO_ERROR";
+            break;
+        case GLFW_NOT_INITIALIZED:  
+            output = "GLFW_NOT_INITIALIZED";
+            break;
+        case GLFW_NO_CURRENT_CONTEXT:  
+            output = "GLFW_NO_CURRENT_CONTEXT";
+            break;
+        case GLFW_INVALID_ENUM:  
+            output = "GLFW_INVALID_ENUM";
+            break;
+        case GLFW_OUT_OF_MEMORY:  
+            output = "GLFW_OUT_OF_MEMORY";;
+            break;
+        case GLFW_API_UNAVAILABLE:  
+            output = "GLFW_API_UNAVAILABLE";;
+            break;
+        case GLFW_VERSION_UNAVAILABLE:  
+            output = "GLFW_VERSION_UNAVAILABLE";
+            break;
+        case GLFW_PLATFORM_ERROR:  
+            output = "GLFW_PLATFORM_ERROR";
+            break;
+        case GLFW_FORMAT_UNAVAILABLE:  
+            output = "GLFW_FORMAT_UNAVAILABLE";
+            break;
+        case GLFW_NO_WINDOW_CONTEXT:  
+            output = "GLFW_NO_WINDOW_CONTEXT";
+            break;
     }
+    return output;
 }
