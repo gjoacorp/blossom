@@ -2,21 +2,24 @@
 #define BLOSSOM_SYSTEM_TRANSFORM_H
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <entt/entt.hpp>
+#include "../systems/base_system.h"
 #include "../components/transform.h"
 #include "../components/transform_matrix.h"
 #include "../components/tags/dirty.h"
 
 namespace blossom::system
 {
-  class transform
+  class transform : public base_system<transform>
   {
-    public:
-      static void init(entt::registry& registry)
+    friend class base_system<transform>;
+
+    private:
+      static void init_impl_(entt::registry& registry)
       {
         registry.on_construct<component::transform>().connect<&on_construct_>();
       }
-      static void update(entt::registry& registry)
+
+      static void update_impl_(entt::registry& registry)
       {
         auto view = registry.view<component::transform, component::transform_matrix, component::tag::dirty>();
         for ( auto [entity, transform, transform_matrix] : view.each() )
@@ -26,12 +29,12 @@ namespace blossom::system
         registry.clear<component::tag::dirty>();
       }
 
-    private:
-      static void on_construct_(entt::registry& registry, entt::entity entity)
+      static void on_construct_impl_(entt::registry& registry, entt::entity entity)
       {
         registry.emplace_or_replace<component::tag::dirty>(entity);
         registry.emplace_or_replace<component::transform_matrix>(entity);
       }
+
       static void update_transform_matrix_(const component::transform& transform, component::transform_matrix& transform_matrix)
       {
         auto local_to_world = glm::mat4(1.0F);
