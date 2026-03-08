@@ -1,5 +1,6 @@
 #include "../headers/window.h"
 #include <stdexcept>
+#include <iostream>
 
 using blossom::window;
 
@@ -22,8 +23,9 @@ window::window(int width, int height, const char* title)
   {
       const std::string description = reinterpret_cast<const char*>(glewGetErrorString(err));
       const std::string error_string = "ERROR > glewInit failed. \nREASON > " + description;
-      glfwTerminate();
-      throw std::runtime_error(error_string);
+      //glfwTerminate();
+      //throw std::runtime_error(error_string);
+      std::cout << error_string + ". Continuing..." << std::endl;
   }
 
   glfwSwapInterval(1); 
