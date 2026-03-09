@@ -21,11 +21,11 @@ window::window(int width, int height, const char* title)
   GLenum err = glewInit();
   if ( err != GLEW_OK )
   {
-      const std::string description = reinterpret_cast<const char*>(glewGetErrorString(err));
-      const std::string error_string = "ERROR > glewInit failed. \nREASON > " + description;
+      const std::string DESCRIPTION = reinterpret_cast<const char*>(glewGetErrorString(err));
+      const std::string ERROR_STRING = "ERROR > glewInit failed. \nREASON > " + DESCRIPTION;
       //glfwTerminate();
       //throw std::runtime_error(error_string);
-      std::cout << error_string + ". Continuing..." << std::endl;
+      std::cout << ERROR_STRING + ". Continuing..." << std::endl;
   }
 
   glfwSwapInterval(1); 
@@ -56,9 +56,9 @@ void window::framebuffer_size_callback_(GLFWwindow* window, int width, int heigh
 
 void window::fatal_error_callback_(int error, const char* description) 
 {
-    const std::string error_string = "ERROR > " + get_error_name_(error) + "\nDESCRIPTION > " + std::string(description);
+    const std::string ERROR_STRING = "ERROR > " + get_error_name_(error) + "\nDESCRIPTION > " + std::string(description);
     glfwTerminate();
-    throw std::runtime_error(error_string);
+    throw std::runtime_error(ERROR_STRING);
 }
 
 std::string window::get_error_name_(int error) 
