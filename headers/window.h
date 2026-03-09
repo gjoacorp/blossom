@@ -34,7 +34,7 @@ namespace blossom
       /// @brief Error callback function for GLFW.
       static void fatal_error_callback_(int error, const char* description);
       /// @brief Manually defined retrieval of error name from GLFW error int.
-      static std::string get_error_name_(int error);
+      static auto get_error_name_(int error) -> std::string;
   };
 }
 
