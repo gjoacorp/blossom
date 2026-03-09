@@ -15,6 +15,8 @@ window::window(int width, int height, const char* title)
 
   window_ptr = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
+  const int PLATFORM = glfwGetPlatform();
+
   glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
 
@@ -22,10 +24,14 @@ window::window(int width, int height, const char* title)
   if ( err != GLEW_OK )
   {
     const std::string DESCRIPTION = reinterpret_cast<const char*>(glewGetErrorString(err));
-    const std::string ERROR_STRING = "ERROR > glewInit failed. \nREASON > " + DESCRIPTION;
-    //glfwTerminate();
-    //throw std::runtime_error(error_string);
-    std::cout << ERROR_STRING + ". Continuing..." << '\n';
+
+    if (PLATFORM != GLFW_PLATFORM_WAYLAND && DESCRIPTION != "No GLX display")
+    {
+      const std::string ERROR_STRING = "ERROR > glewInit failed. \nREASON > " + DESCRIPTION;
+      glfwTerminate();
+      throw std::runtime_error(ERROR_STRING);
+    }
+    std::cout << "WARNING: Wayland detected. No GLX display error from glewInit() has been ignored.\n";
   }
 
   glfwSwapInterval(1); 
