@@ -1,6 +1,6 @@
 #include "../headers/shader.h"
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
-#include <GL/glew.h>
 #include <stdexcept>
 #include <fstream>
 #include <iostream>
