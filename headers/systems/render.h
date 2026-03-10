@@ -8,6 +8,7 @@
 #include "../components/tags/active_camera.h"
 #include "../components/view_projection_matrix.h"
 #include "../components/transform_matrix.h"
+#include "../components/mvp_matrix.h"
 #include "../components/mesh.h"
 
 namespace blossom::system
@@ -42,11 +43,11 @@ namespace blossom::system
           std::cout << "WARNING (blossom::system::render): No active camera detected. Drawing without a camera." << "\n";
         }
 
-        auto mesh_view = registry.view<component::transform_matrix, component::mesh>();
-        for ( auto [entity, transform_matrix, mesh] : mesh_view.each() )
+        auto mesh_view = registry.view<component::transform_matrix, component::mvp_matrix, component::mesh>();
+        for ( auto [entity, transform_matrix, mvp_matrix, mesh] : mesh_view.each() )
         {
-          const auto MVP_MATRIX = view_projection_matrix * transform_matrix.matrix;
-          draw_(mesh, MVP_MATRIX);
+          mvp_matrix.matrix = view_projection_matrix * transform_matrix.matrix;
+          draw_(mesh, mvp_matrix.matrix);
         }
       }
 
