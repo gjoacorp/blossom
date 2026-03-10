@@ -10,12 +10,12 @@ window::window(int width, int height, const char* title)
 
   glfwInit();
 
+  const int PLATFORM = glfwGetPlatform();
+
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
   window_ptr = glfwCreateWindow(width, height, title, nullptr, nullptr);
-
-  const int PLATFORM = glfwGetPlatform();
 
   glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
@@ -23,23 +23,15 @@ window::window(int width, int height, const char* title)
   GLenum err = glewInit();
   if (err != GLEW_OK)
   {
-      const std::string DESCRIPTION = reinterpret_cast<const char*>(glewGetErrorString(err));
-      const std::string error_string = "ERROR > glewInit failed. \nREASON > " + DESCRIPTION;
+    const std::string DESCRIPTION = reinterpret_cast<const char*>(glewGetErrorString(err));
 
-      // if statement checks if OpenGL appears operational despite this error.
-      if (glGetError() == GL_NO_ERROR && glGetString(GL_VERSION) != NULL)
-      {
-          // if statement checks if the platform is Wayland and the particular error is raised.
-          if (PLATFORM != GLFW_PLATFORM_WAYLAND && err == GLEW_ERROR_NO_GLX_DISPLAY)
-          {
-              std::cout << "Wayland context identified with particular error >" + error_string + "\n.OpenGL appears operational. Continuing..." << std::endl;
-          }
-      }
-      else
-      {
-          glfwTerminate();
-          throw std::runtime_error(error_string);
-      }
+    if (PLATFORM != GLFW_PLATFORM_WAYLAND && err != GLEW_ERROR_NO_GLX_DISPLAY )
+    {
+      const std::string ERROR_STRING = "ERROR > glewInit failed. \nREASON > " + DESCRIPTION;
+      glfwTerminate();
+      throw std::runtime_error(ERROR_STRING);
+    }
+    std::cout << "WARNING: Wayland detected. No GLX display error from glewInit() has been ignored.\n";
   }
 
   glfwSwapInterval(1); 
