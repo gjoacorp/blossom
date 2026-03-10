@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <string>
 
 namespace blossom
 {
@@ -11,7 +12,7 @@ namespace blossom
     public:
       /// @brief The pointer returned by [glfwCreateWindow()](https://www.glfw.org/docs/latest/group__window.html#ga3555a418df92ad53f917597fe2f64aeb).
       /// This pointer is set in the `window` constructor.
-      GLFWwindow* window_ptr;
+      GLFWwindow* window_ptr    = nullptr;
 
       /// @brief Constructs a new window with an associated OpenGL context.
       /// @param width is width of the window in pixels.
@@ -30,6 +31,10 @@ namespace blossom
     private:
       /// @brief Resizes the viewport when the window is resized.
       static void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
+      /// @brief Error callback function for GLFW.
+      static void fatal_error_callback_(int error, const char* description);
+      /// @brief Manually defined retrieval of error name from GLFW error int.
+      static auto get_error_name_(int error) -> std::string;
   };
 }
 
