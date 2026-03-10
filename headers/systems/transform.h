@@ -7,6 +7,9 @@
 #include "../components/transform_matrix.h"
 #include "../components/tags/dirty.h"
 
+#include "../components/orthographic_camera.h"
+#include "../components/perspective_camera.h"
+
 namespace blossom::system
 {
   class transform : public base_system<transform>
@@ -24,9 +27,16 @@ namespace blossom::system
         auto view = registry.view<component::transform, component::transform_matrix, component::tag::dirty>();
         for ( auto [entity, transform, transform_matrix] : view.each() )
         {
-          update_transform_matrix_(transform, transform_matrix);
+            update_transform_matrix_(transform, transform_matrix);
+
+            auto* ortho_camera = registry.try_get<component::orthographic_camera>(entity);
+            auto* persp_camera = registry.try_get<component::perspective_camera>(entity);
+
+            if (!ortho_camera && !persp_camera)
+            {
+                registry.remove<component::tag::dirty>(entity);
+            }
         }
-        registry.clear<component::tag::dirty>();
       }
 
       static void on_construct_impl_(entt::registry& registry, entt::entity entity)
