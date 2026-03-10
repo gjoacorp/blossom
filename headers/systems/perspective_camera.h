@@ -4,6 +4,7 @@
 #include "../components/perspective_camera.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include "../components/transform_matrix.h"
+#include "../components/tags/dirty.h"
 #include "../components/view_projection_matrix.h"
 #include <entt/entt.hpp>
 
