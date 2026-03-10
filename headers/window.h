@@ -1,7 +1,7 @@
 #ifndef BLOSSOM_WINDOW_H
 #define BLOSSOM_WINDOW_H
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <string>
 

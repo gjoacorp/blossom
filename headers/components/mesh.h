@@ -1,7 +1,7 @@
 #ifndef BLOSSOM_COMPONENT_MESH_H
 #define BLOSSOM_COMPONENT_MESH_H
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 namespace blossom::component
 {
