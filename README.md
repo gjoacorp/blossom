@@ -17,7 +17,6 @@ To use **blossom**, you'll first need to install the following prerequisites:
 
 - [OpenGL Mathematics (GLM)](https://github.com/g-truc/glm)
 - [GLFW](https://github.com/glfw/glfw)
-- [GLAD](https://github.com/Dav1dde/glad)
 - [EnTT](https://github.com/skypjack/entt)
 
 ## Building the examples
