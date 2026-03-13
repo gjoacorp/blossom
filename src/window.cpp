@@ -13,27 +13,19 @@ window::window(int width, int height, const char* title)
   const int PLATFORM = glfwGetPlatform();
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
   window_ptr = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
   glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
 
-  GLenum err = glewInit();
-  if (err != GLEW_OK)
+  const bool GL_LOADED = gladLoadGL(glfwGetProcAddress);
+  if (!GL_LOADED)
   {
-    const std::string DESCRIPTION = reinterpret_cast<const char*>(glewGetErrorString(err));
-
-    if (PLATFORM != GLFW_PLATFORM_WAYLAND && err != GLEW_ERROR_NO_GLX_DISPLAY )
-    {
-      const std::string ERROR_STRING = "ERROR > glewInit failed. \nREASON > " + DESCRIPTION;
       glfwTerminate();
-      throw std::runtime_error(ERROR_STRING);
-    }
-    std::cout << "WARNING: Wayland detected. No GLX display error from glewInit() has been ignored.\n";
+      throw std::runtime_error("ERROR > glad failed to initialize.");
   }
-
   glfwSwapInterval(1); 
 }
 

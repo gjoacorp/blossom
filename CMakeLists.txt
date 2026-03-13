@@ -17,14 +17,15 @@ function(add_example name)
     add_executable(${name} ${SOURCES} examples/${name}.cpp)
     add_dependencies(${name} copy_shaders)
     target_include_directories(${name} PRIVATE include)
-    target_link_libraries(${name} PRIVATE OpenGL::GL glfw GLEW::GLEW)
+    target_link_libraries(${name} PRIVATE OpenGL::GL glfw glad)
 endfunction()
 
 cmake_policy(SET CMP0072 NEW)
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 
-find_package(GLEW REQUIRED)
+add_subdirectory(external/glad)
+
 find_package(glfw3 REQUIRED)
 
 add_example(multi_cube)
@@ -47,7 +48,7 @@ target_link_libraries(run_tests
     PRIVATE
         OpenGL::GL
         glfw
-        GLEW::GLEW
+        glad
         GTest::gtest
         GTest::gtest_main
 )
