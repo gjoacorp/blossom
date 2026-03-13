@@ -20,8 +20,8 @@ window::window(int width, int height, const char* title)
   glfwMakeContextCurrent(window_ptr);
   glfwSetFramebufferSizeCallback(window_ptr, framebuffer_size_callback_);
 
-  GLenum err = gladLoadGL(glfwGetProcAddress);
-  if (err == 0)
+  const bool GL_LOADED = gladLoadGL(glfwGetProcAddress);
+  if (!GL_LOADED)
   {
       glfwTerminate();
       throw std::runtime_error("ERROR > glad failed to initialize.");
