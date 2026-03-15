@@ -32,7 +32,8 @@ namespace blossom::system
         auto* ortho_camera = registry.try_get<component::orthographic_camera>(entity);
         auto* persp_camera = registry.try_get<component::perspective_camera>(entity);
 
-        if (!ortho_camera && !persp_camera)
+        const bool CAMERA_PRESENT = ortho_camera != nullptr || persp_camera != nullptr;
+        if (!CAMERA_PRESENT)
         {
           registry.remove<component::tag::dirty>(entity);
         }
