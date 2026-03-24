@@ -10,8 +10,6 @@ window::window(int width, int height, const char* title)
 
   glfwInit();
 
-  const int PLATFORM = glfwGetPlatform();
-
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
