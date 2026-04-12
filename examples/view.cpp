@@ -13,6 +13,7 @@ const char* window_title = "Blossom Mesh View Example";
 auto main() -> int
 {
     blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
+    glfwSwapInterval(1);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glEnable(GL_DEPTH_TEST);
@@ -36,7 +37,7 @@ auto main() -> int
 
     blossom::shader default_shader("shaders/random.frag", "shaders/default.vert");
 
-    blossom::factory::sphere(
+    auto sphere = blossom::factory::sphere(
           registry,
           1.0F,
           32,
@@ -48,6 +49,10 @@ auto main() -> int
 
     while (glfwWindowShouldClose(window.window_ptr) == 0) 
     {
+      auto& sphere_transform = registry.get<blossom::component::transform>(sphere);
+      sphere_transform.rotation += glm::vec3(0.5F, 1.0F, 0.0F);
+      blossom::system::transform::update(registry);
+
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       blossom::system::render::update(registry);
