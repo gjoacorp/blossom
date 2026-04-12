@@ -17,6 +17,11 @@ To use **blossom**, you'll first need to install the following prerequisites:
 
 - [GLFW](https://github.com/glfw/glfw)
 
+Remember to clone **blossom** with submodules. You can do this by cloning with this line
+```sh
+git clone --recursive https://github.com/gjoacorp/blossom.git
+```
+
 ## Building the examples
 
 Install [CMake](https://cmake.org/) if you don't already have it, then run the following command in the project root:
