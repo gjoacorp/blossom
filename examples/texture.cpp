@@ -5,7 +5,6 @@
 #include "../headers/systems/transform.h"
 #include "../headers/factories/camera.h"
 #include "../headers/factories/rectangle.h"
-#include "../headers/factories/cube.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../external/stb/stb_image.h"
