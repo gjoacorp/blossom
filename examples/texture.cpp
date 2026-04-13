@@ -11,7 +11,7 @@
 
 constexpr unsigned int WINDOW_WIDTH  = 1920;
 constexpr unsigned int WINDOW_HEIGHT = 1080;
-const char* window_title = "Blossom Rectangle Camera ECS Example";
+const char* window_title = "Blossom Texture Loading Example";
 
 const std::array<GLfloat,4> CLEAR_COLOR = { 0.0F, 0.0F, 0.0F, 1.0F};
 
