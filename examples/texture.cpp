@@ -20,27 +20,48 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  unsigned int texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
+  constexpr GLsizei NUMBER_OF_TEXTURES = 1;
+  GLuint                  texture_name = 0;
+
+  glGenTextures(1, &texture_name);
+  glBindTexture(GL_TEXTURE_2D, texture_name);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  int width, height, nrChannels;
-  stbi_set_flip_vertically_on_load(true);
-  unsigned char* data = stbi_load("resources/textures/couchy.png", &width, &height, &nrChannels, 0);
-  if (data)
+  int texture_width    = 0;
+  int texture_height   = 0;
+  int texture_channels = 0;
+
+  const std::string TEXTURE_PATH = "resources/textures/couchy.png";
+
+  stbi_set_flip_vertically_on_load(1);
+
+  unsigned char* data = stbi_load(TEXTURE_PATH.c_str(), &texture_width, &texture_height, &texture_channels, 0);
+
+  if (data != nullptr)
   {
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    constexpr GLint ALIGNMENT = 1;
+    constexpr GLint LOD      =  0;
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, ALIGNMENT);
+    glTexImage2D(
+        GL_TEXTURE_2D, 
+        LOD, 
+        GL_RGB, 
+        texture_width, 
+        texture_height, 
+        0, 
+        GL_RGBA, 
+        GL_UNSIGNED_BYTE, 
+        data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
   else
   {
-    std::cout << "Failed to load texture." << std::endl;
+    std::cout << "WARNING: Failed to load texture from " + TEXTURE_PATH + ".\n";
   }
   stbi_image_free(data);
 
@@ -76,7 +97,7 @@ auto main() -> int
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, texture_name);
 
     blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);
