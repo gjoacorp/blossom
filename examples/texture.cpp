@@ -4,7 +4,7 @@
 #include "../headers/systems/camera.h"
 #include "../headers/systems/transform.h"
 #include "../headers/factories/camera.h"
-#include "../headers/factories/sphere.h"
+#include "../headers/factories/rectangle.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../external/stb/stb_image.h"
@@ -20,27 +20,48 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  unsigned int texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
+  constexpr GLsizei NUMBER_OF_TEXTURES = 1;
+  GLuint                  texture_name = 0;
+
+  glGenTextures(1, &texture_name);
+  glBindTexture(GL_TEXTURE_2D, texture_name);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  int width, height, nrChannels;
-  stbi_set_flip_vertically_on_load(true);
-  unsigned char* data = stbi_load("resources/textures/flat_earth03_web.png", &width, &height, &nrChannels, 0);
-  if (data)
+  int texture_width    = 0;
+  int texture_height   = 0;
+  int texture_channels = 0;
+
+  const std::string TEXTURE_PATH = "resources/textures/couchy.png";
+
+  stbi_set_flip_vertically_on_load(1);
+
+  unsigned char* data = stbi_load(TEXTURE_PATH.c_str(), &texture_width, &texture_height, &texture_channels, 0);
+
+  if (data != nullptr)
   {
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    constexpr GLint ALIGNMENT = 1;
+    constexpr GLint LOD      =  0;
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, ALIGNMENT);
+    glTexImage2D(
+        GL_TEXTURE_2D, 
+        LOD, 
+        GL_RGB, 
+        texture_width, 
+        texture_height, 
+        0, 
+        GL_RGBA, 
+        GL_UNSIGNED_BYTE, 
+        data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
   else
   {
-    std::cout << "Failed to load texture." << std::endl;
+    std::cout << "WARNING: Failed to load texture from " + TEXTURE_PATH + ".\n";
   }
   stbi_image_free(data);
 
@@ -54,25 +75,18 @@ auto main() -> int
   constexpr glm::vec3 RECTANGLE_POSITION = { 0.0F, 0.0F, 0.0F };
   constexpr glm::vec2 RECTANGLE_SCALE    = { 200.0F, 100.0F };
 
-  constexpr glm::vec3 CAMERA_POSITION = { 0.0F, 2.0F, 2.0F };
-  constexpr glm::vec3 CAMERA_ROTATION = { -45.0F, 0.0F,  0.0F };
+  constexpr glm::vec3 CAMERA_POSITION = { 0.0F, 0.0F, 5.0F };
 
-  constexpr float CAMERA_FOV_Y = 90.0F;
+  blossom::factory::rectangle(
+      registry, 
+      RECTANGLE_POSITION, 
+      RECTANGLE_SCALE,
+      default_shader.program_id);
 
-  auto sphere = blossom::factory::sphere(
-    registry,
-    1.0F,
-    64,
-    32,
-    default_shader.program_id);
-
-  blossom::factory::camera{ registry }
-    .with_width(WINDOW_WIDTH)
-    .with_height(WINDOW_HEIGHT)
-    .with_fov_y(CAMERA_FOV_Y)
-    .with_position(CAMERA_POSITION)
-    .with_rotation(CAMERA_ROTATION)
-    .with_type(blossom::component::camera::camera_type::PERSPECTIVE)
+  blossom::factory::camera{registry}
+    .with_width    (WINDOW_WIDTH)
+    .with_height   (WINDOW_HEIGHT)
+    .with_position (CAMERA_POSITION)
     .make_active();
 
   blossom::system::transform::update(registry);
@@ -80,16 +94,10 @@ auto main() -> int
 
   while ( glfwWindowShouldClose(window.window_ptr) == 0 )
   {
-    auto& sphere_transform = registry.get<blossom::component::transform>(sphere);
-    sphere_transform.rotation += glm::vec3(0.0F, 1.0F, 0.0F);
-    blossom::system::transform::update(registry);
-
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
 
-    glEnable(GL_CULL_FACE);
-
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, texture_name);
 
     blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);
