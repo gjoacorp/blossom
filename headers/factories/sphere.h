@@ -29,6 +29,7 @@ namespace blossom::factory
     }
 
     std::vector<glm::vec3> sphere_vertices;
+    std::vector<glm::vec2> sphere_uv;
     std::vector<GLuint> sphere_indices;
 
     std::size_t current_stack;
@@ -52,6 +53,11 @@ namespace blossom::factory
 
         sphere_vertices.emplace_back( VERTEX_X, VERTEX_Y, VERTEX_Z );
 
+        float u = (glm::atan(VERTEX_X, VERTEX_Z) / (2 * glm::pi<float>())) + 0.5f;
+        float v = (glm::asin(VERTEX_Y) / glm::pi<float>()) + 0.5f;
+
+        sphere_uv.emplace_back(glm::vec2{ u, v });
+
         if ( i < sector_count )
         {
           if (i != 0)
@@ -74,6 +80,7 @@ namespace blossom::factory
 
     return mesh(registry)
       .with_vertices(sphere_vertices)
+      .with_uv(sphere_uv)
       .with_indices(sphere_indices)
       .with_scale(SPHERE_SCALE)
       .with_shader_program(shader_program)
