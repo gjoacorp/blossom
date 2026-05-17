@@ -22,13 +22,6 @@ auto main() -> int
 
   entt::registry registry;
 
-  blossom::component::texture texture {
-    .count = 1,
-    .path = "resources/textures/couchy.png",
-    .internal_format = GL_RGB,
-    .format = GL_RGBA
-  };
-
   constexpr glm::vec3 RECTANGLE_POSITION = { 0.0F, 0.0F, 0.0F };
   constexpr glm::vec2 RECTANGLE_SCALE    = { 200.0F, 100.0F };
 
@@ -38,7 +31,11 @@ auto main() -> int
       RECTANGLE_SCALE,
       default_shader.program_id);
 
-  registry.emplace<blossom::component::texture>(rectangle, texture);
+  auto &t = registry.emplace<blossom::component::texture>(rectangle);
+  t.path = "resources/textures/couchy.png";
+  t.internal_format = GL_RGB;
+  t.format = GL_RGBA;
+
   blossom::system::texture::init(registry);
 
   GLint texture_uniform_location = glGetUniformLocation(default_shader.program_id, "Texture");
@@ -60,7 +57,7 @@ auto main() -> int
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(texture.target, texture.names);
+    glBindTexture(t.target, t.names);
 
     blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);

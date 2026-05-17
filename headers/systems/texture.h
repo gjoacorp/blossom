@@ -16,14 +16,6 @@ namespace blossom::system
   class texture
   {
     public:
-      static void update(entt::registry& registry)
-      {
-        auto view = registry.view<component::texture>();
-        for ( auto [entity, texture] : view.each() )
-        {
-        }
-      }
-
       static void init(entt::registry& registry)
       {
         auto view = registry.view<component::texture>();
