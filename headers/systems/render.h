@@ -4,17 +4,25 @@
 #include <entt/entt.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+
 #include "../components/tags/active_camera.h"
 #include "../components/view_projection_matrix.h"
 #include "../components/transform_matrix.h"
 #include "../components/mesh.h"
+#include "../systems/base.h"
 
 namespace blossom::system
 {
-  class render
+  class render : public base<render>
   {
-    public:
-      static void update(entt::registry& registry)
+    friend class base<render>;
+
+    private:
+      static void init_implementation_(entt::registry& registry)
+      {
+      }
+
+      static void update_implementation_(entt::registry& registry)
       {
         glm::mat4 view_projection_matrix(1.0F);
 
@@ -47,7 +55,6 @@ namespace blossom::system
         }
       }
 
-    private:
       static void draw_(const component::mesh& mesh, const glm::mat4& mvp_matrix)
       {
         glUseProgram(mesh.shader_program);
