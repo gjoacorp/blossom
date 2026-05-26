@@ -1,18 +1,22 @@
 #ifndef BLOSSOM_SYSTEM_CAMERA_H
 #define BLOSSOM_SYSTEM_CAMERA_H
 
-#include "../components/camera.h"
+#include <entt/entt.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
+
+#include "../components/camera.h"
 #include "../components/transform_matrix.h"
 #include "../components/view_projection_matrix.h"
-#include <entt/entt.hpp>
+#include "../systems/base.h"
 
 namespace blossom::system
 {
-  class camera
+  class camera : public base<camera>
   {
-    public:
-      static void update(entt::registry& registry)
+    friend class base<camera>;
+
+    private:
+      static void update_implementation_(entt::registry& registry)
       {
         auto view = registry.view<component::transform_matrix, component::view_projection_matrix, component::camera>();
         for (auto [entity, transform_matrix, vp_matrix, camera] : view.each())
@@ -23,7 +27,10 @@ namespace blossom::system
         }
       }
 
-    private:
+      static void init_implementation_(entt::registry& registry)
+      {
+      }
+
       static auto calculate_projection_matrix_(const component::camera& camera) -> glm::mat4
       {
         if (camera.type == component::camera::camera_type::PERSPECTIVE)
