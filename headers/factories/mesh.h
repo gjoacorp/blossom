@@ -34,7 +34,13 @@ namespace blossom::factory
 
       auto with_vertices(std::vector<glm::vec3> vertices) -> mesh&
       {
-        vertices_ = std::move(vertices);
+        points_ = std::move(vertices);
+        return *this;
+      }
+
+      auto with_uv(std::vector<glm::vec2> uv) -> mesh&
+      {
+        uv_ = std::move(uv);
         return *this;
       }
 
@@ -74,6 +80,20 @@ namespace blossom::factory
       {
         auto& mesh = registry_.get<component::mesh>(entity_);
 
+        if (uv_.empty())
+        {
+          uv_.assign(points_.size(), glm::vec2());
+        }
+
+        for (size_t i = 0; i < points_.size(); i++)
+        {
+          vertices_.push_back(points_[i].x);
+          vertices_.push_back(points_[i].y);
+          vertices_.push_back(points_[i].z);
+          vertices_.push_back(uv_.at(i).x);
+          vertices_.push_back(uv_.at(i).y);
+        }
+
         mesh.vertex_count = static_cast<GLsizei>(vertices_.size());
         mesh.index_count = static_cast<GLsizei>(indices_.size());
 
@@ -87,7 +107,10 @@ namespace blossom::factory
       entt::registry&        registry_;
       entt::entity           entity_;
 
-      std::vector<glm::vec3> vertices_;
+      std::vector<glm::vec3> points_;
+      std::vector<glm::vec2> uv_;
+
+      std::vector<float> vertices_;
       std::vector<GLuint> indices_;
 
       void init_uniform_locations_()
@@ -107,7 +130,7 @@ namespace blossom::factory
         glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
         glNamedBufferStorage(
             mesh.vbo, 
-            static_cast<GLsizeiptr>( vertices_.size() * sizeof(glm::vec3) ), 
+            static_cast<GLsizeiptr>(vertices_.size() * sizeof(float)),
             vertices_.data(), 
             0);
 
@@ -123,14 +146,26 @@ namespace blossom::factory
         }
 
         glVertexAttribPointer(
-            0, 
-            3, 
-            GL_FLOAT, 
-            GL_FALSE, 
-            sizeof(glm::vec3), 
-            nullptr );
-
+          0,
+          3,
+          GL_FLOAT,
+          GL_FALSE,
+          sizeof(glm::vec3) + sizeof(glm::vec2),
+          nullptr
+        );
         glEnableVertexAttribArray(0);
+
+        //  Vertex UV
+        glVertexAttribPointer(
+          1,
+          2,
+          GL_FLOAT,
+          GL_FALSE,
+          sizeof(glm::vec3) + sizeof(glm::vec2),
+          reinterpret_cast<void*>(sizeof(glm::vec3))
+        );
+        glEnableVertexAttribArray(1);
+
         glBindVertexArray(0);
       }
   };

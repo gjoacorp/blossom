@@ -13,9 +13,15 @@ add_custom_target(copy_shaders ALL
    COMMENT "Copying shaders to build directory"
 )
 
+add_custom_target(copy_resources ALL
+   COMMAND ${CMAKE_COMMAND} -E copy_directory
+   ${CMAKE_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources
+   COMMENT "Copying resources to build directory"
+)
+
 function(add_example name)
     add_executable(${name} ${SOURCES} examples/${name}.cpp)
-    add_dependencies(${name} copy_shaders)
+    add_dependencies(${name} copy_shaders copy_resources)
     target_include_directories(${name} PRIVATE include)
     target_link_libraries(${name} PRIVATE OpenGL::GL glfw glad EnTT::EnTT glm::glm)
 endfunction()
@@ -42,6 +48,7 @@ add_example(triangle)
 add_example(view)
 add_example(lines)
 add_example(squiggle)
+add_example(texture)
 
 find_package(GTest REQUIRED)
 set(TEST_SOURCES

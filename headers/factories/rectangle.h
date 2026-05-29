@@ -15,6 +15,14 @@ namespace blossom::factory
       glm::vec3{-1.0F, -1.0F, 0.0F},
       glm::vec3{ 1.0F, -1.0F, 0.0F} 
     };
+
+    const std::vector<glm::vec2> UV =
+    {
+      glm::vec2{ 1.0F, 1.0F },
+      glm::vec2{ 0.0F, 1.0F },
+      glm::vec2{ 0.0F, 0.0F },
+      glm::vec2{ 1.0F, 0.0F },
+    };
     
     const std::vector<GLuint> INDICES = 
     {
@@ -28,6 +36,7 @@ namespace blossom::factory
       .with_position(position)
       .with_scale(SCALE)
       .with_vertices(VERTICES)
+      .with_uv(UV)
       .with_indices(INDICES)
       .with_shader_program(shader_program)
       .build();
