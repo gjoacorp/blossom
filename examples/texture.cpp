@@ -18,7 +18,12 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  blossom::shader default_shader {"shaders/texture.frag", "shaders/texture.vert"};
+  const blossom::shader_info SHADER_INFO
+  {
+    .vertex_shader_path = "shaders/texture.vert",
+    .fragment_shader_path = "shaders/texture.frag"
+  };
+  const auto DEFAULT_SHADER = blossom::shader::compile(SHADER_INFO);
 
   entt::registry registry;
 
@@ -29,16 +34,16 @@ auto main() -> int
       registry, 
       RECTANGLE_POSITION, 
       RECTANGLE_SCALE,
-      default_shader.program_id);
+      DEFAULT_SHADER);
 
-  auto &t = registry.emplace<blossom::component::texture>(rectangle);
-  t.path = "resources/textures/couchy.png";
-  t.internal_format = GL_RGB;
-  t.format = GL_RGBA;
+  auto& texture_component = registry.emplace<blossom::component::texture>(rectangle);
+  texture_component.path = "resources/textures/couchy.png";
+  texture_component.internal_format = GL_RGB;
+  texture_component.format = GL_RGBA;
 
   blossom::system::texture::init(registry);
 
-  GLint texture_uniform_location = glGetUniformLocation(default_shader.program_id, "Texture");
+  GLint texture_uniform_location = glGetUniformLocation(DEFAULT_SHADER, "Texture");
   glUniform1i(texture_uniform_location, 0);
 
   constexpr glm::vec3 CAMERA_POSITION = { 0.0F, 0.0F, 5.0F };
@@ -57,7 +62,7 @@ auto main() -> int
     glClearBufferfv(GL_COLOR, 0, CLEAR_COLOR.data());
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(t.target, t.names);
+    glBindTexture(texture_component.target, texture_component.names);
 
     blossom::system::render::update(registry);
     glfwSwapBuffers(window.window_ptr);
