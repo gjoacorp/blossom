@@ -17,7 +17,13 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
+  const blossom::shader_info SHADER_INFO
+  {
+    .vertex_shader_path   = "shaders/default.vert",
+    .fragment_shader_path = "shaders/default.frag"
+  };
+
+  const GLuint SHADER_PROGRAM_ID = blossom::shader::compile(SHADER_INFO);
 
   std::vector<glm::vec3> triangle_vertices =
   {
@@ -41,7 +47,7 @@ auto main() -> int
   blossom::factory::mesh(registry)
     .with_vertices(triangle_vertices)
     .with_scale(TRIANGLE_SCALE)
-    .with_shader_program(default_shader.program_id)
+    .with_shader_program(SHADER_PROGRAM_ID)
     .build();
 
   blossom::system::transform::update(registry);

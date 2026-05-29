@@ -17,28 +17,30 @@ class shader_test : public ::testing::Test
     }
 };
 
-// test that the constructor throws a std::runtime_error when there is no valid OpenGL context
-TEST_F(shader_test, constructor_with_no_gl_context_throws)
+TEST_F(shader_test, compile_with_no_gl_context_throws_runtime_error)
 {
-  EXPECT_THROW(blossom::shader("", ""), std::runtime_error);
+  const blossom::shader_info INFO = {.vertex_shader_path="shaders/default.vert", .fragment_shader_path="shaders/default.frag"};
+  EXPECT_THROW(blossom::shader::compile(INFO), std::runtime_error);
 }
 
-// test that print_log() throws a std::runtime_error when there is no valid OpenGL context
-TEST_F(shader_test, print_log_with_no_gl_context_throws)
-{
-  EXPECT_THROW(blossom::shader::print_log(INVALID_SHADER_PROGRAM), std::runtime_error);
-}
-
-// test that print_log() throws a std::runtime_error when the passed shader is valid
-TEST_F(shader_test, print_log_with_invalid_shader_throws)
+TEST_F(shader_test, compile_with_invalid_vertex_shader_throws_runtime_error)
 {
   create_dummy_window_();
-  EXPECT_THROW(blossom::shader::print_log(INVALID_SHADER_PROGRAM), std::runtime_error);
+  const blossom::shader_info INFO
+  {
+    .vertex_shader_path   = "shaders/squiggle.geom", 
+    .fragment_shader_path = "shaders/default.frag"
+  };
+  EXPECT_THROW(blossom::shader::compile(INFO), std::runtime_error);
 }
 
-// test that read_source() throws a std::runtime_error when the passed path is invalid
-TEST_F(shader_test, read_source_invalid_file_path_throws)
+TEST_F(shader_test, compile_with_invalid_fragment_shader_throws_runtime_error)
 {
-  const char* invalid_path = "abcdefghijklmnopqrstuvwxyz";
-  EXPECT_THROW(blossom::shader::read_source(invalid_path), std::runtime_error);
+  create_dummy_window_();
+  const blossom::shader_info INFO
+  {
+    .vertex_shader_path   = "shaders/default.vert",
+    .fragment_shader_path = "shaders/default.vert"
+  };
+  EXPECT_THROW(blossom::shader::compile(INFO), std::runtime_error);
 }

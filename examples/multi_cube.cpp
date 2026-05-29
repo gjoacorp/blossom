@@ -11,8 +11,6 @@ const unsigned int TOTAL_CUBES = 1000000;
 const unsigned int NUM_VAOS = 1;
 const unsigned int NUM_VBOS = 2;
 
-GLuint rendering_program; 
-
 glm::vec3 camera_pos;
 
 GLuint vao[NUM_VAOS]; 
@@ -49,15 +47,15 @@ void init_vertices()
   glBufferData (GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
 }
 
-void render_cube(GLFWwindow* window, glm::vec3 cube_pos, double& time) 
+void render_cube(GLFWwindow* window, glm::vec3 cube_pos, double& time, GLuint shader_program) 
 {
   GLuint v_loc, proj_loc, t_loc, m_loc;
   glm::mat4 p_mat, v_mat, m_mat;
 
-  v_loc = glGetUniformLocation (rendering_program, "v_matrix");
-  proj_loc = glGetUniformLocation (rendering_program, "proj_matrix");
-  m_loc = glGetUniformLocation (rendering_program, "m_matrix");
-  t_loc = glGetUniformLocation (rendering_program, "tf");
+  v_loc = glGetUniformLocation (shader_program, "v_matrix");
+  proj_loc = glGetUniformLocation (shader_program, "proj_matrix");
+  m_loc = glGetUniformLocation (shader_program, "m_matrix");
+  t_loc = glGetUniformLocation (shader_program, "tf");
 
   // building the perspective matrix
 
@@ -76,16 +74,16 @@ void render_cube(GLFWwindow* window, glm::vec3 cube_pos, double& time)
   glUniform1f (t_loc, static_cast<float>(time));
 }
 
-void display(GLFWwindow* window, double time) 
+void display(GLFWwindow* window, double time, GLuint shader_program) 
 {
   glClearColor (0.0, 0.0, 0.0, 1.0);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glUseProgram (rendering_program);
+  glUseProgram (shader_program);
   glEnable (GL_DEPTH_TEST);
   glDepthFunc (GL_LEQUAL);
   glDrawArraysInstanced (GL_TRIANGLES, 0, 36, TOTAL_CUBES);
 
-  render_cube(window, {0.0f, 0.0f, 1.0f}, time);
+  render_cube(window, {0.0f, 0.0f, 1.0f}, time, shader_program);
 }
 
 int main(void) 
@@ -95,8 +93,13 @@ int main(void)
 
   init_vertices();
 
-  blossom::shader s ("shaders/multi_cube.frag", "shaders/multi_cube.vert");
-  rendering_program = s.program_id;
+  const blossom::shader_info SHADER_INFO
+  {
+    .vertex_shader_path   = "shaders/multi_cube.vert",
+    .fragment_shader_path = "shaders/multi_cube.frag"
+  };
+
+  const GLuint SHADER_PROGRAM_ID = blossom::shader::compile(SHADER_INFO);
 
   while ( !glfwWindowShouldClose(w.window_ptr) ) 
   {
@@ -119,7 +122,7 @@ int main(void)
     else if (glfwGetKey(w.window_ptr, GLFW_KEY_A) == GLFW_PRESS) {
       camera_pos[0] -= 5000.0 * delta_time;
     }
-    display(w.window_ptr, glfwGetTime());
+    display(w.window_ptr, glfwGetTime(), SHADER_PROGRAM_ID);
     glfwSwapBuffers(w.window_ptr); // swaps the front and back colour buffers
     glfwPollEvents();
   }

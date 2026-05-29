@@ -26,7 +26,7 @@ auto main() -> int
   constexpr float CAMERA_FOV_Y = 90.0F;
 
   blossom::factory::camera{registry}
-    .with_width (WINDOW_WIDTH)
+  .with_width (WINDOW_WIDTH)
     .with_height(WINDOW_HEIGHT)
     .with_fov_y (CAMERA_FOV_Y)
     .with_position(CAMERA_POSITION)
@@ -34,8 +34,14 @@ auto main() -> int
     .with_type(blossom::component::camera::camera_type::PERSPECTIVE)
     .make_active();
 
-  blossom::shader waves_shader("shaders/waves.frag", "shaders/waves.vert");
-  GLint time_uniform_location = glGetUniformLocation(waves_shader.program_id, "time");
+  const blossom::shader_info SHADER_INFO
+  {
+    .vertex_shader_path   = "shaders/waves.vert",
+    .fragment_shader_path = "shaders/waves.frag"
+  };
+
+  const GLuint SHADER_PROGRAM_ID = blossom::shader::compile(SHADER_INFO);
+  GLint time_uniform_location = glGetUniformLocation(SHADER_PROGRAM_ID, "time");
 
   constexpr uint32_t TOTAL_GRID_TILES = 500;
   constexpr glm::vec2 GRID_TILE_WIDTH = {0.25F, 0.25F};
@@ -44,7 +50,7 @@ auto main() -> int
       registry,
       TOTAL_GRID_TILES,
       GRID_TILE_WIDTH,
-      waves_shader.program_id);
+      SHADER_PROGRAM_ID);
 
   blossom::system::transform::update(registry);
   blossom::system::camera::update(registry);

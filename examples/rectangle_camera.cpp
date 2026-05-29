@@ -17,7 +17,13 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
+  const blossom::shader_info SHADER_INFO
+  {
+    .vertex_shader_path   = "shaders/default.vert",
+    .fragment_shader_path = "shaders/default.frag"
+  };
+
+  const GLuint SHADER_PROGRAM_ID = blossom::shader::compile(SHADER_INFO);
 
   entt::registry registry;
 
@@ -30,7 +36,7 @@ auto main() -> int
       registry, 
       RECTANGLE_POSITION, 
       RECTANGLE_SCALE,
-      default_shader.program_id);
+      SHADER_PROGRAM_ID);
 
   blossom::factory::camera{registry}
     .with_width    (WINDOW_WIDTH)

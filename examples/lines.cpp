@@ -17,7 +17,13 @@ auto main() -> int
   blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
   window.enter_fullscreen();
 
-  blossom::shader default_shader {"shaders/default.frag", "shaders/default.vert"};
+  const blossom::shader_info SHADER_INFO
+  {
+    .vertex_shader_path   = "shaders/default.vert",
+    .fragment_shader_path = "shaders/default.frag"
+  };
+
+  const GLuint SHADER_PROGRAM_ID = blossom::shader::compile(SHADER_INFO);
 
   // Vertices (start and end points) for a line
   const glm::vec3 LINE_START_POINT = {-200.0F, 0.0F, 0.0F};
@@ -45,13 +51,13 @@ auto main() -> int
 
   blossom::factory::line(
       registry,
-      default_shader.program_id,
+      SHADER_PROGRAM_ID,
       LINE_START_POINT,
       LINE_END_POINT);
 
   blossom::factory::line(
       registry,
-      default_shader.program_id,
+      SHADER_PROGRAM_ID,
       line_strip_points);
 
   blossom::system::transform::update(registry);
