@@ -80,11 +80,18 @@ namespace blossom::factory
       {
         auto& mesh = registry_.get<component::mesh>(entity_);
 
+        // If uv_ is empty, this means that .with_uv() wasn't called.
+        // Hence, we fill the uv_ container with (0, 0) values.
         if (uv_.empty())
         {
           uv_.assign(points_.size(), glm::vec2());
         }
 
+        // vertices_ is organised into 4-byte blocks as shown below:
+        //
+        // | X | Y | Z | U | V |
+        //
+        // If uv_ is never supplied ( i.e. via .with_uv() ) then U and V are zero.
         for (size_t i = 0; i < points_.size(); i++)
         {
           vertices_.push_back(points_[i].x);
@@ -107,10 +114,10 @@ namespace blossom::factory
       entt::registry&        registry_;
       entt::entity           entity_;
 
-      std::vector<glm::vec3> points_;
-      std::vector<glm::vec2> uv_;
+      std::vector<glm::vec3> points_; // (x, y, z) coordinates representing the mesh's geometric vertices' positions ( in local-space ).
+      std::vector<glm::vec2> uv_;     // texture coordinates
 
-      std::vector<float> vertices_;
+      std::vector<float> vertices_;   // this is an unpacked container obtained by continuously merging points and texture coordinates
       std::vector<GLuint> indices_;
 
       void init_uniform_locations_()
@@ -134,6 +141,7 @@ namespace blossom::factory
             vertices_.data(), 
             0);
 
+        // If indices are supplied, we store them in an EBO.
         if (indices_.size() > 0)
         {
           glCreateBuffers(1, &mesh.ebo);
