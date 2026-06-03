@@ -10,6 +10,7 @@
 
 #include <string>
 #include <iostream>
+#include <glad/gl.h>
 
 namespace blossom::system
 {
@@ -29,7 +30,7 @@ namespace blossom::system
           glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
           glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
           
-          with_image(texture, texture.path, texture.internal_format, texture.format, texture.flip);
+          with_image(texture, texture.path, texture.internal_format, texture.pixel_data_format, texture.flip_vertically_on_load);
         }
       }
 
@@ -47,10 +48,10 @@ namespace blossom::system
 
           if (data != nullptr)
           {
-            glPixelStorei(GL_UNPACK_ALIGNMENT, texture.alignment);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, texture.pixel_alignment);
             glTexImage2D(
                 texture.target, 
-                texture.lod, 
+                texture.level_of_detail, 
                 internal_format, 
                 _width, 
                 _height, 

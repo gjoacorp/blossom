@@ -39,7 +39,7 @@ auto main() -> int
   auto& texture_component = registry.emplace<blossom::component::texture>(rectangle);
   texture_component.path = "resources/textures/couchy.png";
   texture_component.internal_format = GL_RGB;
-  texture_component.format = GL_RGBA;
+  texture_component.pixel_data_format = GL_RGBA;
 
   blossom::system::texture::init(registry);
 
