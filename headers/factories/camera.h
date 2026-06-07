@@ -3,9 +3,10 @@
 
 #include <entt/entt.hpp>
 #include "../components/transform.h"
-#include "../components/transform_matrix.h"
+#include "../components/matrices/transform.h"
+#include "../components/matrices/view.h"
+#include "../components/matrices/projection.h"
 #include "../components/camera.h"
-#include "../components/view_projection_matrix.h"
 #include "../components/tags/active_camera.h"
 
 namespace blossom::factory
@@ -19,8 +20,19 @@ namespace blossom::factory
         entity_    =  registry_.create();
         registry_.emplace<component::camera>(entity_);
         registry_.emplace<component::transform>(entity_);
-        registry_.emplace<component::transform_matrix>(entity_);
-        registry_.emplace<component::view_projection_matrix>(entity_);
+        registry_.emplace<component::matrix::transform>(entity_);
+        registry_.emplace<component::matrix::view>(entity_);
+        registry_.emplace<component::matrix::projection>(entity_);
+
+        init_buffers();
+      }
+
+      void init_buffers()
+      {
+        auto& ubo = registry_.get<component::camera>(entity_).ubo;
+        glCreateBuffers(1, &ubo);
+        glNamedBufferData(ubo, 2 * sizeof(glm::mat4), nullptr, GL_DYNAMIC_DRAW);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo);
       }
 
       auto with_width(const uint16_t width) -> camera&

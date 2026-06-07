@@ -2,7 +2,13 @@
 
 layout (location=0) in vec3 position;
 
-uniform mat4 mvp_matrix;
+layout (std140, binding = 0) uniform CameraMatrices 
+{
+    mat4 projection; 
+    mat4 view;       
+}; 
+
+uniform mat4 model;
 
 uniform float time;
 
@@ -30,6 +36,6 @@ void main(void)
 
   vec3 new_pos = position + vec3(0.0f, wave_a_out + wave_b_out + wave_c_out, 0.0f);
 
-  gl_Position = mvp_matrix * vec4(new_pos, 1.0);
+  gl_Position = projection * view * model * vec4(new_pos, 1.0);
   varying_color = vec4(sin(5.0f * new_pos.y), cos(new_pos.y), sin(new_pos.y), 1.0);
 }
