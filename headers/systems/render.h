@@ -15,10 +15,16 @@
 
 namespace blossom::system
 {
-  class render
+  class render : public base<render>
   {
-    public:
-      static void update(entt::registry& registry)
+    friend class base<render>;
+
+    private:
+      static void init_implementation_(entt::registry& registry)
+      {
+      }
+
+      static void update_implementation_(entt::registry& registry)
       {
         std::array<glm::mat4, 3> pvm_matrices;
 

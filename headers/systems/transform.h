@@ -3,15 +3,19 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <entt/entt.hpp>
+
+#include "../systems/base.h"
 #include "../components/transform.h"
 #include "../components/matrices/transform.h"
 
 namespace blossom::system
 {
-  class transform
+  class transform : public base<transform>
   {
-    public:
-      static void update(entt::registry& registry)
+    friend class base<transform>;
+
+    private:
+      static void update_implementation_(entt::registry& registry)
       {
         auto view = registry.view<component::transform, component::matrix::transform>();
         for ( auto [entity, transform, matrix] : view.each() )
@@ -20,7 +24,10 @@ namespace blossom::system
         }
       }
 
-    private:
+      static void init_implementation_(entt::registry& registry)
+      {
+      }
+
       static void update_transform_matrix_(const component::transform& transform, component::matrix::transform& matrix)
       {
         auto local_to_world = glm::mat4(1.0F);
