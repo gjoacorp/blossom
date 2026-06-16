@@ -6,7 +6,7 @@
 
 #include "../systems/base.h"
 #include "../components/transform.h"
-#include "../components/transform_matrix.h"
+#include "../components/matrices/transform.h"
 
 namespace blossom::system
 {
@@ -17,10 +17,10 @@ namespace blossom::system
     private:
       static void update_implementation_(entt::registry& registry)
       {
-        auto view = registry.view<component::transform, component::transform_matrix>();
-        for ( auto [entity, transform, transform_matrix] : view.each() )
+        auto view = registry.view<component::transform, component::matrix::transform>();
+        for ( auto [entity, transform, matrix] : view.each() )
         {
-          update_transform_matrix_(transform, transform_matrix);
+          update_transform_matrix_(transform, matrix);
         }
       }
 
@@ -28,7 +28,7 @@ namespace blossom::system
       {
       }
 
-      static void update_transform_matrix_(const component::transform& transform, component::transform_matrix& transform_matrix)
+      static void update_transform_matrix_(const component::transform& transform, component::matrix::transform& matrix)
       {
         auto local_to_world = glm::mat4(1.0F);
 
@@ -38,7 +38,7 @@ namespace blossom::system
         local_to_world = glm::rotate(local_to_world, glm::radians(transform.rotation.z), glm::vec3(0.0F, 0.0F, 1.0F));
         local_to_world = glm::scale(local_to_world, transform.scale);
 
-        transform_matrix.matrix = local_to_world;
+        matrix.data = local_to_world;
       }
   };
 }

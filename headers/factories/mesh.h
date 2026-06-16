@@ -3,7 +3,7 @@
 
 #include <entt/entt.hpp>
 #include "../components/transform.h"
-#include "../components/transform_matrix.h"
+#include "../components/matrices/transform.h"
 #include "../components/mesh.h"
 
 namespace blossom::factory
@@ -17,7 +17,7 @@ namespace blossom::factory
         entity_    = registry_.create();
         registry_.emplace<component::mesh>(entity_);
         registry_.emplace<component::transform>(entity_);
-        registry_.emplace<component::transform_matrix>(entity_);
+        registry_.emplace<component::matrix::transform>(entity_);
       }
 
       auto with_position(const glm::vec3& position) -> mesh&
@@ -93,7 +93,7 @@ namespace blossom::factory
       void init_uniform_locations_()
       {
         auto& mesh = registry_.get<component::mesh>(entity_);
-        mesh.mvp_uniform_location = glGetUniformLocation(mesh.shader_program, "mvp_matrix");
+        mesh.model_uniform_location = glGetUniformLocation(mesh.shader_program, "model");
       }
 
       void init_buffers_()
@@ -101,37 +101,42 @@ namespace blossom::factory
         auto& mesh = registry_.get<component::mesh>(entity_);
 
         glCreateVertexArrays(1, &mesh.vao);
-        glBindVertexArray(mesh.vao);
 
         glCreateBuffers(1, &mesh.vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
         glNamedBufferStorage(
             mesh.vbo, 
             static_cast<GLsizeiptr>( vertices_.size() * sizeof(glm::vec3) ), 
             vertices_.data(), 
-            0);
+            0
+        );
 
         if (indices_.size() > 0)
         {
           glCreateBuffers(1, &mesh.ebo);
-          glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ebo);
           glNamedBufferStorage(
               mesh.ebo, 
               static_cast<GLsizeiptr>( indices_.size() * sizeof(GLuint) ), 
               indices_.data(), 
-              0);
+              0
+          );
         }
 
-        glVertexAttribPointer(
-            0, 
-            3, 
-            GL_FLOAT, 
-            GL_FALSE, 
-            sizeof(glm::vec3), 
-            nullptr );
+        // Vertex size
+        const GLsizei stride = sizeof(glm::vec3);
 
-        glEnableVertexAttribArray(0);
-        glBindVertexArray(0);
+        glVertexArrayElementBuffer(mesh.vao, mesh.ebo);
+        glVertexArrayVertexBuffer(mesh.vao, 0, mesh.vbo, 0, stride);
+
+        glEnableVertexArrayAttrib(mesh.vao, 0);
+        glVertexArrayAttribFormat(
+          mesh.vao, 
+          0, 
+          3, 
+          GL_FLOAT, 
+          GL_FALSE, 
+          0
+        );
+        glVertexArrayAttribBinding(mesh.vao, 0, 0);
       }
   };
 }

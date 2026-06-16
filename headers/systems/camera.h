@@ -5,9 +5,9 @@
 #include <glm/ext/matrix_clip_space.hpp>
 
 #include "../components/camera.h"
-#include "../components/transform_matrix.h"
-#include "../components/view_projection_matrix.h"
-#include "../systems/base.h"
+#include "../components/matrices/transform.h"
+#include "../components/matrices/view.h"
+#include "../components/matrices/projection.h"
 
 namespace blossom::system
 {
@@ -18,12 +18,11 @@ namespace blossom::system
     private:
       static void update_implementation_(entt::registry& registry)
       {
-        auto view = registry.view<component::transform_matrix, component::view_projection_matrix, component::camera>();
-        for (auto [entity, transform_matrix, vp_matrix, camera] : view.each())
+        auto view = registry.view<component::matrix::transform, component::matrix::view, component::matrix::projection, component::camera>();
+        for (auto [entity, transform, view, projection, camera] : view.each())
         {
-          auto view_projection_matrix = calculate_projection_matrix_(camera);
-          view_projection_matrix *= glm::inverse(transform_matrix.matrix);
-          vp_matrix.matrix = view_projection_matrix;
+          view.data = glm::inverse(transform.data);
+          projection.data = calculate_projection_matrix_(camera);
         }
       }
 

@@ -22,6 +22,8 @@ namespace blossom::component
     float fov_y = 90.0F; 
 
     camera_type type = camera_type::ORTHOGRAPHIC;
+
+    GLuint ubo = 0;
   };
 }
 
