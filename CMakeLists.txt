@@ -17,7 +17,7 @@ function(add_example name)
     add_executable(${name} ${SOURCES} examples/${name}.cpp)
     add_dependencies(${name} copy_shaders)
     target_include_directories(${name} PRIVATE include)
-    target_link_libraries(${name} PRIVATE OpenGL::GL glfw glad EnTT::EnTT glm::glm)
+    target_link_libraries(${name} PRIVATE Vulkan::Vulkan OpenGL::GL glfw glad EnTT::EnTT glm::glm)
 endfunction()
 
 cmake_policy(SET CMP0072 NEW)
@@ -28,6 +28,7 @@ find_package(OpenGL REQUIRED)
 add_subdirectory(external/glad)
 
 find_package(glfw3 REQUIRED)
+find_package(Vulkan REQUIRED)
 
 #   GLM
 add_subdirectory(external/glm)
@@ -42,6 +43,7 @@ add_example(triangle)
 add_example(view)
 add_example(lines)
 add_example(squiggle)
+add_example(vk)
 
 find_package(GTest REQUIRED)
 set(TEST_SOURCES

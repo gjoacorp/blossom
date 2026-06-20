@@ -1,17 +1,20 @@
+#ifndef BLOSSOM_SYSTEM_VK_RENDERER_H
+#define BLOSSOM_SYSTEM_VK_RENDERER_H
+
 #include <algorithm>
 #include <cstring>
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
 #include <memory>
 #include <span>
 #include <vulkan/vulkan.h>
-#include <GLFW/glfw3.h>
 
 namespace blossom::system
 {
   class vk_renderer
   {
     public:
-    private:
-      static VkInstance instance_; // NOLINT
+      static inline VkInstance instance_ = VK_NULL_HANDLE; // NOLINT
       
       // Returns true if all extensions in extensions_view are supported by the implementation, false otherwise.
       // TODO: If not all are extensions supported, this should probably return the ones which AREN'T supported
@@ -68,3 +71,5 @@ namespace blossom::system
       }
   };
 }
+
+#endif
