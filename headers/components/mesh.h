@@ -19,7 +19,7 @@ namespace blossom::component
     GLenum polygon_mode = GL_FILL;
     GLenum primitive_type = GL_TRIANGLES;
 
-    GLint mvp_uniform_location = 0;
+    GLint model_uniform_location = 0;
   };
 }
 
