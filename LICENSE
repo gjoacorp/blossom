@@ -1,5 +1,3 @@
-# Proprietary License & Terms of Use
-
 Copyright © 2024-2026 James Russell Calvert. All rights reserved.
 
 This software and its associated documentation files (the "Software") are the 
@@ -10,7 +8,7 @@ medium, is strictly prohibited.
 Portions of this Software contain legacy code originally distributed under the 
 MIT License. Those specific legacy components remain subject to the terms and 
 conditions of the MIT License, which can be found in the accompanying 
-`LICENSE-MIT` file. All new modifications, architecture, and rewrites are 
+LICENSE-MIT file. All new modifications, architecture, and rewrites are 
 proprietary and owned exclusively by James Russell Calvert.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
