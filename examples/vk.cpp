@@ -1,14 +1,18 @@
-#include "../headers/window.h"
 #include "../headers/vk_renderer.h"
-
-const unsigned int WINDOW_WIDTH = 1920;
-const unsigned int WINDOW_HEIGHT = 1080;
-const char* window_title = "Blossom Vulkan Example";
+#include "../headers/utils/vk.h"
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <span>
 
 auto main() -> int 
 {
-  blossom::window window(WINDOW_WIDTH, WINDOW_HEIGHT, window_title);
-  window.enter_fullscreen();
+  blossom::utils::print_available_instance_extension_names();
 
-  blossom::system::vk_renderer::create_instance_();
+  uint32_t    glfw_extension_count = 0;
+  const auto* glfw_extension_names = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
+
+  const auto EXTENSIONS_VIEW = std::span(glfw_extension_names, glfw_extension_count);
+
+  std::array<const std::string, 1> layers {"VK_LAYER_KHRONOS_validation" };
+  blossom::system::vk_renderer::create_instance_(EXTENSIONS_VIEW, std::span(layers));
 }

@@ -7,6 +7,7 @@
 
 namespace blossom::utils
 {
+  // Queries for and prints all available Vulkan instance extension names.
   auto print_available_instance_extension_names() -> void
   {
     uint32_t count = 0;
