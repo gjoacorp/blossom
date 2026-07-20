@@ -18,7 +18,7 @@ namespace blossom::system
 
     class vk_renderer
     {
-        public:
+        private:
             static inline VkInstance instance_ = VK_NULL_HANDLE; // NOLINT
             // -------------------------------------------------------------------------------------------------------
             // [action] Can be used to query whether certain extensions are supported by the implementation.
@@ -81,6 +81,7 @@ namespace blossom::system
                 }
                 return unsupported_layers;
             }
+        public:
             // -------------------------------------------------------------------------------------------------------
             // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
             //          extension_names enabled.
@@ -90,7 +91,7 @@ namespace blossom::system
             // -------------------------------------------------------------------------------------------------------
             // [out] VkResult       -- The output from vkCreateInstance.
             // -------------------------------------------------------------------------------------------------------
-            static auto create_instance_(string_viewable_range auto&& extension_names, string_viewable_range auto&& layer_names) -> VkResult
+            static auto create_instance(string_viewable_range auto&& extension_names, string_viewable_range auto&& layer_names) -> VkResult
             {
                 static constexpr VkApplicationInfo APPLICATION_INFO
                 {
@@ -107,11 +108,11 @@ namespace blossom::system
                     throw std::runtime_error("ERROR (blossom::vk_renderer): Some requested instance extensions are not supported by the implementation.");
                 }
 
-                const auto unsupported_layers = get_unsupported_layers_(layer_names);
-                if (!unsupported_layers.empty())
+                const auto UNSUPPORTED_LAYERS = get_unsupported_layers_(layer_names);
+                if (!UNSUPPORTED_LAYERS.empty())
                 {
                     std::string layers_str = "\n";
-                    for (const auto& layer : unsupported_layers)
+                    for (const auto& layer : UNSUPPORTED_LAYERS)
                     {
                         layers_str += layer + "\n";
                     }

@@ -14,5 +14,5 @@ auto main() -> int
   const auto EXTENSIONS_VIEW = std::span(glfw_extension_names, glfw_extension_count);
 
   std::array<const std::string, 1> layers {"VK_LAYER_KHRONOS_validation" };
-  blossom::system::vk_renderer::create_instance_(EXTENSIONS_VIEW, layers);
+  blossom::system::vk_renderer::create_instance(EXTENSIONS_VIEW, layers);
 }
