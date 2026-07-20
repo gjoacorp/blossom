@@ -2,7 +2,6 @@
 #define BLOSSOM_SYSTEM_VK_RENDERER_H
 
 #include <algorithm>
-#include <cstring>
 #include <concepts>
 #include <memory>
 #include <span>
@@ -49,7 +48,6 @@ namespace blossom::system
                 }
                 return true;
             }
-
             // -------------------------------------------------------------------------------------------------------
             // [action] Can be used to query whether certain layers are supported by the implementation.
             // -------------------------------------------------------------------------------------------------------
@@ -83,7 +81,6 @@ namespace blossom::system
                 }
                 return unsupported_layers;
             }
-
             // -------------------------------------------------------------------------------------------------------
             // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
             //          extension_names enabled.
