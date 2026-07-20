@@ -84,6 +84,15 @@ namespace blossom::system
                 return unsupported_layers;
             }
 
+            // -------------------------------------------------------------------------------------------------------
+            // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
+            //          extension_names enabled.
+            // -------------------------------------------------------------------------------------------------------
+            // [in] extension_names -- A range of extension names to use.
+            // [in] layer_names     -- A range of layer names to use.
+            // -------------------------------------------------------------------------------------------------------
+            // [out] VkResult       -- The output from vkCreateInstance.
+            // -------------------------------------------------------------------------------------------------------
             static auto create_instance_(string_viewable_range auto&& extension_names, string_viewable_range auto&& layer_names) -> VkResult
             {
                 static constexpr VkApplicationInfo APPLICATION_INFO
