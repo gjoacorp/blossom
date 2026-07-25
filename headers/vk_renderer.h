@@ -11,15 +11,19 @@
 namespace blossom::system
 {
     template <typename T>
-        concept string_viewable_range = 
-        std::ranges::input_range<T>                                               // Is it a range?
-        && 
-        std::convertible_to<std::ranges::range_reference_t<T>, std::string_view>; // Can its elements be converted to std::string_view?
+        concept vk_string =
+        std::convertible_to<std::remove_cvref_t<T>, const char*> || 
+        (std::same_as<std::remove_cvref_t<T>, std::string> && std::is_lvalue_reference_v<T>);
+
+    template <typename R>
+        concept vk_string_range =
+        std::ranges::input_range<R> && vk_string<std::ranges::range_reference_t<R>>;
 
     class vk_renderer
     {
         private:
-            static inline VkInstance instance_ = VK_NULL_HANDLE; // NOLINT
+            static inline VkInstance       instance_        = VK_NULL_HANDLE; // NOLINT
+            static inline VkPhysicalDevice physical_device_ = VK_NULL_HANDLE; // NOLINT
             // -------------------------------------------------------------------------------------------------------
             // [action] Can be used to query whether certain extensions are supported by the implementation.
             // TODO: If not all are extensions supported, this should probably return the ones which AREN'T supported  
@@ -28,7 +32,7 @@ namespace blossom::system
             // -------------------------------------------------------------------------------------------------------
             // [out] bool            -- true if all extensions are supported by the implementation, false otherwise.
             // -------------------------------------------------------------------------------------------------------
-            static auto are_extensions_supported_(string_viewable_range auto&& extension_names) -> bool
+            static auto are_extensions_supported_(vk_string_range auto&& extension_names) -> bool
             {
                 uint32_t property_count = 0;
                 vkEnumerateInstanceExtensionProperties(nullptr, &property_count, nullptr);
@@ -56,7 +60,7 @@ namespace blossom::system
             // [out] std::vector<std::string> -- Contains all layers from layer_names which are unsupported by the
             //                                   implementation. Empty if all are supported.
             // -------------------------------------------------------------------------------------------------------
-            static auto get_unsupported_layers_(string_viewable_range auto&& layer_names) -> std::vector<std::string>
+            static auto get_unsupported_layers_(vk_string_range auto&& layer_names) -> std::vector<std::string>
             {
                 std::vector<std::string> unsupported_layers;
 
@@ -81,6 +85,18 @@ namespace blossom::system
                 }
                 return unsupported_layers;
             }
+
+            static auto select_physical_device_() -> void
+            {
+                if (instance_ == VK_NULL_HANDLE)
+                {
+                    throw std::runtime_error("ERROR (blossom::vk_renderer): A valid Vulkan instance handle is required to call select_physical_device_.");
+                }
+                uint32_t physical_device_count = 0U;
+                vkEnumeratePhysicalDevices(instance_, &physical_device_count, nullptr);
+                auto physical_devices = std::make_unique<VkPhysicalDevice[]>(physical_device_count); // NOLINT
+                vkEnumeratePhysicalDevices(instance_, &physical_device_count, physical_devices.get());
+            }
         public:
             // -------------------------------------------------------------------------------------------------------
             // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
@@ -91,7 +107,7 @@ namespace blossom::system
             // -------------------------------------------------------------------------------------------------------
             // [out] VkResult       -- The output from vkCreateInstance.
             // -------------------------------------------------------------------------------------------------------
-            static auto create_instance(string_viewable_range auto&& extension_names, string_viewable_range auto&& layer_names) -> VkResult
+            static auto create_instance(vk_string_range auto&& extension_names, vk_string_range auto&& layer_names) -> VkResult
             {
                 static constexpr VkApplicationInfo APPLICATION_INFO
                 {
