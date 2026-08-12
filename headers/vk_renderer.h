@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <concepts>
+#include <functional>
 #include <memory>
 #include <span>
 #include <vector>
@@ -86,7 +87,19 @@ namespace blossom::system
                 return unsupported_layers;
             }
 
-            static auto select_physical_device_() -> void
+            // -------------------------------------------------------------------------------------------------------
+            // [action] Enumerates all physical devices, scores them using score_fn, and selects the physical device
+            //          with the highest score.
+            // -------------------------------------------------------------------------------------------------------
+            // [in] score_fn -- This is the function used to score (and hence rank) physical devices.
+            // -------------------------------------------------------------------------------------------------------
+            // [out]         -- N/A
+            // -------------------------------------------------------------------------------------------------------
+            // [notes]       -- Notice that, by default, all physical devices are given the same score.
+            // -------------------------------------------------------------------------------------------------------
+            // TODO: Perhaps use a more sensible default score_fn that prioritises discrete GPUs?
+            template<typename T = int>
+            static auto select_physical_device_(const std::function<T(VkPhysicalDevice)>& score_fn = [](VkPhysicalDevice) -> T { return T{}; }) -> void
             {
                 if (instance_ == VK_NULL_HANDLE)
                 {
@@ -94,8 +107,22 @@ namespace blossom::system
                 }
                 uint32_t physical_device_count = 0U;
                 vkEnumeratePhysicalDevices(instance_, &physical_device_count, nullptr);
+
+                if (physical_device_count == 0U)
+                {
+                    throw std::runtime_error("ERROR (blossom::vk_renderer): Failed to find any GPUs with Vulkan support.");
+                }
                 auto physical_devices = std::make_unique<VkPhysicalDevice[]>(physical_device_count); // NOLINT
                 vkEnumeratePhysicalDevices(instance_, &physical_device_count, physical_devices.get());
+
+                std::span<const VkPhysicalDevice> physical_devices_view(physical_devices.get(), physical_device_count);
+                const auto HIGHEST_SCORE_IT = std::ranges::max_element(physical_devices_view, std::less{}, score_fn);
+
+                if (HIGHEST_SCORE_IT == physical_devices_view.end())
+                {
+                    throw std::runtime_error("ERROR (blossom::vk_renderer): A suitable physical device was unable to be selected.");
+                }
+                physical_device_ = physical_devices_view[*HIGHEST_SCORE_IT];
             }
         public:
             // -------------------------------------------------------------------------------------------------------
