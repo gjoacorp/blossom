@@ -122,7 +122,7 @@ namespace blossom::system
                 {
                     throw std::runtime_error("ERROR (blossom::vk_renderer): A suitable physical device was unable to be selected.");
                 }
-                return physical_devices_view[*HIGHEST_SCORE_IT];
+                return *HIGHEST_SCORE_IT;
             }
         public:
             // -------------------------------------------------------------------------------------------------------
