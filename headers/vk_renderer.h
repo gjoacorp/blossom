@@ -139,11 +139,11 @@ namespace blossom::system
                 static constexpr VkApplicationInfo APPLICATION_INFO
                 {
                     .sType               = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-                        .pNext               = nullptr,
-                        .pApplicationName    = nullptr, // TODO: Provide a way to obtain this
-                        .applicationVersion  = 0,       // TODO: Provide a way to obtain this
-                        .pEngineName         = "blossom", 
-                        .apiVersion          = 0        // TODO: Provide a proper way of obtaining this 
+                    .pNext               = nullptr,
+                    .pApplicationName    = nullptr, // TODO: Provide a way to obtain this
+                    .applicationVersion  = 0,       // TODO: Provide a way to obtain this
+                    .pEngineName         = "blossom", 
+                    .apiVersion          = 0        // TODO: Provide a proper way of obtaining this 
                 };
 
                 if (!are_extensions_supported_(extension_names))
