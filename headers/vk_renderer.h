@@ -136,6 +136,7 @@ namespace blossom::system
             // -------------------------------------------------------------------------------------------------------
             static auto create_instance(vk_string_range auto&& extension_names, vk_string_range auto&& layer_names) -> VkResult
             {
+                // Populating application information.
                 static constexpr VkApplicationInfo APPLICATION_INFO
                 {
                     .sType               = VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -146,12 +147,15 @@ namespace blossom::system
                     .apiVersion          = 0        // TODO: Provide a proper way of obtaining this 
                 };
 
+                // Checking whether requested extensions are supported.
                 if (!are_extensions_supported_(extension_names))
                 {
                     throw std::runtime_error("ERROR (blossom::vk_renderer): Some requested instance extensions are not supported by the implementation.");
                 }
 
+                // Obtain and print unsupported instance layers (if any).
                 const auto UNSUPPORTED_LAYERS = get_unsupported_layers_(layer_names);
+
                 if (!UNSUPPORTED_LAYERS.empty())
                 {
                     std::string layers_str = "\n";
@@ -161,7 +165,6 @@ namespace blossom::system
                     }
                     throw std::runtime_error("ERROR (blossom::vk_renderer): The following requested instance layers are not supported by the implementation:" + layers_str);
                 }
-
                 // Copying extension names from the view to perform the std::string -> const char* conversion.
                 std::vector<const char*> enabled_extension_names;
                 enabled_extension_names.reserve(extension_names.size());
