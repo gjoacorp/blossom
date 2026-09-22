@@ -88,18 +88,18 @@ namespace blossom::system
             }
 
             // -------------------------------------------------------------------------------------------------------
-            // [action] Enumerates all physical devices, scores them using score_fn, and selects the physical device
-            //          with the highest score.
+            // [action] Enumerates all physical devices, scores them using score_fn, and sets physical_device_ to
+            //          the VkPhysicalDevice with the highest score.
             // -------------------------------------------------------------------------------------------------------
             // [in] score_fn -- This is the function used to score (and hence rank) physical devices.
             // -------------------------------------------------------------------------------------------------------
-            // [out]         -- A VkPhysicalDevice with the highest score.
+            // [out]         -- void
             // -------------------------------------------------------------------------------------------------------
             // [notes]       -- Notice that, by default, all physical devices are given the same score.
             // -------------------------------------------------------------------------------------------------------
             // TODO: Perhaps use a more sensible default score_fn that prioritises discrete GPUs?
             template<typename T = int>
-            static auto select_physical_device_(const std::function<T(VkPhysicalDevice)>& score_fn = [](VkPhysicalDevice) -> T { return T{}; }) -> VkPhysicalDevice
+            static auto select_physical_device_(const std::function<T(VkPhysicalDevice)>& score_fn = [](VkPhysicalDevice) -> T { return T{}; }) -> void
             {
                 if (instance_ == VK_NULL_HANDLE)
                 {
@@ -122,7 +122,7 @@ namespace blossom::system
                 {
                     throw std::runtime_error("ERROR (blossom::vk_renderer): A suitable physical device was unable to be selected.");
                 }
-                return *HIGHEST_SCORE_IT;
+                physical_device_ = *HIGHEST_SCORE_IT;
             }
         public:
             // -------------------------------------------------------------------------------------------------------
