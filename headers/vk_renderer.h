@@ -4,10 +4,32 @@
 #include <algorithm>
 #include <concepts>
 #include <functional>
+#include <iostream>
 #include <memory>
+#include <optional>
 #include <span>
 #include <vector>
 #include <vulkan/vulkan.h>
+#include <GLFW/glfw3.h>
+
+namespace
+{
+    struct queue_family_indices
+    {
+        // Bogus value.
+        uint32_t index = std::numeric_limits<uint32_t>::max(); 
+
+        std::optional<uint32_t> graphics  = std::nullopt;
+        std::optional<uint32_t> compute   = std::nullopt;
+        std::optional<uint32_t> transfer  = std::nullopt;
+        std::optional<uint32_t> present   = std::nullopt;
+
+        [[nodiscard]] auto supports_graphics_and_presentation() const -> bool
+        {
+            return graphics.has_value() && present.has_value();
+        }
+    };
+} // anonymous namespace
 
 namespace blossom::system
 {
@@ -25,6 +47,7 @@ namespace blossom::system
         private:
             static inline VkInstance       instance_        = VK_NULL_HANDLE; // NOLINT
             static inline VkPhysicalDevice physical_device_ = VK_NULL_HANDLE; // NOLINT
+            static inline VkSurfaceKHR     surface_         = VK_NULL_HANDLE; // NOLINT
             // -------------------------------------------------------------------------------------------------------
             // [action] Can be used to query whether certain extensions are supported by the implementation.
             // TODO: If not all are extensions supported, this should probably return the ones which AREN'T supported  
@@ -124,6 +147,71 @@ namespace blossom::system
                 }
                 physical_device_ = *HIGHEST_SCORE_IT;
             }
+
+            static auto find_queue_families_(VkPhysicalDevice physical_device) -> queue_family_indices
+            {
+                queue_family_indices indices {};
+
+                if (physical_device == VK_NULL_HANDLE)
+                {
+                    throw std::runtime_error("ERROR (blossom::vk_renderer): Cannot proceed to find queue families. Invalid physical device.");
+                }
+                // Querying how many queue families are available.
+                uint32_t family_count = 0U;
+                vkGetPhysicalDeviceQueueFamilyProperties2(physical_device, &family_count, nullptr);
+
+                // Obtaining the properties of the queue families.
+                std::vector<VkQueueFamilyProperties2> family_properties(family_count);
+                vkGetPhysicalDeviceQueueFamilyProperties2(physical_device, &family_count, family_properties.data());
+
+                for (uint32_t i = 0U; i < family_count; ++i)
+                {
+                    const auto& property = family_properties[i];
+                    indices.index = i;
+
+                    if ( (property.queueFamilyProperties.queueFlags & VK_QUEUE_GRAPHICS_BIT) != 0 )
+                    {
+                        indices.graphics = i;
+                    }
+
+                    if ( (property.queueFamilyProperties.queueFlags & VK_QUEUE_COMPUTE_BIT) != 0 )
+                    {
+                        indices.compute = i;
+                    }
+
+                    if ( (property.queueFamilyProperties.queueFlags & VK_QUEUE_TRANSFER_BIT) != 0 )
+                    {
+                        indices.transfer = i;
+                    }
+
+                    VkBool32 supports_presentation = VK_FALSE;
+
+                    if (surface_ != VK_NULL_HANDLE)
+                    {
+                        vkGetPhysicalDeviceSurfaceSupportKHR(
+                                physical_device, 
+                                indices.index,
+                                surface_,
+                                &supports_presentation
+                                );
+
+                        indices.present = (supports_presentation == VK_TRUE);
+                    }
+                    else
+                    {
+                        std::cout 
+                            << "WARNING (blossom::vk_renderer): Unable to query queue family for presentation support. No surface was found. Returning VK_FALSE."
+                            << "\n";
+                    }
+                }
+                return indices;
+            }
+
+        static auto create_surface(GLFWwindow* window) -> void
+        {
+            // TODO: Check if these pointers are valid.
+            glfwCreateWindowSurface(instance_, window, nullptr, &surface_);
+        }
         public:
             // -------------------------------------------------------------------------------------------------------
             // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
@@ -144,7 +232,7 @@ namespace blossom::system
                     .pApplicationName    = nullptr, // TODO: Provide a way to obtain this
                     .applicationVersion  = 0,       // TODO: Provide a way to obtain this
                     .pEngineName         = "blossom", 
-                    .apiVersion          = 0        // TODO: Provide a proper way of obtaining this 
+                    .apiVersion          = 0,       // TODO: Provide a proper way of obtaining this 
                 };
 
                 // Checking whether requested extensions are supported.
@@ -180,7 +268,7 @@ namespace blossom::system
                     .flags                   = static_cast<VkInstanceCreateFlags>(0),
                     .pApplicationInfo        = &APPLICATION_INFO,
                     .enabledExtensionCount   = static_cast<uint32_t>(enabled_extension_names.size()),
-                    .ppEnabledExtensionNames = enabled_extension_names.data()
+                    .ppEnabledExtensionNames = enabled_extension_names.data(),
                 };
 
                 return vkCreateInstance(&CREATE_INFO, nullptr, &instance_);
