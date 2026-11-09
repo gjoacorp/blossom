@@ -249,15 +249,11 @@ namespace blossom::system
                 // TODO: Check if these pointers are valid.
                 glfwCreateWindowSurface(instance_, window, nullptr, &surface_);
             }
-            // -------------------------------------------------------------------------------------------------------
-            // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
-            //          extension_names enabled.
-            // -------------------------------------------------------------------------------------------------------
-            // [in] extension_names -- A range of extension names to use.
-            // [in] layer_names     -- A range of layer names to use.
-            // -------------------------------------------------------------------------------------------------------
-            // [out] VkResult       -- The output from vkCreateInstance.
-            // -------------------------------------------------------------------------------------------------------
+            /// @brief                 Attempts to create a Vulkan instance with the instance layers and instance extensions 
+            ///                        given in @p layer_names and @p extension_names enabled.
+            /// @param extension_names A @ref vk_string_range of instance extension names.
+            /// @param layer_names     A @ref vk_string_range of instance layer names.
+            /// @return                The output from [`vkCreateInstance`](https://docs.vulkan.org/refpages/latest/refpages/source/vkCreateInstance.html).
             static auto create_instance(vk_string_range auto&& extension_names, vk_string_range auto&& layer_names) -> VkResult
             {
                 // Populating application information.
