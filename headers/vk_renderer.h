@@ -2,6 +2,8 @@
 #define BLOSSOM_SYSTEM_VK_RENDERER_H
 
 #include <algorithm>
+#include <stacktrace>
+#include <sstream>
 #include <concepts>
 #include <functional>
 #include <iostream>
@@ -33,6 +35,7 @@ namespace
 
 namespace blossom::system
 {
+    /// @brief Contrains a type to a Vulkan-compatible string.
     template <typename T>
         concept vk_string =
         std::convertible_to<std::remove_cvref_t<T>, const char*> || 
@@ -48,14 +51,15 @@ namespace blossom::system
             static inline VkInstance       instance_        = VK_NULL_HANDLE; // NOLINT
             static inline VkPhysicalDevice physical_device_ = VK_NULL_HANDLE; // NOLINT
             static inline VkSurfaceKHR     surface_         = VK_NULL_HANDLE; // NOLINT
-            // -------------------------------------------------------------------------------------------------------
-            // [action] Can be used to query whether certain extensions are supported by the implementation.
-            // TODO: If not all are extensions supported, this should probably return the ones which AREN'T supported  
-            // -------------------------------------------------------------------------------------------------------
-            // [in]  extension_names -- A range of extension names to query implementation support for.
-            // -------------------------------------------------------------------------------------------------------
-            // [out] bool            -- true if all extensions are supported by the implementation, false otherwise.
-            // -------------------------------------------------------------------------------------------------------
+            static inline VkDevice         device_  = VK_NULL_HANDLE; // NOLINT
+            static inline VkQueue          graphics_queue_  = VK_NULL_HANDLE; // NOLINT
+            static inline VkQueue          present_queue_   = VK_NULL_HANDLE; // NOLINT
+
+            /// @brief Used to query whether certain extensions are supported by the implementation.
+            /// @param extension_names A @ref vk_string_range of extension names to query implementation support for.
+            /// @return A @c bool that is @c true if every extension in @p extension_names is supported by the implementation. @c false otherwise.
+            /// @todo It might be useful to have this not return a @c bool, but instead return the extension names that are NOT supported.
+            /// That is, make this function more in line with @ref get_unsupported_layers_.
             static auto are_extensions_supported_(vk_string_range auto&& extension_names) -> bool
             {
                 uint32_t property_count = 0;
@@ -76,14 +80,11 @@ namespace blossom::system
                 }
                 return true;
             }
-            // -------------------------------------------------------------------------------------------------------
-            // [action] Can be used to query whether certain layers are supported by the implementation.
-            // -------------------------------------------------------------------------------------------------------
-            // [in] layer_names               -- A range of layer names to query implementation support for.
-            // -------------------------------------------------------------------------------------------------------
-            // [out] std::vector<std::string> -- Contains all layers from layer_names which are unsupported by the
-            //                                   implementation. Empty if all are supported.
-            // -------------------------------------------------------------------------------------------------------
+            /// @brief Used to query whether certain layers are supported by the implementation.
+            /// @param layer_names A @ref vk_string_range of layer names to query implementation support for.
+            /// @return A @c std::vector<std::string> containing all layers from @c layer_names which are unsupported by
+            /// the implementation.
+            /// @note This will return an empty vector if all the requested layers are supported by the implementation.
             static auto get_unsupported_layers_(vk_string_range auto&& layer_names) -> std::vector<std::string>
             {
                 std::vector<std::string> unsupported_layers;
@@ -110,17 +111,12 @@ namespace blossom::system
                 return unsupported_layers;
             }
 
-            // -------------------------------------------------------------------------------------------------------
-            // [action] Enumerates all physical devices, scores them using score_fn, and sets physical_device_ to
-            //          the VkPhysicalDevice with the highest score.
-            // -------------------------------------------------------------------------------------------------------
-            // [in] score_fn -- This is the function used to score (and hence rank) physical devices.
-            // -------------------------------------------------------------------------------------------------------
-            // [out]         -- void
-            // -------------------------------------------------------------------------------------------------------
-            // [notes]       -- Notice that, by default, all physical devices are given the same score.
-            // -------------------------------------------------------------------------------------------------------
-            // TODO: Perhaps use a more sensible default score_fn that prioritises discrete GPUs?
+            /// @brief Enumerates all physical devices, scores them using @c score_fn, and sets @ref physical_device_ to the
+            /// @c VkPhysicalDevice with the highest score.
+            /// @param score_fn This is the function used to rank physical devices.
+            /// @return Nothing.
+            /// @note By default, all physical devices are given the same score.
+            /// @todo Perhaps use a more sensible default @c score_fn that prioritises discrete GPUs?
             template<typename T = int>
             static auto select_physical_device_(const std::function<T(VkPhysicalDevice)>& score_fn = [](VkPhysicalDevice) -> T { return T{}; }) -> void
             {
@@ -148,7 +144,7 @@ namespace blossom::system
                 physical_device_ = *HIGHEST_SCORE_IT;
             }
 
-            static auto find_queue_families_(VkPhysicalDevice physical_device) -> queue_family_indices
+            static auto find_queue_family_indices_(VkPhysicalDevice physical_device) -> queue_family_indices
             {
                 queue_family_indices indices {};
 
@@ -173,19 +169,16 @@ namespace blossom::system
                     {
                         indices.graphics = i;
                     }
-
                     if ( (property.queueFamilyProperties.queueFlags & VK_QUEUE_COMPUTE_BIT) != 0 )
                     {
                         indices.compute = i;
                     }
-
                     if ( (property.queueFamilyProperties.queueFlags & VK_QUEUE_TRANSFER_BIT) != 0 )
                     {
                         indices.transfer = i;
                     }
 
                     VkBool32 supports_presentation = VK_FALSE;
-
                     if (surface_ != VK_NULL_HANDLE)
                     {
                         vkGetPhysicalDeviceSurfaceSupportKHR(
@@ -195,7 +188,10 @@ namespace blossom::system
                                 &supports_presentation
                                 );
 
-                        indices.present = (supports_presentation == VK_TRUE);
+                        if (supports_presentation == VK_TRUE)
+                        {
+                            indices.present = i;
+                        }
                     }
                     else
                     {
@@ -207,12 +203,52 @@ namespace blossom::system
                 return indices;
             }
 
-        static auto create_surface(GLFWwindow* window) -> void
-        {
-            // TODO: Check if these pointers are valid.
-            glfwCreateWindowSurface(instance_, window, nullptr, &surface_);
-        }
+            static auto generate_device_queue_create_infos_(VkPhysicalDevice physical_device) -> std::vector<VkDeviceQueueCreateInfo>
+            {
+                if (physical_device == nullptr)
+                {
+                    throw std::runtime_error(
+                            "ERROR (blossom::vk_renderer): "
+                            "Cannot generate device queue create infos for a null physical device.");
+                }
+
+                const auto queue_family_indices = find_queue_family_indices_(physical_device);
+                std::vector<uint32_t> families;
+                const auto add_family = [&families](std::optional<uint32_t> family) -> void
+                {
+                    if (family.has_value() && std::ranges::find(families, family.value()) == families.end())
+                    {
+                        families.push_back(family.value());
+                    }
+                };
+                add_family(queue_family_indices.graphics);
+                add_family(queue_family_indices.present);
+
+                std::vector<VkDeviceQueueCreateInfo> device_queue_create_infos;
+                device_queue_create_infos.reserve(families.size());
+
+                for (const uint32_t family : families)
+                {
+                    VkDeviceQueueCreateInfo info
+                    {
+                        .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                        .queueFamilyIndex = family,
+                        .queueCount = 1,
+                        .pQueuePriorities = nullptr,
+                    };
+
+                    device_queue_create_infos.push_back(info);
+                }
+                return device_queue_create_infos;
+            }
+
+
         public:
+            static auto create_surface(GLFWwindow* window) -> void
+            {
+                // TODO: Check if these pointers are valid.
+                glfwCreateWindowSurface(instance_, window, nullptr, &surface_);
+            }
             // -------------------------------------------------------------------------------------------------------
             // [action] Attempts to create a Vulkan instance with the layers and extensions given in layers_names and
             //          extension_names enabled.
@@ -240,7 +276,6 @@ namespace blossom::system
                 {
                     throw std::runtime_error("ERROR (blossom::vk_renderer): Some requested instance extensions are not supported by the implementation.");
                 }
-
                 // Obtain and print unsupported instance layers (if any).
                 const auto UNSUPPORTED_LAYERS = get_unsupported_layers_(layer_names);
 
@@ -256,6 +291,7 @@ namespace blossom::system
                 // Copying extension names from the view to perform the std::string -> const char* conversion.
                 std::vector<const char*> enabled_extension_names;
                 enabled_extension_names.reserve(extension_names.size());
+
                 for (std::string_view name : extension_names)
                 {
                     enabled_extension_names.emplace_back(name.data());
@@ -264,7 +300,6 @@ namespace blossom::system
                 const VkInstanceCreateInfo CREATE_INFO
                 {
                     .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-                    .pNext                   = nullptr, 
                     .flags                   = static_cast<VkInstanceCreateFlags>(0),
                     .pApplicationInfo        = &APPLICATION_INFO,
                     .enabledExtensionCount   = static_cast<uint32_t>(enabled_extension_names.size()),
@@ -272,6 +307,37 @@ namespace blossom::system
                 };
 
                 return vkCreateInstance(&CREATE_INFO, nullptr, &instance_);
+            }
+
+            static auto create_device() -> void
+            {
+                select_physical_device_();
+                if (physical_device_ == VK_NULL_HANDLE)
+                {
+                    std::ostringstream message;
+                    message 
+                        << "ERROR (blossom::vk_renderer): "
+                        << "Cannot create a logical device without a physical device.\n"
+                        << std::stacktrace::current();
+                        
+                    throw std::runtime_error(message.str());
+                }
+
+                const auto device_queue_create_infos = generate_device_queue_create_infos_(physical_device_);
+
+                const VkDeviceCreateInfo device_create_info
+                {
+                    .sType                = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+                    .queueCreateInfoCount = static_cast<uint32_t>(device_queue_create_infos.size()),
+                    .pQueueCreateInfos    = device_queue_create_infos.data(),
+                };
+
+                vkCreateDevice(
+                        physical_device_,
+                        &device_create_info,
+                        nullptr,
+                        &device_
+                        );
             }
     };
 }
